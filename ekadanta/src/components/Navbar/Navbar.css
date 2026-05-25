@@ -1,6 +1,6 @@
 .navbar {
   width: 100%;
-  background: var(--primary-green);
+  background: var(--matcha-green);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -30,7 +30,7 @@
 }
 
 .logo-image img {
-  width: 169px;
+  width: 159px;
   height: 169px;
   object-fit: contain;
 }
@@ -43,12 +43,13 @@
 .logo a {
   font-size: clamp(24px, 2vw, 38px);
   font-family:var(--title-font);
-  font-weight: 700;
+  font-weight: bold;
   color: #f3efe3;
   line-height: 1;
   letter-spacing: 1px;
   white-space: nowrap;
   text-transform: uppercase;
+
 }
 
 .logo p {

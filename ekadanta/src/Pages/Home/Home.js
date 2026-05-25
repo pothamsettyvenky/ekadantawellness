@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../Pages/Banner/banner";
 import FeaturedService from "../../components/FeaturedService/FeaturedService";
 import SpecializedCare from "../../components/SpecializedCare/SpecializedCare";
+import AboutDoctor from "../../components/AboutDoctor/AboutDoctor";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -25,8 +26,8 @@ function Home() {
       <Navbar />
       <Hero />
       <FeaturedService/>
-      
       <SpecializedCare/>
+      <AboutDoctor/>
     </>
   );
 }
