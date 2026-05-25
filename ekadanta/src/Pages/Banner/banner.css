@@ -1,0 +1,175 @@
+.hero{
+  width:100%;
+  min-height:100vh;
+
+  background:
+    /* linear-gradient(
+      to right,
+      rgba(248,247,242,0.92),
+      rgba(248,247,242,0.75),
+      rgba(248,247,242,0.15)
+    ), */
+    url("../../assets/images/banner_img.png");
+
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+
+  display:flex;
+  align-items:center;
+}
+
+.hero-overlay{
+  width:100%;
+}
+
+.hero-content{
+  width:90%;
+  margin:auto;
+
+  /* max-width:700px; */
+
+  padding-bottom:70px;
+  /* max-width:700px; */
+}
+
+/* ========================= */
+/* Tagline */
+/* ========================= */
+
+.hero-tagline{
+  font-size:15px;
+  letter-spacing:4px;
+
+  color:var(--secondary-green);
+
+  margin-bottom:25px;
+font-family: var(--text-font);
+
+  font-weight:bold;
+}
+
+/* ========================= */
+/* Heading */
+/* ========================= */
+
+.hero-content h1{
+  font-size:clamp(56px, 7vw, 96px);
+
+  line-height:1;
+
+  margin-bottom:30px;
+
+  font-family:'Caudex', serif;
+  font-weight:700;
+
+  color:var(--primary-green);
+
+  letter-spacing:-2px;
+}
+
+/* ========================= */
+/* Description */
+/* ========================= */
+
+.hero-description{
+  font-size:24px;
+  line-height:1.8;
+
+  color:#2d2d2d;
+
+  max-width:650px;
+
+  margin-bottom:40px;
+  font-family: "Google Sans Flex", sans-serif;
+  font-weight: 700;
+
+  font-variation-settings:
+    "wdth" 120,
+    "GRAD" 50,
+    "ROND" 20;;
+}
+
+/* ========================= */
+/* Button */
+/* ========================= */
+
+.hero-btn{
+  padding:18px 38px;
+
+  border:none;
+  border-radius:50px;
+
+  background:var(--primary-green);
+  color:#fff;
+
+  font-size:18px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+  font-family:'Bricolage Grotesque', sans-serif;
+}
+
+.hero-btn:hover{
+  background:var(--secondary-green);
+
+  transform:translateY(-2px);
+}
+
+/* ========================= */
+/* Tablet */
+/* ========================= */
+
+@media screen and (max-width:1100px){
+
+  .hero{
+    min-height:85vh;
+  }
+
+  .hero-content h1{
+    font-size:72px;
+  }
+
+  .hero-description{
+    font-size:20px;
+  }
+}
+
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media screen and (max-width:768px){
+
+  .hero{
+    min-height:80vh;
+
+    background-position:center;
+  }
+
+  .hero-content{
+    text-align:center;
+  }
+
+  .hero-tagline{
+    font-size:11px;
+    letter-spacing:3px;
+  }
+
+  .hero-content h1{
+    font-size:48px;
+  }
+
+  .hero-description{
+    font-size:16px;
+    line-height:1.7;
+  }
+
+  .hero-btn{
+    padding:16px 32px;
+    font-size:16px;
+  }
+}

@@ -21,7 +21,7 @@ function Navbar() {
               <div className="logo">
 
   <Link to="/">
-    Ekadanta Wellness
+    Ekadantha Wellness
   </Link>
 
   <p>Holistic Healing & Homeopathy Care</p>
@@ -56,12 +56,7 @@ function Navbar() {
               <Link to="/feedback">Patient Feedback</Link>
             </div>
           </li>
-
-          <li>
-            <Link to="/treatments">Treatments</Link>
-          </li>
-
-          {/* Media */}
+ {/* Media */}
           <li className="dropdown">
             <span>Media</span>
 
@@ -69,6 +64,11 @@ function Navbar() {
               <Link to="/media">Awards</Link>
             </div>
           </li>
+          <li>
+            <Link to="/treatments">Treatments</Link>
+          </li>
+
+         
 
           <li>
             <Link to="/book-appointment" className="appointment-btn">

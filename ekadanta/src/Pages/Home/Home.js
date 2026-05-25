@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./Home.css";
 
 import Navbar from "../../components/Navbar/Navbar";
+import Hero from "../../Pages/Banner/banner";
+import FeaturedService from "../../components/FeaturedService/FeaturedService";
+import SpecializedCare from "../../components/SpecializedCare/SpecializedCare";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function Home() {
+
+  useEffect(() => {
+
+    AOS.init({
+      duration: 1200,
+      once: true
+    });
+
+  }, []);
 
   return (
     <>
       <Navbar />
-
-      <div className="home">
-        <h1>Ekadanta Wellness</h1>
-      </div>
+      <Hero />
+      <FeaturedService/>
+      
+      <SpecializedCare/>
     </>
   );
 }

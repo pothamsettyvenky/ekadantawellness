@@ -1,5 +1,5 @@
 :root{
-  --primary-green: #022B26;
+  --primary-green: #44624a;
   --soft-cream: #D8CFB7;
   --light-sage: #C0C3B9;
   --off-white: #F3EFE3;
@@ -8,4 +8,6 @@
   --desktop: 1200px;
   --tablet: 768px;
   --mobile: 480px;
+  --title-font: 'Caudex', serif;
+  --para-font: "Google Sans Flex", sans-serif
 }
