@@ -5,34 +5,28 @@ import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 function Navbar() {
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="navbar">
-
       <div className="navbar-container">
-
         {/* Logo */}
         <div className=" brand ">
-            <div className=" logo-image ">
-                <img src={require("../../assets/images/logo.png")} alt="Ekadanta wellness"/>
-            </div>
-              <div className="logo">
+          <div className=" logo-image ">
+            <img
+              src={require("../../assets/images/logo.png")}
+              alt="Ekadanta wellness"
+            />
+          </div>
+          <div className="logo">
+            <Link to="/">Ekadantha Wellness</Link>
 
-  <Link to="/">
-    Ekadantha Wellness
-  </Link>
-
-  <p>Holistic Healing & Homeopathy Care</p>
-
-</div>
+            <p>Holistic Healing & Homoeopathy Care</p>
+          </div>
         </div>
-     
 
         {/* Desktop Menu */}
         <ul className={menuOpen ? "nav-links active" : "nav-links"}>
-
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -56,7 +50,7 @@ function Navbar() {
               <Link to="/feedback">Patient Feedback</Link>
             </div>
           </li>
- {/* Media */}
+          {/* Media */}
           <li className="dropdown">
             <span>Media</span>
 
@@ -68,28 +62,18 @@ function Navbar() {
             <Link to="/treatments">Treatments</Link>
           </li>
 
-         
-
           <li>
             <Link to="/book-appointment" className="appointment-btn">
               Book Appointment
             </Link>
           </li>
-
         </ul>
 
         {/* Mobile Menu Icon */}
-        <div
-          className="menu-icon"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {
-            menuOpen ? <FaTimes /> : <FaBars />
-          }
+        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <FaTimes /> : <FaBars />}
         </div>
-
       </div>
-
     </nav>
   );
 }

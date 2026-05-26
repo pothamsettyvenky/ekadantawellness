@@ -9,13 +9,21 @@ function SplashScreen() {
 
       <div className="splash-content">
 
-        {/* Logo */}
+        {/* Video */}
 
-        <img
-          src={require("../../assets/images/logo.png")}
-          alt="Ekadantha Wellness"
-          className="splash-logo"
-        />
+        <video
+          autoPlay
+          muted
+          playsInline
+          className="splash-video"
+        >
+
+          <source
+            src={require("../../assets/images/splash.mp4")}
+            type="video/mp4"
+          />
+
+        </video>
 
         {/* Text */}
 

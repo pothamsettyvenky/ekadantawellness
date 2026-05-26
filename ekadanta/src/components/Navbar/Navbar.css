@@ -1,10 +1,20 @@
 .navbar {
   width: 100%;
-  background: var(--matcha-green);
+
+  background: #7D9888;
+
   position: sticky;
   top: 0;
+
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.06);
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(10px);
 }
 
 .navbar-container {
@@ -41,24 +51,37 @@
 }
 
 .logo a {
-  font-size: clamp(24px, 2vw, 38px);
-  font-family:var(--title-font);
-  font-weight: bold;
-  color: #f3efe3;
-  line-height: 1;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  text-transform: uppercase;
+  font-size: clamp(54px, 2vw, 38px);
 
+ font-family: "Great Vibes", cursive;
+
+text-transform:none;
+
+letter-spacing:1px;
+  font-weight: bold;
+
+  color: #F3EFE3;
+
+  line-height: 1;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
 }
 
 .logo p {
   font-size: 11px;
-  color: #f3efe3;
+
+  color: #F3EFE3;
+
   margin-top: 6px;
+
   letter-spacing: 1.5px;
+
   text-transform: uppercase;
+
   opacity: 0.9;
+
   font-weight: bold;
 }
 
@@ -69,6 +92,7 @@
 .nav-links {
   display: flex;
   align-items: center;
+
   gap: 28px;
 }
 
@@ -79,17 +103,25 @@
 .nav-links li a,
 .nav-links li span {
   font-size: 16px;
-  color: #f3efe3;
+
+  color: #F3EFE3;
+
   cursor: pointer;
+
   transition: 0.3s;
+
   font-weight: 600;
+
   white-space: nowrap;
+
   text-transform: uppercase;
 }
 
 .nav-links li a:hover,
 .nav-links li span:hover {
-  color: #d8cfb7;
+  color: #F3EFE3;
+
+  opacity: 0.75;
 }
 
 /* ========================= */
@@ -98,31 +130,40 @@
 
 .dropdown-menu {
   position: absolute;
+
   top: 20px;
   left: 0;
 
   background: #ffffff;
+
   min-width: 220px;
 
-  border-radius: 10px;
+  border-radius: 12px;
+
   overflow: hidden;
 
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.08);
 
   display: none;
+
   flex-direction: column;
 }
 
 .dropdown-menu a {
   padding: 14px 18px;
+
   color: #2d2d2d !important;
+
   transition: 0.3s;
+
   font-size: 15px !important;
 }
 
 .dropdown-menu a:hover {
-  background: var(--secondary-green);
-  color: black !important;
+  background: #D8CFB7;
+
+  color: #022B26 !important;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -134,15 +175,25 @@
 /* ========================= */
 
 .appointment-btn {
-  background: #f3efe3;
-  color: var(--primary-green) !important;
-  padding: 12px 20px;
-  border-radius: 8px;
+  background: #F3EFE3;
+
+  color: #4D665A !important;
+
+  padding: 12px 22px;
+
+  border-radius: 12px;
+
   font-weight: 700;
+
+  transition: 0.3s;
 }
 
 .appointment-btn:hover {
-  background: #d8cfb7;
+  background: #D8CFB7;
+
+  opacity: 1 !important;
+
+  transform: translateY(-2px);
 }
 
 /* ========================= */
@@ -151,9 +202,12 @@
 
 .menu-icon {
   display: none;
+
   font-size: 26px;
+
   cursor: pointer;
-  color: #f3efe3;
+
+  color: #F3EFE3;
 }
 
 /* ========================= */
@@ -161,6 +215,7 @@
 /* ========================= */
 
 @media screen and (max-width: 1250px) {
+
   .nav-links {
     gap: 18px;
   }
@@ -180,32 +235,36 @@
 /* ========================= */
 
 @media screen and (max-width: 1100px) {
+
   .navbar-container {
-    min-height: 85px;
+    min-height: 135px;
   }
 
   .menu-icon {
     display: block;
+
     z-index: 1100;
   }
 
   .brand {
     display: flex;
     align-items: center;
+
     gap: 10px;
   }
 
   .logo-image img {
-    width: 60px;
-    height: 60px;
+    width: 105px;
+    height: 105px;
   }
 
   .logo a {
-    font-size: 24px;
+    font-size: 38px;
   }
 
   .logo p {
     font-size: 8px;
+
     letter-spacing: 1px;
   }
 
@@ -218,9 +277,10 @@
     width: 100%;
     height: calc(100vh - 85px);
 
-    background: var(--primary-green);
+    background: #7D9888;
 
     flex-direction: column;
+
     align-items: flex-start;
 
     padding: 40px 30px;
@@ -256,9 +316,9 @@
 
     width: 100%;
 
-    background: #0f3b35;
+    background: #6B8475;
 
-    border-radius: 8px;
+    border-radius: 12px;
 
     box-shadow: none;
 
@@ -269,16 +329,21 @@
 
   .dropdown-menu a {
     padding: 14px 16px;
-    color: #f3efe3 !important;
+
+    color: #F3EFE3 !important;
+
     font-size: 16px !important;
   }
 
   .dropdown-menu a:hover {
-    background: #4e8b67;
+    background: #D8CFB7;
+
+    color: #022B26 !important;
   }
 
   .appointment-btn {
     display: inline-block;
+
     margin-top: 10px;
   }
 }
@@ -288,8 +353,9 @@
 /* ========================= */
 
 @media screen and (max-width: 768px) {
+
   .navbar-container {
-    min-height: 165px;
+    min-height: 195px;
 
     display: flex;
     align-items: center;
@@ -300,13 +366,16 @@
 
   .brand {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
     gap: 4px;
 
     position: absolute;
+
     left: 50%;
 
     transform: translateX(-50%);
@@ -317,6 +386,7 @@
   .logo-image img {
     width: 108px;
     height: 108px;
+
     object-fit: contain;
   }
 
@@ -327,16 +397,20 @@
   }
 
   .logo a {
-    font-size: 24px;
+    font-size: 34px;
+
     letter-spacing: 1px;
+
     text-align: center;
   }
 
-  /* Hide tagline */
+  /* Tagline */
 
   .logo p {
     text-align: center;
+
     font-weight: bold;
+
     font-size: 10px;
   }
 
@@ -346,11 +420,12 @@
     display: block;
 
     position: absolute;
+
     right: 0;
 
     font-size: 24px;
 
-    color: #f3efe3;
+    color: #F3EFE3;
 
     cursor: pointer;
   }
@@ -359,9 +434,13 @@
 
   .nav-links {
     top: 165px;
+
     height: calc(100vh - 165px);
+
     padding: 30px 20px;
+
     text-align: center;
+
     gap: 24px;
   }
 

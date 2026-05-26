@@ -25,9 +25,10 @@ function Home() {
     <>
       <Navbar />
       <Hero />
+      <AboutDoctor/>
       <FeaturedService/>
       <SpecializedCare/>
-      <AboutDoctor/>
+      
     </>
   );
 }
