@@ -21,7 +21,7 @@ function Navbar() {
           <div className="logo">
             <Link to="/">Ekadantha Wellness</Link>
 
-            <p>Holistic Healing & Homoeopathy Care</p>
+            <p>Holistic Healing with Homoeopathy Care</p>
           </div>
         </div>
 

@@ -15,11 +15,15 @@
     1px solid rgba(255,255,255,0.08);
 
   backdrop-filter: blur(10px);
+
+  overflow: hidden;
 }
 
 .navbar-container {
   width: 90%;
+
   margin: auto;
+
   min-height: 90px;
 
   display: flex;
@@ -36,12 +40,14 @@
 .brand {
   display: flex;
   align-items: center;
+
   gap: 14px;
 }
 
 .logo-image img {
   width: 159px;
   height: 169px;
+
   object-fit: contain;
 }
 
@@ -51,25 +57,26 @@
 }
 
 .logo a {
-  font-size: clamp(54px, 2vw, 38px);
 
- font-family: "Great Vibes", cursive;
+  font-size: clamp(30px, 3vw, 48px);
 
-text-transform:none;
+  font-family: "Great Vibes", cursive;
 
-letter-spacing:1px;
+  text-transform: none;
+
+  letter-spacing: 2px;
+
   font-weight: bold;
 
   color: #F3EFE3;
 
   line-height: 1;
 
-  letter-spacing: 1px;
-
   white-space: nowrap;
 }
 
 .logo p {
+
   font-size: 11px;
 
   color: #F3EFE3;
@@ -90,6 +97,7 @@ letter-spacing:1px;
 /* ========================= */
 
 .nav-links {
+
   display: flex;
   align-items: center;
 
@@ -102,6 +110,7 @@ letter-spacing:1px;
 
 .nav-links li a,
 .nav-links li span {
+
   font-size: 16px;
 
   color: #F3EFE3;
@@ -119,6 +128,7 @@ letter-spacing:1px;
 
 .nav-links li a:hover,
 .nav-links li span:hover {
+
   color: #F3EFE3;
 
   opacity: 0.75;
@@ -129,6 +139,7 @@ letter-spacing:1px;
 /* ========================= */
 
 .dropdown-menu {
+
   position: absolute;
 
   top: 20px;
@@ -151,6 +162,7 @@ letter-spacing:1px;
 }
 
 .dropdown-menu a {
+
   padding: 14px 18px;
 
   color: #2d2d2d !important;
@@ -161,6 +173,7 @@ letter-spacing:1px;
 }
 
 .dropdown-menu a:hover {
+
   background: #D8CFB7;
 
   color: #022B26 !important;
@@ -175,6 +188,7 @@ letter-spacing:1px;
 /* ========================= */
 
 .appointment-btn {
+
   background: #F3EFE3;
 
   color: #4D665A !important;
@@ -189,6 +203,7 @@ letter-spacing:1px;
 }
 
 .appointment-btn:hover {
+
   background: #D8CFB7;
 
   opacity: 1 !important;
@@ -201,6 +216,7 @@ letter-spacing:1px;
 /* ========================= */
 
 .menu-icon {
+
   display: none;
 
   font-size: 26px;
@@ -222,10 +238,12 @@ letter-spacing:1px;
 
   .nav-links li a,
   .nav-links li span {
+
     font-size: 14px;
   }
 
   .appointment-btn {
+
     padding: 10px 16px;
   }
 }
@@ -237,16 +255,19 @@ letter-spacing:1px;
 @media screen and (max-width: 1100px) {
 
   .navbar-container {
+
     min-height: 135px;
   }
 
   .menu-icon {
+
     display: block;
 
     z-index: 1100;
   }
 
   .brand {
+
     display: flex;
     align-items: center;
 
@@ -254,28 +275,32 @@ letter-spacing:1px;
   }
 
   .logo-image img {
+
     width: 105px;
     height: 105px;
   }
 
   .logo a {
+
     font-size: 38px;
   }
 
   .logo p {
+
     font-size: 8px;
 
     letter-spacing: 1px;
   }
 
   .nav-links {
+
     position: fixed;
 
-    top: 85px;
+    top: 135px;
     left: -100%;
 
     width: 100%;
-    height: calc(100vh - 85px);
+    height: calc(100vh - 135px);
 
     background: #7D9888;
 
@@ -290,26 +315,33 @@ letter-spacing:1px;
     gap: 28px;
 
     overflow-y: auto;
+
+    overflow-x: hidden;
   }
 
   .nav-links.active {
+
     left: 0;
   }
 
   .nav-links li {
+
     width: 100%;
   }
 
   .nav-links li a,
   .nav-links li span {
+
     font-size: 20px;
   }
 
   .dropdown {
+
     width: 100%;
   }
 
   .dropdown-menu {
+
     position: relative;
 
     top: 12px;
@@ -328,6 +360,7 @@ letter-spacing:1px;
   }
 
   .dropdown-menu a {
+
     padding: 14px 16px;
 
     color: #F3EFE3 !important;
@@ -336,12 +369,14 @@ letter-spacing:1px;
   }
 
   .dropdown-menu a:hover {
+
     background: #D8CFB7;
 
     color: #022B26 !important;
   }
 
   .appointment-btn {
+
     display: inline-block;
 
     margin-top: 10px;
@@ -354,17 +389,33 @@ letter-spacing:1px;
 
 @media screen and (max-width: 768px) {
 
+  body{
+    overflow-x:hidden;
+  }
+
+  .navbar{
+    overflow:hidden;
+  }
+
   .navbar-container {
-    min-height: 195px;
+
+    width: 92%;
+
+    min-height: 175px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
   }
 
   /* Brand Center */
 
   .brand {
+
     display: flex;
 
     flex-direction: column;
@@ -372,20 +423,23 @@ letter-spacing:1px;
     align-items: center;
     justify-content: center;
 
-    gap: 4px;
+    gap: 2px;
 
-    position: absolute;
+    width: 100%;
 
-    left: 50%;
+    position: relative;
 
-    transform: translateX(-50%);
+    left: auto;
+
+    transform: none;
   }
 
   /* Logo */
 
   .logo-image img {
-    width: 108px;
-    height: 108px;
+
+    width: 100px;
+    height: 100px;
 
     object-fit: contain;
   }
@@ -393,63 +447,87 @@ letter-spacing:1px;
   /* Title */
 
   .logo {
+
     align-items: center;
+
+    width: 100%;
   }
 
   .logo a {
-    font-size: 34px;
 
-    letter-spacing: 1px;
+    font-size: 26px;
+
+    line-height: 1.1;
 
     text-align: center;
+
+    white-space: normal;
+
+    overflow-wrap: break-word;
   }
 
   /* Tagline */
 
   .logo p {
+
     text-align: center;
 
     font-weight: bold;
 
-    font-size: 10px;
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    width: 100%;
   }
 
   /* Hamburger */
 
   .menu-icon {
+
     display: block;
 
     position: absolute;
 
-    right: 0;
+    right: 10px;
+    top: 50%;
+
+    transform: translateY(-50%);
 
     font-size: 24px;
 
     color: #F3EFE3;
 
     cursor: pointer;
+
+    z-index: 1200;
   }
 
   /* Mobile Menu */
 
   .nav-links {
-    top: 165px;
 
-    height: calc(100vh - 165px);
+    top: 175px;
+
+    height: calc(100vh - 175px);
 
     padding: 30px 20px;
 
     text-align: center;
 
     gap: 24px;
+
+    overflow-x: hidden;
   }
 
   .nav-links li a,
   .nav-links li span {
+
     font-size: 18px;
   }
 
   .dropdown-menu a {
+
     font-size: 15px !important;
   }
 }
