@@ -17,7 +17,7 @@ function Banner() {
           </h1>
 
           <p className="hero-description">
-            Holistic Homoeopathy pathic care to cure diseases, restore balance, and boost immunity
+            Holistic Homoeopathic care to cure diseases, restore balance, boost immunity
             and bring harmony to your life.
           </p>
 

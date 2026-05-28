@@ -1,0 +1,252 @@
+.footer{
+  width:100%;
+
+  background:#769382;
+
+  padding-top:90px;
+font-weight: bold;
+  overflow:hidden;
+}
+
+.footer-container{
+  width:90%;
+  margin:auto;
+
+  display:grid;
+
+  grid-template-columns:
+    1.4fr
+    1fr
+    1fr
+    1.2fr;
+
+  gap:60px;
+
+  padding-bottom:70px;
+}
+
+/* ========================= */
+/* About */
+/* ========================= */
+
+.footer-about img{
+  width:120px;
+
+  margin-bottom:25px;
+}
+
+.footer-about h2{
+  color:#F3EFE3;
+
+  font-size:42px;
+
+  margin-bottom:20px;
+
+  font-family:"Cormorant Garamond", serif;
+
+  font-weight:600;
+}
+
+.footer-about p{
+  color:rgba(255,255,255,0.75);
+
+  font-size:16px;
+
+  line-height:1.9;
+
+  margin-bottom:30px;
+
+  max-width:400px;
+}
+
+/* ========================= */
+/* Social */
+/* ========================= */
+
+.footer-socials{
+  display:flex;
+
+  align-items:center;
+
+  gap:18px;
+}
+
+.footer-socials a{
+  width:48px;
+  height:48px;
+
+  border-radius:50%;
+
+  background:#D8CFB7;
+
+  color:#022B26;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:18px;
+
+  transition:0.3s;
+}
+
+.footer-socials a:hover{
+  transform:translateY(-4px);
+
+  background:#769382;
+
+  color:#fff;
+}
+
+/* ========================= */
+/* Links */
+/* ========================= */
+
+.footer-links h3,
+.footer-contact h3{
+  color:#F3EFE3;
+
+  font-size:24px;
+
+  margin-bottom:28px;
+
+  font-family:"Google Sans Flex", sans-serif;
+
+  font-weight:600;
+}
+
+.footer-links{
+  display:flex;
+
+  flex-direction:column;
+}
+
+.footer-links a{
+  color:rgba(255,255,255,0.75);
+
+  text-decoration:none;
+
+  margin-bottom:16px;
+
+  font-size:16px;
+
+  transition:0.3s;
+}
+
+.footer-links a:hover{
+  color:#D8CFB7;
+
+  transform:translateX(4px);
+}
+
+/* ========================= */
+/* Contact */
+/* ========================= */
+
+.footer-contact-item{
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:15px;
+
+  margin-bottom:22px;
+}
+
+.footer-contact-item svg{
+  color:#D8CFB7;
+
+  margin-top:4px;
+
+  font-size:16px;
+}
+
+.footer-contact-item span{
+  color:rgba(255,255,255,0.75);
+
+  line-height:1.8;
+
+  font-size:16px;
+}
+
+/* ========================= */
+/* Bottom */
+/* ========================= */
+
+.footer-bottom{
+  border-top:
+    1px solid rgba(255,255,255,0.08);
+
+  padding:28px 0;
+
+  text-align:center;
+}
+
+.footer-bottom p{
+  color:rgba(255,255,255,0.6);
+
+  font-size:15px;
+}
+
+/* ========================= */
+/* Tablet */
+/* ========================= */
+
+@media screen and (max-width:1100px){
+
+  .footer-container{
+
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap:50px;
+  }
+}
+
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media screen and (max-width:768px){
+
+  .footer{
+    padding-top:70px;
+  }
+
+  .footer-container{
+
+    grid-template-columns:1fr;
+
+    gap:45px;
+
+    padding-bottom:50px;
+  }
+
+  .footer-about{
+    text-align:center;
+  }
+
+  .footer-about p{
+    margin:auto;
+
+    margin-bottom:30px;
+  }
+
+  .footer-socials{
+    justify-content:center;
+  }
+
+  .footer-links,
+  .footer-contact{
+    text-align:center;
+  }
+
+  .footer-contact-item{
+    justify-content:center;
+  }
+
+  .footer-about h2{
+    font-size:34px;
+  }
+}

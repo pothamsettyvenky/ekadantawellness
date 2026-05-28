@@ -178,11 +178,52 @@
 @media screen and (max-width:1100px){
 
   .featured-container{
+
+    flex-direction:column;
+
+    align-items:center;
+
+    text-align:center;
+
     gap:50px;
+  }
+
+  .featured-image{
+    width:100%;
+  }
+
+  .featured-image img{
+
+    width:100%;
+
+    max-width:700px;
+
+    height:auto;
+  }
+
+  .featured-content{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
   }
 
   .featured-content h2{
     font-size:56px;
+  }
+
+  .featured-description{
+
+    max-width:750px;
+  }
+
+  .featured-quote{
+
+    max-width:700px;
   }
 }
 

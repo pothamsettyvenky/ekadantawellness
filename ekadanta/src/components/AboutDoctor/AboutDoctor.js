@@ -10,7 +10,7 @@ function AboutDoctor() {
         {/* Doctor Image */}
 
         <div className="doctor-image" data-aos="fade-right">
-          <img src={require("../../assets/images/logo.png")} alt="Dr Priya" />
+          <img src={require("../../assets/images/hero.jpeg")} alt="Dr Priya" />
         </div>
 
         {/* Doctor Info */}
@@ -23,7 +23,7 @@ function AboutDoctor() {
           <h4>BHMS, MD</h4>
 
           <p className="doctor-description">
-            Dr. S. Shripriya is a dedicated Homoeopathy pathic practitioner
+            Dr. S. Shripriya is a dedicated Homoeopathic practitioner
             focused on personalized and holistic healing. With expertise ranging
             from paediatric to geriatric care, she believes in treating the root
             cause rather than just the symptoms. Her patient-centered approach

@@ -1,104 +1,146 @@
 import React from "react";
 import "./SpecializedCare.css";
 
-import { FaFemale, FaHeartbeat, FaSpa, FaBrain, FaPlus } from "react-icons/fa";
+import {
+  FaFemale,
+  FaHeartbeat,
+  FaSpa,
+  FaBrain,
+  FaPlus
+} from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 
 function SpecializedCare() {
+
   const services = [
+
     {
       icon: <FaFemale />,
-      title: "PCOD Care",
+      title: "PCOD",
       description:
-        "Natural support to balance hormones, regulate cycles and improve overall wellbeing.",
+        "Personalized homeopathic support focused on hormonal balance and reproductive wellness."
     },
 
     {
       icon: <FaHeartbeat />,
-      title: "Hormonal Wellness",
+      title: "Thyroid Issues",
       description:
-        "Holistic care for thyroid imbalance, irregular cycles and hormonal health.",
+        "Natural treatment plans supporting thyroid balance and overall metabolism."
     },
 
     {
       icon: <FaSpa />,
-      title: "Menopause Support",
+      title: "Menopausal Syndrome",
       description:
-        "Gentle treatment to ease menopause symptoms and emotional wellbeing.",
+        "Gentle care designed to ease hormonal and emotional changes naturally."
     },
 
     {
       icon: <FaBrain />,
-      title: "Stress Management",
+      title: "Endometriosis",
       description:
-        "Mind-body wellness support for stress, anxiety and emotional exhaustion.",
-    },
+        "Holistic support focused on long-term reproductive health and comfort."
+    }
+
   ];
 
   return (
+
     <section className="specialized-care">
+
       <div className="specialized-container">
+
         {/* Heading */}
 
-        <div className="specialized-heading" data-aos="fade-up">
+        <div
+          className="specialized-heading"
+          data-aos="fade-up"
+        >
+
           <p>WOMEN WELLNESS</p>
 
           <h2>
             Women Wellness
             <br />
-            Through Homoeopathy pathy
+            Through Homoeopathy
           </h2>
 
           <span>
-            Natural, gentle and personalized care to support every stage of a
-            woman’s wellness journey.
+            Specialized homeopathic care focused on hormonal balance,
+            reproductive health and long-term women wellness.
           </span>
+
         </div>
 
-        {/* Grid Layout */}
+        {/* Grid */}
 
         <div className="specialized-grid">
+
           {/* Image */}
 
-          <div className="specialized-image" data-aos="fade-right">
+          <div
+            className="specialized-image"
+            data-aos="fade-right"
+          >
+
             <img
               src={require("../../assets/images/women_wellness.png")}
               alt="Women Wellness"
             />
+
           </div>
 
           {/* Cards */}
 
           <div className="specialized-cards">
-            {services.map((service, index) => (
-              <div
-                className="specialized-card"
-                key={index}
-                data-aos="fade-left"
-              >
-                <div className="specialized-icon">{service.icon}</div>
 
-                <h3>{service.title}</h3>
+            {
+              services.map((service, index) => (
 
-                <p>{service.description}</p>
+                <div
+                  className="specialized-card"
+                  key={index}
+                  data-aos="fade-left"
+                >
 
-                <div className="plus-circle">
-                  <FaPlus />
+                  <div className="specialized-icon">
+                    {service.icon}
+                  </div>
+
+                  <h3>{service.title}</h3>
+
+                  <p>{service.description}</p>
+
+                  <div className="plus-circle">
+                    <FaPlus />
+                  </div>
+
                 </div>
-              </div>
-            ))}
+
+              ))
+            }
+
           </div>
+
         </div>
 
         {/* Button */}
 
         <div className="specialized-btn-wrapper">
+
           <Link to="/treatments#women-wellness">
-            <button>More Details</button>
+
+            <button>
+              More Details
+            </button>
+
           </Link>
+
         </div>
+
       </div>
+
     </section>
   );
 }
