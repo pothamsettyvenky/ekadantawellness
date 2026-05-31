@@ -1,43 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const location = useLocation();
+
+  // Close menu whenever route changes
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location]);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
-        <div className=" brand ">
-          <div className=" logo-image ">
+        <div className="brand">
+          <div className="logo-image">
             <img
               src={require("../../assets/images/logo.png")}
-              alt="Ekadanta wellness"
+              alt="Ekadanta Wellness"
             />
           </div>
+
           <div className="logo">
-            <Link to="/">Ekadantha Wellness</Link>
+            <Link to="/" onClick={closeMenu}>
+              Ekadantha Wellness
+            </Link>
 
             <p>Holistic Healing with Homoeopathy</p>
           </div>
         </div>
 
-        {/* Desktop Menu */}
+        {/* Navigation */}
         <ul className={menuOpen ? "nav-links active" : "nav-links"}>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/" onClick={closeMenu}>
+              Home
+            </Link>
           </li>
 
-          {/* About Dropdown */}
+          {/* About */}
           <li className="dropdown">
             <span>About</span>
 
             <div className="dropdown-menu">
-              <Link to="/about-clinic">About Clinic</Link>
-              <Link to="/doctor">Dr. Priya</Link>
+              <Link to="/about/clinic" onClick={closeMenu}>
+                About Clinic
+              </Link>
+
+              <Link to="/about/doctor" onClick={closeMenu}>
+                Dr. Priya
+              </Link>
             </div>
           </li>
 
@@ -46,31 +67,49 @@ function Navbar() {
             <span>Patients Corner</span>
 
             <div className="dropdown-menu">
-              <Link to="/faqs">FAQs</Link>
-              <Link to="/feedback">Patient Feedback</Link>
+              <Link to="/patientscorner/faq" onClick={closeMenu}>
+                FAQs
+              </Link>
+
+              <Link to="/feedback" onClick={closeMenu}>
+                Patient Feedback
+              </Link>
             </div>
           </li>
+
           {/* Media */}
           <li className="dropdown">
             <span>Media</span>
 
             <div className="dropdown-menu">
-              <Link to="/media">Awards</Link>
+              <Link to="/media" onClick={closeMenu}>
+                Awards
+              </Link>
             </div>
-          </li>
-          <li>
-            <Link to="/treatments">Treatments</Link>
           </li>
 
           <li>
-            <Link to="/book-appointment" className="appointment-btn">
+            <Link to="/treatments" onClick={closeMenu}>
+              Treatments
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/book-appointment"
+              className="appointment-btn"
+              onClick={closeMenu}
+            >
               Book Appointment
             </Link>
           </li>
         </ul>
 
         {/* Mobile Menu Icon */}
-        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+        <div
+          className="menu-icon"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           {menuOpen ? <FaTimes /> : <FaBars />}
         </div>
       </div>

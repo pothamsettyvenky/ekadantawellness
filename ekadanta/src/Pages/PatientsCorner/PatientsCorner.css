@@ -1,0 +1,76 @@
+.patients-corner{
+  width:100%;
+  background:#F3EFE3;
+  padding:160px 0 120px;
+}
+
+.patients-hero{
+  width:90%;
+  max-width:1100px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.patients-tag{
+  color:#769382;
+  letter-spacing:4px;
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:20px;
+}
+
+.patients-hero h1{
+  color:#022B26;
+  font-size:clamp(42px,5vw,72px);
+  line-height:1.1;
+  margin-bottom:30px;
+  font-family:"Google Sans Flex", sans-serif;
+}
+
+.patients-description{
+  color:#555;
+  font-size:18px;
+  line-height:1.9;
+  max-width:900px;
+  margin:auto;
+}
+
+.faq-intro{
+  width:90%;
+  max-width:1000px;
+  margin:100px auto 70px;
+  text-align:center;
+}
+
+.faq-intro h2{
+  color:#022B26;
+  font-size:clamp(36px,4vw,56px);
+  margin-bottom:25px;
+  font-family:"Google Sans Flex", sans-serif;
+}
+
+.faq-intro p{
+  color:#555;
+  line-height:1.9;
+  font-size:18px;
+}
+
+@media screen and (max-width:768px){
+
+  .patients-corner{
+    padding:130px 0 80px;
+  }
+
+  .patients-hero h1{
+    font-size:42px;
+  }
+
+  .patients-description,
+  .faq-intro p{
+    font-size:16px;
+  }
+
+  .faq-intro{
+    margin:70px auto 50px;
+  }
+}

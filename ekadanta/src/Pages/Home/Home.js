@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 
 import "./Home.css";
-
-import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../Pages/Banner/banner";
 
 import FeaturedService from "../../components/FeaturedService/FeaturedService";
@@ -14,7 +12,8 @@ import AboutDoctor from "../../components/AboutDoctor/AboutDoctor";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Faq from "../FAQs/Faq";
-import Footer from "../footer/footer";
+
+
 
 function Home() {
 
@@ -31,7 +30,6 @@ function Home() {
 
     <>
 
-      <Navbar />
 
       <Hero />
 <AboutDoctor />
@@ -74,7 +72,7 @@ function Home() {
       />
 
      <Faq/>
-     <Footer/>
+     
 
     </>
   );

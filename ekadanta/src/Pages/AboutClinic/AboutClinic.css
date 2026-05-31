@@ -1,0 +1,280 @@
+.about-clinic{
+  width:100%;
+
+  min-height:100vh;
+
+  padding:160px 0 120px;
+
+  background:#F3EFE3;
+}
+
+.about-clinic-container{
+  width:90%;
+
+  max-width:1400px;
+
+  margin:auto;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:80px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #769382,
+      #8FA89A
+    );
+
+  padding:70px;
+
+  border-radius:35px;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.08);
+}
+
+/* ========================= */
+/* Image */
+/* ========================= */
+
+.clinic-image{
+  flex:0.9;
+
+  display:flex;
+  justify-content:center;
+}
+
+.clinic-image img{
+  width:100%;
+
+  max-width:420px;
+
+  border-radius:24px;
+
+  display:block;
+
+  object-fit:cover;
+
+  /* box-shadow:
+    0 20px 40px rgba(0,0,0,0.15); */
+
+  transition:0.4s ease;
+}
+
+.clinic-image img:hover{
+  transform:translateY(-8px);
+}
+
+/* ========================= */
+/* Content */
+/* ========================= */
+
+.clinic-content{
+  flex:1;
+}
+
+.clinic-tag{
+  color:#D8CFB7;
+
+  letter-spacing:4px;
+
+  font-size:14px;
+  font-weight:600;
+
+  margin-bottom:20px;
+}
+
+.clinic-content h2{
+  font-size:clamp(42px,5vw,72px);
+
+  line-height:1.08;
+
+  color:#D8CFB7;
+
+  margin-bottom:30px;
+
+  font-family:"Google Sans Flex", sans-serif;
+
+  font-weight:700;
+
+  max-width:650px;
+}
+
+.clinic-description{
+  color:#D8CFB7;
+
+  font-size:18px;
+
+  line-height:1.9;
+font-weight: bold;
+  margin-bottom:40px;
+}
+
+/* ========================= */
+/* Button */
+/* ========================= */
+
+.clinic-btn{
+  padding:18px 40px;
+
+  border:none;
+
+  border-radius:50px;
+
+  background:#D8CFB7;
+
+  color:#022B26;
+
+  font-size:17px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+  font-family:"Google Sans Flex", sans-serif;
+}
+
+.clinic-btn:hover{
+  transform:translateY(-4px);
+
+  background:#F3EFE3;
+}
+
+/* ========================= */
+/* Tablet */
+/* ========================= */
+
+@media screen and (max-width:1100px){
+
+  .about-clinic-container{
+
+    flex-direction:column;
+
+    text-align:center;
+
+    gap:50px;
+  }
+
+  .clinic-content h2{
+    max-width:100%;
+  }
+
+  .clinic-image img{
+
+    max-width:500px;
+
+    margin:auto;
+  }
+}
+
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media screen and (max-width:768px){
+
+  .about-clinic{
+
+    padding:130px 0 80px;
+  }
+
+  .about-clinic-container{
+
+    padding:40px 25px;
+  }
+
+  .clinic-content h2{
+    font-size:42px;
+
+    line-height:1.1;
+  }
+
+  .clinic-description{
+    font-size:16px;
+  }
+
+  .clinic-btn{
+    width:100%;
+  }
+
+  .clinic-image img{
+    max-width:280px;
+  }
+}
+/* ========================= */
+/* Consultation Guidelines */
+/* ========================= */
+
+.consultation-guidelines{
+width:90%;
+max-width:1400px;
+margin:100px auto 0;
+}
+
+.consultation-guidelines h2{
+text-align:center;
+color:#022B26;
+font-size:clamp(38px,4vw,60px);
+margin-bottom:20px;
+font-family:"Google Sans Flex", sans-serif;
+}
+
+.guidelines-intro{
+text-align:center;
+max-width:800px;
+margin:0 auto 50px;
+color:#555;
+line-height:1.8;
+font-size:18px;
+}
+
+.guidelines-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+}
+
+.guideline-card{
+background:#fff;
+padding:30px;
+border-radius:25px;
+box-shadow:0 15px 35px rgba(0,0,0,.05);
+}
+
+.guideline-card h4{
+color:#769382;
+margin-bottom:12px;
+font-size:20px;
+}
+
+.guideline-card p{
+color:#555;
+line-height:1.8;
+}
+
+@media screen and (max-width:1100px){
+
+.guidelines-grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media screen and (max-width:768px){
+
+.guidelines-grid{
+grid-template-columns:1fr;
+}
+
+.guidelines-intro{
+font-size:16px;
+}
+
+.guideline-card{
+padding:25px;
+}
+}
