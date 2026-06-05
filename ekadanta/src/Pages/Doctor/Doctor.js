@@ -246,7 +246,7 @@ function Doctor() {
             <h4>MD</h4>
 
             <p>
-              Homoeopathy
+              Doctor of Medicine in Homoeopathy
             </p>
 
           </div>
@@ -263,11 +263,10 @@ function Doctor() {
 
           <div className="qualification-item">
 
-            <h4>Institution</h4>
+            <h4>Languages</h4>
 
             <p>
-              MNR Homoeopathy Medical College,
-              Sangareddy, Telangana
+              English, Telugu, Hindi.
             </p>
 
           </div>

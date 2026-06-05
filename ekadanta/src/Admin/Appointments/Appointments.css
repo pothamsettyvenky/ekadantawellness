@@ -1,0 +1,119 @@
+.appointments-container {
+  padding: 30px;
+}
+
+.appointments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.appointments-title {
+  font-size: 32px;
+  color: #1f2937;
+}
+
+.refresh-btn {
+  border: none;
+  background: #0f766e;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.refresh-btn:hover {
+  background: #115e59;
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 15px;
+  overflow-x: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.appointments-table th {
+  background: #0f766e;
+  color: white;
+  padding: 15px;
+  text-align: left;
+}
+
+.appointments-table td {
+  padding: 15px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.appointments-table tr:hover {
+  background: #f8fafc;
+}
+
+.status-booked {
+  background: #dcfce7;
+  color: #166534;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.status-cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.view-btn,
+.notes-btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+
+.view-btn {
+  background: #2563eb;
+}
+
+.notes-btn {
+  background: #7c3aed;
+}
+
+.loading-text {
+  text-align: center;
+  margin-top: 100px;
+}
+
+@media(max-width:900px){
+
+  .appointments-container{
+    padding:15px;
+  }
+
+  .appointments-table{
+    min-width:1100px;
+  }
+
+}

@@ -1,46 +1,44 @@
 import React from "react";
 import "./SpecializedCare.css";
 
-import {
-  FaFemale,
-  FaHeartbeat,
-  FaSpa,
-  FaBrain,
-  FaPlus
-} from "react-icons/fa";
-
+import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
+import pcodImg from "../../assets/images/pcod.jpg";
+import thyroidImg from "../../assets/images/Thyroid.jpg";
+import menopauseImg from "../../assets/images/Menopausal.jpg";
+import endometriosisImg from "../../assets/images/Endometriosis.jpg";
 
 function SpecializedCare() {
 
   const services = [
 
     {
-      icon: <FaFemale />,
+      image: pcodImg,
       title: "PCOD",
       description:
-        "Personalized homeopathic support focused on hormonal balance and reproductive wellness."
+        "Personalized homoeopathic support focused on hormonal balance, menstrual regularity, fertility wellness and overall reproductive health."
     },
 
     {
-      icon: <FaHeartbeat />,
+      image: thyroidImg,
       title: "Thyroid Issues",
       description:
-        "Natural treatment plans supporting thyroid balance and overall metabolism."
+        "Natural treatment plans supporting thyroid balance, metabolism regulation, energy levels and long-term wellness."
     },
 
     {
-      icon: <FaSpa />,
+      image: menopauseImg,
       title: "Menopausal Syndrome",
       description:
-        "Gentle care designed to ease hormonal and emotional changes naturally."
+        "Gentle and individualized care designed to ease hormonal, emotional and physical changes during menopause."
     },
 
     {
-      icon: <FaBrain />,
+      image: endometriosisImg,
       title: "Endometriosis",
       description:
-        "Holistic support focused on long-term reproductive health and comfort."
+        "Holistic support focused on reducing discomfort, improving quality of life and promoting reproductive health."
     }
 
   ];
@@ -67,7 +65,7 @@ function SpecializedCare() {
           </h2>
 
           <span>
-            Specialized homeopathic care focused on hormonal balance,
+            Specialized homoeopathic care focused on hormonal balance,
             reproductive health and long-term women wellness.
           </span>
 
@@ -77,7 +75,7 @@ function SpecializedCare() {
 
         <div className="specialized-grid">
 
-          {/* Image */}
+          {/* Main Image */}
 
           <div
             className="specialized-image"
@@ -95,31 +93,34 @@ function SpecializedCare() {
 
           <div className="specialized-cards">
 
-            {
-              services.map((service, index) => (
+            {services.map((service, index) => (
 
-                <div
-                  className="specialized-card"
-                  key={index}
-                  data-aos="fade-left"
-                >
+              <div
+                className="specialized-card"
+                key={index}
+                data-aos="fade-left"
+              >
 
-                  <div className="specialized-icon">
-                    {service.icon}
-                  </div>
+                <div className="specialized-image-box">
 
-                  <h3>{service.title}</h3>
-
-                  <p>{service.description}</p>
-
-                  <div className="plus-circle">
-                    <FaPlus />
-                  </div>
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                  />
 
                 </div>
 
-              ))
-            }
+                <h3>{service.title}</h3>
+
+                <p>{service.description}</p>
+
+                <div className="plus-circle">
+                  <FaPlus />
+                </div>
+
+              </div>
+
+            ))}
 
           </div>
 
@@ -142,6 +143,7 @@ function SpecializedCare() {
       </div>
 
     </section>
+
   );
 }
 

@@ -4,16 +4,14 @@ import "./Home.css";
 import Hero from "../../Pages/Banner/banner";
 
 import FeaturedService from "../../components/FeaturedService/FeaturedService";
-
 import SpecializedCare from "../../components/SpecializedCare/SpecializedCare";
-
 import AboutDoctor from "../../components/AboutDoctor/AboutDoctor";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 import Faq from "../FAQs/Faq";
-
-
+import Testimonials from "../../components/Testmonials/Testimonials";
 
 function Home() {
 
@@ -30,9 +28,10 @@ function Home() {
 
     <>
 
-
       <Hero />
-<AboutDoctor />
+
+      <AboutDoctor />
+
       {/* CHILD WELLNESS */}
 
       <FeaturedService
@@ -52,8 +51,12 @@ function Home() {
 
       />
 
-       
+      {/* WOMEN WELLNESS */}
+
       <SpecializedCare />
+
+      {/* OTHER CONDITIONS */}
+
       <FeaturedService
 
         tag="OTHER DISEASES"
@@ -67,14 +70,16 @@ function Home() {
 
         image={require("../../assets/images/other_diseases.png")}
 
-        redirect="/treatments#other-diseases"
+        redirect="/treatments#other"
 
       />
 
-     <Faq/>
-     
+      <Testimonials />
+
+      <Faq />
 
     </>
+
   );
 }
 

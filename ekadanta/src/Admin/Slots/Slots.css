@@ -1,0 +1,70 @@
+.slots-container {
+  padding: 30px;
+}
+
+.slots-container h1 {
+  margin-bottom: 25px;
+  color: #1f2937;
+}
+
+.slot-form {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.slot-form input {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.slot-form button {
+  background: #0f766e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.slot-form button:hover {
+  background: #115e59;
+}
+
+.slots-table-wrapper {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.slots-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.slots-table th {
+  background: #0f766e;
+  color: white;
+  padding: 15px;
+  text-align: left;
+}
+
+.slots-table td {
+  padding: 15px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}

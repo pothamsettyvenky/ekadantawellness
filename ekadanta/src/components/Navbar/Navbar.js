@@ -71,7 +71,7 @@ function Navbar() {
                 FAQs
               </Link>
 
-              <Link to="/feedback" onClick={closeMenu}>
+              <Link to="/patientscorner/testimonials" onClick={closeMenu}>
                 Patient Feedback
               </Link>
             </div>
@@ -96,7 +96,7 @@ function Navbar() {
 
           <li>
             <Link
-              to="/book-appointment"
+              to="/book_appointment"
               className="appointment-btn"
               onClick={closeMenu}
             >

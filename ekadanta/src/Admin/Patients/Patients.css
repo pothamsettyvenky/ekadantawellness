@@ -1,0 +1,55 @@
+.patients-container {
+  padding: 30px;
+}
+
+.patients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.patients-header h1 {
+  color: #1f2937;
+}
+
+.patients-table-wrapper {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.patients-table th {
+  background: #0f766e;
+  color: white;
+  padding: 15px;
+  text-align: left;
+}
+
+.patients-table td {
+  padding: 15px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.patients-table tr:hover {
+  background: #f8fafc;
+}
+
+.view-btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background: #1d4ed8;
+}
