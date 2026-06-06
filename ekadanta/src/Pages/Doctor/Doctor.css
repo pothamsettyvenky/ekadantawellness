@@ -24,15 +24,13 @@
   gap:80px;
 }
 
-.doctor-image{
-  flex:0.9;
+.doctor-image1{
+  flex:1;
 }
 
-.doctor-image img{
+.doctor-image1 img{
   width:100%;
-
-  max-width:75%;
-
+  
   border-radius:35px;
 
   display:block;
@@ -179,27 +177,36 @@
 
 @media screen and (max-width:1100px){
 
+  @media screen and (max-width:1100px){
+
   .doctor-container{
     flex-direction:column;
-
     text-align:center;
   }
-   .doctor-image img{
-  width:100%;
 
-  max-width:50%;
+  .doctor-image1{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
 
-  border-radius:35px;
-   }
+  .doctor-image1 img{
+    width:100%;
+    max-width:720px;
+    margin:0 auto;
+    display:block;
+    object-fit:cover;
+    object-position:center top;
+  }
 
   .doctor-expertise{
     justify-content:center;
   }
 
   .qualification-card{
-    grid-template-columns:
-      repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
   }
+}
 }
 
 /* ========================= */
@@ -211,18 +218,22 @@
   .doctor-page{
     padding:130px 0 80px;
   }
-  .doctor-image img{
-  width:100%;
 
-  max-width:75%;
+  .doctor-image1{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
 
-  border-radius:35px;
-
-  display:block;
-
-  box-shadow:
-    0 25px 50px rgba(0,0,0,0.12);
-}
+  .doctor-image1 img{
+    width:90%;
+    max-width:480px;
+    margin:0 auto;
+    display:block;
+    border-radius:35px;
+    box-shadow:
+      0 25px 50px rgba(0,0,0,0.12);
+  }
 
   .doctor-content h1{
     font-size:42px;
@@ -234,7 +245,7 @@
 
   .qualification-card{
     grid-template-columns:1fr;
-  }
+}
 }
 /* ========================= */
 /* Philosophy */

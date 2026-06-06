@@ -13,6 +13,9 @@ import { db } from "../../firebase/config";
 function BookAppointment() {
 
   const [loading, setLoading] = useState(false);
+  const [selectedServices, setSelectedServices] = useState([]);
+
+const [customService, setCustomService] = useState("");
 
   const [slots, setSlots] = useState([]);
 
@@ -83,6 +86,33 @@ function BookAppointment() {
     });
 
   };
+  const handleServiceSelect = (e) => {
+
+  const service = e.target.value;
+
+  if (
+    service &&
+    !selectedServices.includes(service)
+  ) {
+
+    setSelectedServices([
+      ...selectedServices,
+      service
+    ]);
+
+  }
+
+};
+
+const removeService = (service) => {
+
+  setSelectedServices(
+    selectedServices.filter(
+      item => item !== service
+    )
+  );
+
+};
 
   const handleSubmit = async (e) => {
 
@@ -97,16 +127,25 @@ function BookAppointment() {
           ? 2999
           : 1499;
 
-      const appointmentRef = await addDoc(
-        collection(db, "appointments"),
-        {
-          ...formData,
-          amount,
-          paymentStatus: "Pending",
-          status: "Waiting For Payment",
-          createdAt: Timestamp.now()
-        }
-      );
+      const appointmentRef = await await addDoc(
+  collection(db, "appointments"),
+  {
+    ...formData,
+
+    services: selectedServices,
+
+    otherService: customService,
+
+    amount,
+
+    paymentStatus: "Pending",
+
+    status: "Waiting For Payment",
+
+    createdAt: Timestamp.now()
+  }
+);
+    
 
       await addDoc(
         collection(db, "patients"),
@@ -129,18 +168,21 @@ function BookAppointment() {
       alert("Appointment Saved Successfully");
 
       setFormData({
-        packageType: "",
-        name: "",
-        email: "",
-        phone: "",
-        age: "",
-        gender: "",
-        service: "",
-        address: "",
-        date: "",
-        slot: "",
-        notes: ""
-      });
+  packageType: "",
+  name: "",
+  email: "",
+  phone: "",
+  age: "",
+  gender: "",
+  address: "",
+  date: "",
+  slot: "",
+  notes: ""
+});
+
+setSelectedServices([]);
+
+setCustomService("");
 
     } catch (error) {
 
@@ -286,29 +328,67 @@ function BookAppointment() {
 
               <h3>Appointment Details</h3>
 
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                required
-              >
+             <label className="service-label">
+  Select Services
+</label>
 
-                <option value="">
-                  Select Service
-                </option>
+<select
+  onChange={handleServiceSelect}
+  defaultValue=""
+>
 
-                {services.map((item, index) => (
+  <option value="">
+    Select Service
+  </option>
 
-                  <option
-                    key={index}
-                    value={item}
-                  >
-                    {item}
-                  </option>
+  {services.map((item, index) => (
 
-                ))}
+    <option
+      key={index}
+      value={item}
+    >
+      {item}
+    </option>
 
-              </select>
+  ))}
+
+</select>
+
+<div className="selected-services">
+
+  {selectedServices.map((service) => (
+
+    <div
+      key={service}
+      className="service-tag"
+    >
+
+      {service}
+
+      <span
+        onClick={() =>
+          removeService(service)
+        }
+      >
+        ✕
+      </span>
+
+    </div>
+
+  ))}
+
+</div>
+
+<input
+  type="text"
+  placeholder="Other Service (Optional)"
+  value={customService}
+  onChange={(e) =>
+    setCustomService(
+      e.target.value
+    )
+  }
+/>
 
              <input
   type="date"

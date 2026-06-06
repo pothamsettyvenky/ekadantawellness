@@ -29,12 +29,12 @@ function Testimonials() {
       text:
         "Noticeable improvement in hair density, scalp health and overall confidence after treatment."
     },
-    {
-      image: img3,
-      title: "Foot Pain & Swelling",
-      text:
-        "Reduction in chronic pain and swelling allowing the patient to walk comfortably."
-    },
+   {
+  image: img3,
+  title: "Ganglion Cyst Treatment",
+  text:
+    "Noticeable reduction in the size of the ganglion cyst along with relief from discomfort and improved joint mobility through individualized homoeopathic treatment."
+},
     {
       image: img4,
       title: "Tonsillitis Recovery",

@@ -67,58 +67,58 @@ function VideoCard({ item, reverse }) {
 
 function TestimonialVideos() {
 
-  const testimonials = [
 
-    {
-      video: video1,
-      name: "Patient Testimonial",
-      condition: "Varicose Veins",
-      review:
-        "I experienced significant improvement after receiving personalized homoeopathic treatment."
-    },
+   const testimonials = [
 
-    {
-      video: video2,
-      name: "Patient Testimonial",
-      condition: "Hair Fall",
-      review:
-        "The treatment helped reduce hair fall and improve overall scalp health."
-    },
+  {
+    video: video1,
+  name: "Patient Testimonial",
+  condition: "Rheumatoid Arthritis (Stiff Finger Condition)",
+  review:
+    "I experienced significant improvement in finger stiffness, joint mobility and daily comfort through personalized homoeopathic treatment."
+  },
 
-    {
-      video: video3,
-      name: "Patient Testimonial",
-      condition: "Tonsillitis",
-      review:
-        "Recurring throat infections reduced considerably after treatment."
-    },
+  {
+    video: video2,
+    name: "Patient Testimonial",
+    condition: "PCOD",
+    review:
+      "My symptoms improved considerably and I noticed positive changes in my overall health and hormonal balance after treatment."
+  },
 
-    {
-      video: video4,
-      name: "Patient Testimonial",
-      condition: "Skin Complaints",
-      review:
-        "My skin condition improved naturally and the results have been encouraging."
-    },
+  {
+    video: video3,
+    name: "Patient Testimonial",
+    condition: "Chiari Malformation & Disc Prolapse",
+    review:
+      "The treatment helped reduce discomfort and improve my quality of life through a personalized homoeopathic approach."
+  },
 
-    {
-      video: video5,
-      name: "Patient Testimonial",
-      condition: "Chronic Condition",
-      review:
-        "I am very satisfied with the care and the improvement in my health."
-    },
+  {
+    video: video4,
+    name: "Patient Testimonial",
+    condition: "Nocturnal Enuresis (Bed Wetting)",
+    review:
+      "There was a remarkable improvement in symptoms, resulting in better confidence and a more comfortable daily routine."
+  },
 
-    {
-      video: video6,
-      name: "Patient Testimonial",
-      condition: "General Wellness",
-      review:
-        "Professional treatment and excellent support throughout my healing journey."
-    }
+  {
+    video: video5,
+    name: "Patient Testimonial",
+    condition: "Gastric Ulcers, Piles & Anal Fissures",
+    review:
+      "I experienced significant relief from pain, discomfort and digestive complaints, leading to a noticeable improvement in daily life."
+  },
 
-  ];
+  {
+    video: video6,
+    name: "Patient Testimonial",
+    condition: "Menopausal Syndrome",
+    review:
+      "The treatment helped manage menopausal symptoms effectively and improved my overall wellbeing and quality of life."
+  }
 
+];
   return (
 
     <section className="testimonial-videos">

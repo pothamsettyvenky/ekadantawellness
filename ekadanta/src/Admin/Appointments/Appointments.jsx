@@ -132,7 +132,41 @@ function Appointments() {
 
           <td>{appointment.phone || "-"}</td>
 
-          <td>{appointment.service || "-"}</td>
+          <td>
+
+  <div className="services-cell">
+
+    {appointment.services &&
+      appointment.services.map(
+        (service, index) => (
+
+          <span
+            key={index}
+            className="service-badge"
+          >
+            {service}
+          </span>
+
+        )
+      )}
+
+    {appointment.otherService && (
+
+      <span
+        className="service-badge custom-service"
+      >
+        {appointment.otherService}
+      </span>
+
+    )}
+
+    {!appointment.services?.length &&
+      !appointment.otherService &&
+      "-"}
+
+  </div>
+
+</td>
 
           <td>{appointment.date || "-"}</td>
 

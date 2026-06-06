@@ -25,12 +25,12 @@ function Doctor() {
         {/* Left */}
 
         <div
-          className="doctor-image"
+          className="doctor-image1"
           data-aos="fade-right"
         >
 
           <img
-            src={require("../../assets/images/hero.jpeg")}
+            src={require("../../assets/images/hero2.jpeg")}
             alt="Dr. S. Shripriya"
           />
 

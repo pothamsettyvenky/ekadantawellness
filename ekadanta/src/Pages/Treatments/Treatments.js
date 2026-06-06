@@ -18,9 +18,10 @@ function Treatments() {
   });
 
   if (
-    hash === "women" ||
-    hash === "children" ||
-    hash === "other"
+    hash === "Women" ||
+    hash === "Children" ||
+     hash === "Male" ||
+    hash === "Other"
   ) {
 
     setActiveTab(hash);
@@ -70,7 +71,72 @@ function Treatments() {
         description:
           "Holistic support for reproductive health and chronic pelvic discomfort.",
         link: "https://en.wikipedia.org/wiki/Endometriosis"
-      }
+      },
+
+
+  {
+    title: "PCOD",
+    description:
+      "Support for hormonal balance, menstrual regularity and reproductive wellness.",
+    link: "https://en.wikipedia.org/wiki/PCOD"
+  },
+
+  {
+    title: "Adenomyosis",
+    description:
+      "Comprehensive homoeopathic care for adenomyosis and associated symptoms.",
+    link: "https://en.wikipedia.org/wiki/Adenomyosis"
+  },
+
+  {
+    title: "Fibroids",
+    description:
+      "Supportive treatment for uterine fibroids and related concerns.",
+    link: "https://en.wikipedia.org/wiki/Fibroids"
+  },
+
+  {
+    title: "Ovarian Cysts",
+    description:
+      "Holistic care aimed at reproductive and hormonal wellbeing.",
+    link: "https://en.wikipedia.org/wiki/Ovarian_Cysts"
+  },
+
+  {
+    title: "Fibroadenoma",
+    description:
+      "Individualized support for benign breast conditions.",
+    link: "https://en.wikipedia.org/wiki/Fibroadenoma"
+  },
+
+  {
+    title: "Lactation Problems",
+    description:
+      "Support for breastfeeding and lactation-related concerns.",
+    link: "https://en.wikipedia.org/wiki/Breastfeeding_difficulties"
+  },
+
+  {
+    title: "Infertility",
+    description:
+      "Personalized care supporting reproductive health and fertility.",
+    link: "https://en.wikipedia.org/wiki/Infertility"
+  },
+
+  {
+    title: "Menopausal Syndrome",
+    description:
+      "Natural support for hormonal and emotional changes during menopause.",
+    link: "https://en.wikipedia.org/wiki/Menopausal"
+  },
+
+  {
+    title: "Many More Conditions",
+    description:
+      "Comprehensive care for a wide range of women's health concerns.",
+    link: "#treatments"
+  }
+
 
     ],
 
@@ -130,7 +196,20 @@ function Treatments() {
         description:
           "Support for growth, nutrition and developmental milestones.",
         link: "https://en.wikipedia.org/wiki/Child_development"
-      }
+      },
+      {
+  title: "Seizures",
+  description:
+    "Supportive holistic care for children with seizure-related concerns.",
+  link: "https://en.wikipedia.org/wiki/Seizures"
+},
+
+{
+  title: "Worm Infestations",
+  description:
+    "Care focused on digestive health and recurrent worm infestations.",
+  link: "https://en.wikipedia.org/wiki/Helminthiasis"
+}
 
     ],
 
@@ -199,8 +278,45 @@ function Treatments() {
         link: "https://en.wikipedia.org/wiki/Wart"
       }
 
-    ]
+    ],
+male: [
 
+  {
+    title: "Male Infertility",
+    description:
+      "Individualized support for male reproductive health and fertility.",
+    link: "https://en.wikipedia.org/wiki/Male_infertility"
+  },
+
+  {
+    title: "Low Libido",
+    description:
+      "Holistic care supporting hormonal balance and vitality.",
+    link: "https://en.wikipedia.org/wiki/Libido"
+  },
+
+  {
+    title: "Hernias",
+    description:
+      "Supportive management for hernia-related discomfort and wellbeing.",
+    link: "https://en.wikipedia.org/wiki/Hernias"
+  },
+
+  {
+    title: "Hydrocele",
+    description:
+      "Comprehensive homoeopathic care for hydrocele and related concerns.",
+    link: "https://en.wikipedia.org/wiki/Hydrocele"
+  },
+
+  {
+    title: "Pubertal Disorders",
+    description:
+      "Support for developmental and hormonal concerns during puberty.",
+    link: "https://en.wikipedia.org/wiki/Puberty"
+  }
+
+],
   };
 
   return (
@@ -215,9 +331,9 @@ function Treatments() {
           Conditions We Treat
         </h1>
 
-        <span>
-          Comprehensive homoeopathic care for women, children and a wide range of acute and chronic health concerns.
-        </span>
+       <span>
+  Comprehensive homoeopathic care for women, men, children and a wide range of acute and chronic health concerns.
+</span>
 
       </div>
 
@@ -246,6 +362,12 @@ function Treatments() {
         >
           Other Conditions
         </button>
+        <button
+  className={activeTab === "male" ? "active" : ""}
+  onClick={() => setActiveTab("male")}
+>
+  Male Wellness
+</button>
 
       </div>
 

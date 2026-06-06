@@ -123,7 +123,7 @@ function TestimonialsPage() {
         </p>
 
         <a
-          href="/book-appointment"
+          href="/book_appointment"
           className="cta-btn"
         >
           Book Appointment

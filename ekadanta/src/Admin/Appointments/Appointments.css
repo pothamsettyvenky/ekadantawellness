@@ -35,8 +35,8 @@
 }
 
 .appointments-table {
-  width: 100%;
-  border-collapse: collapse;
+  width: 1400px;
+  /* border-collapse: collapse; */
 }
 
 .appointments-table th {
@@ -116,4 +116,23 @@
     min-width:1100px;
   }
 
+}
+.services-cell{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  min-width:250px;
+}
+
+.service-badge{
+  background:#0f766e;
+  color:white;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.custom-service{
+  background:#f59e0b;
 }

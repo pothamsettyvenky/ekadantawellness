@@ -89,3 +89,32 @@
   }
 
 }
+.selected-services{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:15px 0;
+}
+
+.service-tag{
+  background:#0f766e;
+  color:white;
+  padding:8px 15px;
+  border-radius:30px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+}
+
+.service-tag span{
+  cursor:pointer;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.service-label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:600;
+}
