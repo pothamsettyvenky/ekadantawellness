@@ -1,102 +1,55 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-const transporter =
-  nodemailer.createTransport({
-
-    host: "smtp.gmail.com",
-
-    port: 587,
-
-    secure: false,
-
-    auth: {
-
-      user:
-        process.env.EMAIL_USER,
-
-      pass:
-        process.env.EMAIL_PASS
-
-    }
-
-  });
-
-transporter.verify(
-  function (
-    error,
-    success
-  ) {
-
-    if (error) {
-
-      console.error(
-        "SMTP Error:",
-        error
-      );
-
-    } else {
-
-      console.log(
-        "SMTP Ready"
-      );
-
-    }
-
-  }
+const resend = new Resend(
+  process.env.RESEND_API_KEY
 );
 
-const sendReminderEmail =
-  async (
-    email,
-    name
-  ) => {
+const sendReminderEmail = async (
+  email,
+  name
+) => {
 
-    const info =
-      await transporter.sendMail({
+  const response =
+    await resend.emails.send({
 
-        from:
-          process.env.EMAIL_USER,
+      from:
+        "onboarding@resend.dev",
 
-        to: email,
+      to: email,
 
-        subject:
-          "New Consultation Dates Available",
+      subject:
+        "New Consultation Dates Available",
 
-        html: `
+      html: `
+        <h2>Hello ${name}</h2>
 
-          <h2>
-            Hello ${name}
-          </h2>
+        <p>
+          New consultation dates are now available.
+        </p>
 
-          <p>
-            New consultation dates are now open.
-          </p>
+        <p>
+          Please book your slot at your earliest convenience.
+        </p>
 
-          <p>
-            Please book your slot at your earliest convenience.
-          </p>
+        <br/>
 
-          <br/>
+        <p>
+          Thanks,</p>
 
-          <p>
-            Thanks,
-          </p>
+        <p>
+          Ekadantha Homoeopathy Clinic
+        </p>
+      `
+    });
 
-          <p>
-            Ekadantha Homoeopathy Clinic
-          </p>
+  console.log(
+    "Resend Response:",
+    response
+  );
 
-        `
-      });
+  return response;
 
-    console.log(
-      "Message ID:",
-      info.messageId
-    );
-
-    return info;
-
-  };
+};
 
 module.exports = {
   sendReminderEmail
