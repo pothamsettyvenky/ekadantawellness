@@ -211,6 +211,85 @@ setCustomService("");
           <h1>Book Your Appointment</h1>
 
         </div>
+        <div className="package-details-section">
+
+  <h2>Consultation Packages</h2>
+
+  <div className="package-details-grid">
+
+    <div className="package-info-card">
+
+      <h3>Without Medication</h3>
+
+      <div className="price">
+        ₹1499
+      </div>
+
+      <ul>
+
+        <li>✓ Initial Consultation (45–60 Minutes)</li>
+
+        <li>✓ Detailed Case Evaluation</li>
+
+        <li>✓ Personalized Treatment Plan</li>
+
+        <li>✓ 1 Follow-Up Consultation After 15 Days</li>
+
+      </ul>
+
+    </div>
+
+    <div className="package-info-card featured">
+
+      <h3>With Medication</h3>
+
+      <div className="price">
+        ₹2999
+      </div>
+
+      <ul>
+
+        <li>✓ Initial Consultation (45–60 Minutes)</li>
+
+        <li>✓ Detailed Case Evaluation</li>
+
+        <li>✓ Personalized Treatment Plan</li>
+
+        <li>✓ Homeopathic Medicines Included</li>
+
+        <li>✓ 1 Follow-Up Consultation After 15 Days</li>
+
+        <li>✓ Shipping Across India</li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <div className="followup-note">
+
+    <h4>
+      Follow-Up Packages
+    </h4>
+
+    <p>
+      Follow-up consultations are conducted every 15 days.
+    </p>
+
+    <p>
+      Follow-Up Package (Without Medication):
+      ₹1199 per month
+    </p>
+
+    <p>
+      Follow-Up Package (With Medication):
+      ₹2499 per month
+    </p>
+
+  </div>
+
+</div>
 
         <form onSubmit={handleSubmit}>
 
@@ -232,7 +311,8 @@ setCustomService("");
                 required
               />
 
-              Without Medication ₹1499
+               Without Medication ₹1499
+(1 Consultation + 1 Follow-Up)
 
             </label>
 
@@ -249,8 +329,9 @@ setCustomService("");
                 onChange={handleChange}
                 required
               />
-
-              With Medication ₹2999
+With Medication ₹2999
+(1 Consultation + 1 Follow-Up + Medicines)
+            
 
             </label>
 

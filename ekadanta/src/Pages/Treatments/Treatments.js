@@ -209,76 +209,89 @@ function Treatments() {
   description:
     "Care focused on digestive health and recurrent worm infestations.",
   link: "https://en.wikipedia.org/wiki/Helminthiasis"
-}
+},
+{
+    title: "Many More Conditions",
+    description:
+      "Comprehensive homoeopathic care for a wide range of acute and chronic health concerns.",
+    link: "#treatments"
+  }
 
     ],
 
     other: [
 
-      {
-        title: "Allergies",
-        description:
-          "Support for seasonal, environmental and food allergies.",
-        link: "https://en.wikipedia.org/wiki/Allergy"
-      },
+  {
+    title: "Gastric Complaints",
+    description:
+      "Supportive care for acidity, bloating, indigestion and other digestive concerns.",
+    link: "https://en.wikipedia.org/wiki/Gastritis"
+  },
 
-      {
-        title: "IBS",
-        description:
-          "Management of digestive discomfort and bowel irregularities.",
-        link: "https://en.wikipedia.org/wiki/Irritable_bowel_syndrome"
-      },
+  {
+    title: "Skin Complaints",
+    description:
+      "Holistic support for eczema, psoriasis, acne and various skin-related conditions.",
+    link: "https://en.wikipedia.org/wiki/Skin_condition"
+  },
 
-      {
-        title: "IBD",
-        description:
-          "Supportive care for inflammatory bowel conditions.",
-        link: "https://en.wikipedia.org/wiki/Inflammatory_bowel_disease"
-      },
+  {
+    title: "Paralytic Conditions",
+    description:
+      "Individualized care aimed at improving recovery, mobility and overall wellbeing.",
+    link: "https://en.wikipedia.org/wiki/Paralysis"
+  },
 
-      {
-        title: "Gastric Complaints",
-        description:
-          "Relief-focused care for acidity, bloating and digestive issues.",
-        link: "https://en.wikipedia.org/wiki/Gastritis"
-      },
+  {
+    title: "Heart Conditions",
+    description:
+      "Supportive care for cardiovascular health and related concerns.",
+    link: "https://en.wikipedia.org/wiki/Cardiovascular_disease"
+  },
 
-      {
-        title: "Respiratory Complaints",
-        description:
-          "Support for breathing difficulties and recurrent respiratory conditions.",
-        link: "https://en.wikipedia.org/wiki/Respiratory_disease"
-      },
+  {
+    title: "Osteoarthritis",
+    description:
+      "Care focused on joint mobility, comfort and quality of life.",
+    link: "https://en.wikipedia.org/wiki/Osteoarthritis"
+  },
 
-      {
-        title: "Age Related Complaints",
-        description:
-          "Care focused on healthy ageing and quality of life.",
-        link: "https://en.wikipedia.org/wiki/Ageing"
-      },
+  {
+    title: "Rheumatoid Arthritis",
+    description:
+      "Supportive management of joint inflammation and autoimmune-related symptoms.",
+    link: "https://en.wikipedia.org/wiki/Rheumatoid_arthritis"
+  },
 
-      {
-        title: "Rheumatoid Arthritis",
-        description:
-          "Supportive management of joint inflammation and pain.",
-        link: "https://en.wikipedia.org/wiki/Rheumatoid_arthritis"
-      },
+  {
+    title: "Warts",
+    description:
+      "Holistic care for common warts and prevention of recurrence.",
+    link: "https://en.wikipedia.org/wiki/Wart"
+  },
 
-      {
-        title: "Osteoarthritis",
-        description:
-          "Care aimed at mobility, comfort and joint health.",
-        link: "https://en.wikipedia.org/wiki/Osteoarthritis"
-      },
+  {
+    title: "Respiratory Complaints",
+    description:
+      "Support for sinusitis, allergic rhinitis, adenoids, pneumonia, asthma and other respiratory concerns.",
+    link: "https://en.wikipedia.org/wiki/Respiratory_disease"
+  },
 
-      {
-        title: "Warts",
-        description:
-          "Holistic support for common skin growths and recurrence prevention.",
-        link: "https://en.wikipedia.org/wiki/Wart"
-      }
+  {
+    title: "Mental Well-Being",
+    description:
+      "Supportive care for stress, bipolar disorders, behavioural disorders, depression and emotional wellbeing.",
+    link: "https://en.wikipedia.org/wiki/Mental_health"
+  },
 
-    ],
+  {
+    title: "Many More Conditions",
+    description:
+      "Comprehensive homoeopathic care for a wide range of acute and chronic health concerns.",
+    link: "#treatments"
+  }
+
+],
 male: [
 
   {
@@ -314,8 +327,13 @@ male: [
     description:
       "Support for developmental and hormonal concerns during puberty.",
     link: "https://en.wikipedia.org/wiki/Puberty"
+  },
+  {
+    title: "Many More Conditions",
+    description:
+      "Comprehensive homoeopathic care for a wide range of acute and chronic health concerns.",
+    link: "#treatments"
   }
-
 ],
   };
 
