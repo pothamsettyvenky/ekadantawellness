@@ -1,39 +1,30 @@
-const cron = require("node-cron");
-console.log("Before Listen...");
-const { db } =
-  require("../firebaseAdmin");
+cron.schedule("* * * * *", async () => {
 
-const {
-  sendReminderEmail
-} = require(
-  "../services/emailServices"
-);
+  console.log("Checking Doctor Notes...");
 
-cron.schedule(
-  "* * * * *",
-  async () => {
+  try {
+
+    const snapshot = await db
+      .collection("appointments")
+      .get();
 
     console.log(
-      "Checking Doctor Notes..."
+      "Appointments Found:",
+      snapshot.size
     );
 
-    try {
+    for (const doc of snapshot.docs) {
 
-      const snapshot =
-        await db
-          .collection("appointments")
-          .get();
+      const patient = doc.data();
 
-      for (
-        const doc of snapshot.docs
-      ) {
+      console.log(
+        "Patient Email:",
+        patient.email
+      );
 
-        const patient =
-          doc.data();
+      if (patient.email) {
 
-        if (
-          patient.email
-        ) {
+        try {
 
           await sendReminderEmail(
             patient.email,
@@ -45,22 +36,26 @@ cron.schedule(
             patient.email
           );
 
+        } catch (emailError) {
+
+          console.error(
+            "Email Error:",
+            emailError
+          );
+
         }
 
       }
 
-    } catch (error) {
-
-      console.error(error);
-
     }
 
-  },
-  {
-    timezone: "Asia/Kolkata"
-  }
-);
+  } catch (error) {
 
-console.log(
-  "Reminder Cron Started"
-);
+    console.error(
+      "Firestore Error:",
+      error
+    );
+
+  }
+
+});
