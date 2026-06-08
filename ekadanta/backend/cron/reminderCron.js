@@ -10,7 +10,7 @@ const {
 );
 
 cron.schedule(
-  "0 9 * * *",
+  "* * * * *",
   async () => {
 
     console.log(
