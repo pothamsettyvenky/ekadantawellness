@@ -1,5 +1,10 @@
-const cron = require("node-cron");
-console.log("Before Listen...");
+const cron =
+  require("node-cron");
+
+console.log(
+  "Before Listen..."
+);
+
 const { db } =
   require("../firebaseAdmin");
 
@@ -9,67 +14,99 @@ const {
   "../services/emailServices"
 );
 
-cron.schedule("* * * * *", async () => {
+cron.schedule(
 
-  console.log("Checking Doctor Notes...");
+  "* * * * *",
 
-  try {
-
-    const snapshot = await db
-      .collection("appointments")
-      .get();
+  async () => {
 
     console.log(
-      "Appointments Found:",
-      snapshot.size
+      "Checking Doctor Notes..."
     );
 
-    for (const doc of snapshot.docs) {
+    try {
 
-      const patient = doc.data();
+      const snapshot =
+        await db
+          .collection(
+            "appointments"
+          )
+          .get();
 
       console.log(
-        "Patient Email:",
-        patient.email
+        "Appointments Found:",
+        snapshot.size
       );
 
-      if (patient.email) {
+      for (
+        const doc of snapshot.docs
+      ) {
 
-        try {
+        const patient =
+          doc.data();
 
-          await sendReminderEmail(
-            patient.email,
-            patient.name || "Patient"
-          );
+        console.log(
+          "Patient Email:",
+          patient.email
+        );
 
-          console.log(
-            "Email Sent:",
-            patient.email
-          );
+        if (
+          patient.email
+        ) {
 
-        } catch (emailError) {
+          try {
 
-          console.error(
-            "Email Error:",
+            const result =
+              await sendReminderEmail(
+
+                patient.email,
+
+                patient.name ||
+                "Patient"
+
+              );
+
+            console.log(
+              "Email Sent:",
+              patient.email
+            );
+
+            console.log(
+              result.messageId
+            );
+
+          } catch (
             emailError
-          );
+          ) {
+
+            console.error(
+              "Email Error:",
+              emailError
+            );
+
+          }
 
         }
 
       }
 
+    } catch (error) {
+
+      console.error(
+        "Firestore Error:",
+        error
+      );
+
     }
 
-  } catch (error) {
+  },
 
-    console.error(
-      "Firestore Error:",
-      error
-    );
-
+  {
+    timezone:
+      "Asia/Kolkata"
   }
 
-});
+);
 
 console.log(
   "Reminder Cron Started"

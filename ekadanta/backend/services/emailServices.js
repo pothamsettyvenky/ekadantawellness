@@ -1,22 +1,49 @@
-const nodemailer =
-  require("nodemailer");
+const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+const transporter =
+  nodemailer.createTransport({
+
+    host: "smtp.gmail.com",
+
+    port: 587,
+
+    secure: false,
+
+    auth: {
+
+      user:
+        process.env.EMAIL_USER,
+
+      pass:
+        process.env.EMAIL_PASS
+
+    }
+
+  });
+
+transporter.verify(
+  function (
+    error,
+    success
+  ) {
+
+    if (error) {
+
+      console.error(
+        "SMTP Error:",
+        error
+      );
+
+    } else {
+
+      console.log(
+        "SMTP Ready"
+      );
+
+    }
+
   }
-});
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log("SMTP Error:", error);
-  } else {
-    console.log("SMTP Server Ready");
-  }
-});
+);
 
 const sendReminderEmail =
   async (
@@ -24,42 +51,50 @@ const sendReminderEmail =
     name
   ) => {
 
-    await transporter.sendMail({
+    const info =
+      await transporter.sendMail({
 
-      from:
-        process.env.EMAIL_USER,
+        from:
+          process.env.EMAIL_USER,
 
-      to: email,
+        to: email,
 
-      subject:
-        "New Consultation Dates Available",
+        subject:
+          "New Consultation Dates Available",
 
-      html: `
+        html: `
 
-        <h2>
-          Hello ${name}
-        </h2>
+          <h2>
+            Hello ${name}
+          </h2>
 
-        <p>
-          New consultation dates are now open.
-        </p>
+          <p>
+            New consultation dates are now open.
+          </p>
 
-        <p>
-          Please book your slot at your earliest convenience.
-        </p>
+          <p>
+            Please book your slot at your earliest convenience.
+          </p>
 
-        <br/>
+          <br/>
 
-        <p>
-          Thanks,
-        </p>
+          <p>
+            Thanks,
+          </p>
 
-        <p>
-          Ekadantha Homoeopathy Clinic
-        </p>
+          <p>
+            Ekadantha Homoeopathy Clinic
+          </p>
 
-      `
-    });
+        `
+      });
+
+    console.log(
+      "Message ID:",
+      info.messageId
+    );
+
+    return info;
 
   };
 
