@@ -1,22 +1,24 @@
 require("dotenv").config();
 
-console.log("Server Starting...");
+console.log(
+  "Server Starting..."
+);
 
-const express = require("express");
+const express =
+  require("express");
 
-const app = express();
+const app =
+  express();
 
-app.use(express.json());
-
-const {
-  sendReminderEmail
-} = require(
-  "./services/emailServices"
+app.use(
+  express.json()
 );
 
 try {
 
-  require("./cron/reminderCron");
+  require(
+    "./cron/reminderCron"
+  );
 
   console.log(
     "Cron Loaded..."
@@ -31,17 +33,22 @@ try {
 
 }
 
-app.get("/", (req, res) => {
+app.get(
+  "/",
+  (req, res) => {
 
-  res.send(
-    "Ekadantha Backend Running"
-  );
+    res.send(
+      "Ekadantha Backend Running"
+    );
 
-});
+  }
+);
 
-/*
-  TEMPORARY TEST ROUTE
-*/
+const {
+  sendReminderEmail
+} = require(
+  "./services/emailServices"
+);
 
 app.get(
   "/test-email",
@@ -52,34 +59,31 @@ app.get(
 
     try {
 
-      const result =
-        await sendReminderEmail(
+      await sendReminderEmail(
 
-          "pothamsettyvenky003@gmail.com",
+        "test@gmail.com",
 
-          "Test User"
+        "Test User"
 
-        );
-
-      console.log(
-        "Email Test Success:",
-        result.messageId
       );
 
       res.send(
         "Email Sent Successfully"
       );
 
-    } catch (error) {
+    } catch (
+      error
+    ) {
 
       console.error(
-        "Email Test Error:",
         error
       );
 
-      res.status(500).send(
-        error.message
-      );
+      res
+        .status(500)
+        .send(
+          error.message
+        );
 
     }
 

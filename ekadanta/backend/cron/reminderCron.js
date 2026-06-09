@@ -1,10 +1,6 @@
 const cron =
   require("node-cron");
 
-console.log(
-  "Before Listen..."
-);
-
 const { db } =
   require("../firebaseAdmin");
 
@@ -12,6 +8,10 @@ const {
   sendReminderEmail
 } = require(
   "../services/emailServices"
+);
+
+console.log(
+  "Reminder Cron Started"
 );
 
 cron.schedule(
@@ -45,46 +45,46 @@ cron.schedule(
         const patient =
           doc.data();
 
-        console.log(
-          "Patient Email:",
-          patient.email
-        );
-
         if (
-          patient.email
+          !patient.email
         ) {
 
-          try {
+          continue;
 
-            const result =
-              await sendReminderEmail(
+        }
 
-                patient.email,
+        try {
 
-                patient.name ||
-                "Patient"
+          const result =
+            await sendReminderEmail(
 
-              );
+              patient.email,
 
-            console.log(
-              "Email Sent:",
-              patient.email
+              patient.name ||
+              "Patient"
+
             );
 
-            console.log(
-              result.messageId
-            );
+          console.log(
+            "Email Sent For:",
+            patient.email
+          );
 
-          } catch (
-            emailError
-          ) {
+          console.log(
+            result.data
+          );
 
-            console.error(
-              "Email Error:",
-              emailError
-            );
+        } catch (
+          error
+        ) {
 
-          }
+          console.error(
+
+            `Email Failed For ${patient.email}`,
+
+            error.message
+
+          );
 
         }
 
@@ -106,8 +106,4 @@ cron.schedule(
       "Asia/Kolkata"
   }
 
-);
-
-console.log(
-  "Reminder Cron Started"
 );

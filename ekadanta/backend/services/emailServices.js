@@ -5,26 +5,42 @@ const resend = new Resend(
 );
 
 const sendReminderEmail = async (
-  email,
-  name
+  patientEmail,
+  patientName
 ) => {
 
   const response =
     await resend.emails.send({
 
       from:
-        "onboarding@resend.dev",
+        "Ekadantha Wellness <onboarding@resend.dev>",
 
-      to: email,
+      to:
+        "ekadanthawellness@gmail.com",
 
       subject:
-        "New Consultation Dates Available",
+        `Reminder Test - ${patientName}`,
 
       html: `
-        <h2>Hello ${name}</h2>
+
+        <h2>
+          Reminder Email Test
+        </h2>
 
         <p>
-          New consultation dates are now available.
+          Patient Name:
+          <strong>${patientName}</strong>
+        </p>
+
+        <p>
+          Patient Email:
+          <strong>${patientEmail}</strong>
+        </p>
+
+        <hr/>
+
+        <p>
+          New consultation dates are available.
         </p>
 
         <p>
@@ -34,18 +50,23 @@ const sendReminderEmail = async (
         <br/>
 
         <p>
-          Thanks,</p>
+          Thanks,
+        </p>
 
         <p>
           Ekadantha Homoeopathy Clinic
         </p>
+
       `
     });
 
-  console.log(
-    "Resend Response:",
-    response
-  );
+  if (response.error) {
+
+    throw new Error(
+      response.error.message
+    );
+
+  }
 
   return response;
 
