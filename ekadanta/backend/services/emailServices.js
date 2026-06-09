@@ -1,76 +1,75 @@
-const { Resend } = require("resend");
+const { Resend } =
+  require("resend");
 
-const resend = new Resend(
-  process.env.RESEND_API_KEY
-);
+const resend =
+  new Resend(
+    process.env.RESEND_API_KEY
+  );
 
-const sendReminderEmail = async (
-  patientEmail,
-  patientName
-) => {
+const sendReminderEmail =
+  async (
+    patientEmail,
+    patientName
+  ) => {
 
-  const response =
-    await resend.emails.send({
+    const response =
+      await resend.emails.send({
 
-      from:
-        "Ekadantha Wellness <onboarding@resend.dev>",
+        from:
+          "Ekadantha Wellness <onboarding@resend.dev>",
 
-      to:
-        "ekadanthawellness@gmail.com",
+        to:
+          "ekadanthawellness@gmail.com",
 
-      subject:
-        `Reminder Test - ${patientName}`,
+        subject:
+          `15 Day Follow Up Reminder - ${patientName}`,
 
-      html: `
+        html: `
 
-        <h2>
-          Reminder Email Test
-        </h2>
+          <h2>
+            Hello ${patientName}
+          </h2>
 
-        <p>
-          Patient Name:
-          <strong>${patientName}</strong>
-        </p>
+          <p>
+            It has been 15 days since your consultation.
+          </p>
 
-        <p>
-          Patient Email:
-          <strong>${patientEmail}</strong>
-        </p>
+          <p>
+            We would love to support your wellness journey.
+          </p>
 
-        <hr/>
+          <p>
+            Please book your follow up appointment.
+          </p>
 
-        <p>
-          New consultation dates are available.
-        </p>
+          <br/>
 
-        <p>
-          Please book your slot at your earliest convenience.
-        </p>
+          <p>
+            Patient Email:
+            ${patientEmail}
+          </p>
 
-        <br/>
+          <p>
+            Ekadantha Homoeopathy Clinic
+          </p>
 
-        <p>
-          Thanks,
-        </p>
+        `
 
-        <p>
-          Ekadantha Homoeopathy Clinic
-        </p>
+      });
 
-      `
-    });
+    if (
+      response.error
+    ) {
 
-  if (response.error) {
+      throw new Error(
+        response.error.message
+      );
 
-    throw new Error(
-      response.error.message
-    );
+    }
 
-  }
+    return response;
 
-  return response;
-
-};
+  };
 
 module.exports = {
   sendReminderEmail

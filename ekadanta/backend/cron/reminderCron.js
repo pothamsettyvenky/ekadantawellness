@@ -1,5 +1,4 @@
-const cron =
-  require("node-cron");
+const cron = require("node-cron");
 
 const { db } =
   require("../firebaseAdmin");
@@ -14,10 +13,14 @@ console.log(
   "Reminder Cron Started"
 );
 
-cron.schedule("0 9 */15 * *", async () => {
+cron.schedule(
+
+  "0 9 * * *",
+
+  async () => {
 
     console.log(
-      "Checking Doctor Notes..."
+      "Checking Follow Up Reminders..."
     );
 
     try {
@@ -29,10 +32,8 @@ cron.schedule("0 9 */15 * *", async () => {
           )
           .get();
 
-      console.log(
-        "Appointments Found:",
-        snapshot.size
-      );
+      const today =
+        new Date();
 
       for (
         const doc of snapshot.docs
@@ -44,14 +45,63 @@ cron.schedule("0 9 */15 * *", async () => {
         if (
           !patient.email
         ) {
+          continue;
+        }
+
+        if (
+          patient.reminderSent
+        ) {
+          continue;
+        }
+
+        let appointmentDate;
+
+        if (
+          patient.createdAt
+        ) {
+
+          appointmentDate =
+            patient.createdAt.toDate();
+
+        } else {
 
           continue;
 
         }
 
-        try {
+        const diffDays =
+          Math.floor(
 
-          const result =
+            (
+              today -
+              appointmentDate
+            ) /
+
+            (
+              1000 *
+              60 *
+              60 *
+              24
+            )
+
+          );
+
+        console.log(
+
+          patient.email,
+
+          "Days:",
+
+          diffDays
+
+        );
+
+        if (
+          diffDays >= 1
+        ) {
+
+          try {
+
             await sendReminderEmail(
 
               patient.email,
@@ -61,26 +111,39 @@ cron.schedule("0 9 */15 * *", async () => {
 
             );
 
-          console.log(
-            "Email Sent For:",
-            patient.email
-          );
+            await doc.ref.update({
 
-          console.log(
-            result.data
-          );
+              reminderSent:
+                true,
 
-        } catch (
-          error
-        ) {
+              reminderSentAt:
+                new Date()
 
-          console.error(
+            });
 
-            `Email Failed For ${patient.email}`,
+            console.log(
 
-            error.message
+              "Reminder Sent:",
 
-          );
+              patient.email
+
+            );
+
+          } catch (
+            error
+          ) {
+
+            console.error(
+
+              "Email Failed:",
+
+              patient.email,
+
+              error.message
+
+            );
+
+          }
 
         }
 
@@ -89,7 +152,7 @@ cron.schedule("0 9 */15 * *", async () => {
     } catch (error) {
 
       console.error(
-        "Firestore Error:",
+        "Cron Error:",
         error
       );
 
