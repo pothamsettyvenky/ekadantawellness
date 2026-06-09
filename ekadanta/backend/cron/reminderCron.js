@@ -14,11 +14,7 @@ console.log(
   "Reminder Cron Started"
 );
 
-cron.schedule(
-
-  "* * * * *",
-
-  async () => {
+cron.schedule("0 9 */15 * *", async () => {
 
     console.log(
       "Checking Doctor Notes..."
