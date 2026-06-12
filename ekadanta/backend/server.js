@@ -15,7 +15,10 @@ const {
 const {
   processReminders
 } = require("./services/reminderService");
-
+const paymentRoutes =
+  require(
+    "./routes/paymentRoutes"
+  );
 app.get("/", (req, res) => {
   res.send("Ekadantha Backend Running");
 });
@@ -81,6 +84,10 @@ app.get(
   }
 );
 
+app.use(
+  "/api/payment",
+  paymentRoutes
+);
 const PORT =
   process.env.PORT || 5000;
 
