@@ -55,7 +55,10 @@ router.post(
         });
 
       }
-
+console.log(
+  "Backend Key:",
+  process.env.RAZORPAY_KEY_ID
+);
       const order =
         await razorpay.orders.create({
 

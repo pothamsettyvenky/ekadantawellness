@@ -148,7 +148,7 @@ function BookAppointment() {
     const options = {
 
       key:
-        "rzp_test_T0bdzilx6jFljW",
+        "rzp_test_T0oQrwW2TTRH5W",
 
       amount:
         orderData.order.amount,
