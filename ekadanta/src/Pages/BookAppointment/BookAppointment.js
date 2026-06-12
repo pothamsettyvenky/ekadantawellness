@@ -92,63 +92,247 @@ function BookAppointment() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      setLoading(true);
+    const handleSubmit = async (e) => {
 
-      const amount = formData.packageType === "With Medication" ? 2999 : 1499;
+  e.preventDefault();
 
-      // const appointmentRef = await addDoc(collection(db, "appointments"), {
-      //   ...formData,
+  try {
 
-      //   services: selectedServices,
+    setLoading(true);
 
-      //   otherService: customService,
+    const appointmentData = {
 
-      //   amount,
+      ...formData,
 
-      //   appointmentType: "initial",
-      //   consultationType: formData.packageType,
+      services: selectedServices,
 
-      //   paymentStatus: "pending",
+      otherService: customService
 
-      //   status: "waiting_for_payment",
+    };
 
-      //   followUpEligible: false,
+    const orderResponse =
+      await fetch(
 
-      //   freeFollowUpUsed: false,
+        "https://ekadantawellness-backend.onrender.com/api/payment/create-order",
 
-      //   reminderSent: false,
+        {
 
-      //   createdAt: Timestamp.now(),
-      // });
+          method: "POST",
 
-     
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-      // alert("Appointment Saved Successfully");
+          body: JSON.stringify({
 
-      setFormData({
-        packageType: "",
-        name: "",
-        email: "",
-        phone: "",
-        age: "",
-        gender: "",
-        address: "",
-        date: "",
-        slot: "",
-        notes: "",
-      });
+            packageType:
+              formData.packageType
 
-      setSelectedServices([]);
+          })
 
-      setCustomService("");
-    } catch (error) {
-      console.error(error);
+        }
 
-      alert("Something went wrong");
-    } finally {
-      setLoading(false);
+      );
+
+    const orderData =
+      await orderResponse.json();
+
+    if (
+      !orderData.success
+    ) {
+
+      throw new Error(
+        "Order Creation Failed"
+      );
+
     }
+
+    const options = {
+
+      key:
+        "rzp_test_T0ZrtLYCscwYj8",
+
+      amount:
+        orderData.order.amount,
+
+      currency:
+        "INR",
+
+      name:
+        "Ekadantha Wellness",
+
+      description:
+        "Consultation Booking",
+
+      order_id:
+        orderData.order.id,
+
+      prefill: {
+
+        name:
+          formData.name,
+
+        email:
+          formData.email,
+
+        contact:
+          formData.phone
+
+      },
+
+      theme: {
+
+        color:
+          "#2f6f5f"
+
+      },
+
+      handler:
+        async function (
+          response
+        ) {
+
+          try {
+
+            const verifyResponse =
+              await fetch(
+
+                "https://ekadantawellness-backend.onrender.com/api/payment/verify-payment",
+
+                {
+
+                  method:
+                    "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify({
+
+                      razorpay_order_id:
+                        response.razorpay_order_id,
+
+                      razorpay_payment_id:
+                        response.razorpay_payment_id,
+
+                      razorpay_signature:
+                        response.razorpay_signature,
+
+                      appointmentData
+
+                    })
+
+                }
+
+              );
+
+            const verifyData =
+              await verifyResponse.json();
+
+            if (
+              verifyData.success
+            ) {
+
+              alert(
+                "Payment Successful. Appointment Confirmed."
+              );
+
+              setFormData({
+
+                packageType:
+                  "",
+
+                name:
+                  "",
+
+                email:
+                  "",
+
+                phone:
+                  "",
+
+                age:
+                  "",
+
+                gender:
+                  "",
+
+                address:
+                  "",
+
+                date:
+                  "",
+
+                slot:
+                  "",
+
+                notes:
+                  ""
+
+              });
+
+              setSelectedServices(
+                []
+              );
+
+              setCustomService(
+                ""
+              );
+
+            } else {
+
+              alert(
+                "Payment Verification Failed"
+              );
+
+            }
+
+          } catch (
+            error
+          ) {
+
+            console.error(
+              error
+            );
+
+            alert(
+              "Verification Failed"
+            );
+
+          }
+
+        }
+
+    };
+
+    const razorpay =
+      new window.Razorpay(
+        options
+      );
+
+    razorpay.open();
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      error.message
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
   };
 
   return (
