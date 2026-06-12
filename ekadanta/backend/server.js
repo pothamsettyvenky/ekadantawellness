@@ -1,5 +1,6 @@
 require("dotenv").config();
-
+console.log("RESEND:", process.env.RESEND_API_KEY);
+console.log("ALL ENV:", Object.keys(process.env));
 console.log("Server Starting...");
 const cors =
   require("cors");
@@ -8,7 +9,8 @@ const cors =
 const express = require("express");
 
 const app = express();
-
+const followupRoutes =
+  require("./routes/followupRoutes");
 app.use(express.json());
 
 const {
@@ -89,7 +91,10 @@ app.get(
 
   }
 );
-
+app.use(
+  "/api/followup",
+  followupRoutes
+);
 app.use(
   "/api/payment",
   paymentRoutes

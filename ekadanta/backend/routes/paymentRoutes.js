@@ -18,7 +18,10 @@ const router =
 
 const packagePrices = {
   "Without Medication": 1499,
-  "With Medication": 2999
+  "With Medication": 2999,
+
+  "Follow-Up Without Medication": 1199,
+  "Follow-Up With Medication": 2499
 };
 
 router.post(
@@ -160,8 +163,8 @@ router.post(
 
           ...appointmentData,
 
-          appointmentType:
-            "initial",
+         appointmentType:
+  appointmentData.appointmentType,
 
           paymentStatus:
             "paid",
@@ -193,31 +196,33 @@ router.post(
   appointmentData.email
 );
 
-await sendConfirmationEmail(
-  appointmentData.email,
-  appointmentData.name,
-  appointmentData.packageType,
-  appointmentData.amount,
-  razorpay_payment_id
-);
+try {
+  await sendConfirmationEmail(
+    appointmentData.email,
+    appointmentData.name,
+    appointmentData.packageType,
+    appointmentData.amount,
+    razorpay_payment_id
+  );
 
-console.log(
-  "Confirmation Email Sent:",
-  appointmentData.email
-);
+  console.log("Confirmation email sent");
+} catch (error) {
+  console.error("Confirmation email failed", error);
+}
 
-await sendInvoiceEmail(
-  appointmentData.email,
-  appointmentData.name,
-  appointmentData.packageType,
-  appointmentData.amount,
-  razorpay_payment_id
-);
+try {
+  await sendInvoiceEmail(
+    appointmentData.email,
+    appointmentData.name,
+    appointmentData.packageType,
+    appointmentData.amount,
+    razorpay_payment_id
+  );
 
-console.log(
-  "Invoice Email Sent:",
-  appointmentData.email
-);
+  console.log("Invoice email sent");
+} catch (error) {
+  console.error("Invoice email failed", error);
+}
 
       res.json({
         success: true,
@@ -226,6 +231,70 @@ console.log(
       });
 
     } catch (error) {
+
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+
+    }
+
+  }
+);
+router.post(
+  "/book-free-followup",
+  async (req, res) => {
+
+    try {
+
+      const {
+        originalAppointmentId,
+        appointmentData
+      } = req.body;
+
+      await db
+        .collection("appointments")
+        .add({
+
+          ...appointmentData,
+
+          parentAppointmentId:
+            originalAppointmentId,
+
+          appointmentType:
+            "followup",
+
+          paymentStatus:
+            "free",
+
+          amount: 0,
+
+          status:
+            "confirmed",
+
+          createdAt:
+            admin.firestore.FieldValue.serverTimestamp()
+
+        });
+
+      await db
+        .collection("appointments")
+        .doc(
+          originalAppointmentId
+        )
+        .update({
+
+          freeFollowUpUsed: true
+
+        });
+
+      res.json({
+        success: true
+      });
+
+    } catch (error) {
+
+      console.error(error);
 
       res.status(500).json({
         success: false,
