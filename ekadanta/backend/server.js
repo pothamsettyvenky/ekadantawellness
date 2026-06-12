@@ -1,6 +1,9 @@
 require("dotenv").config();
 
 console.log("Server Starting...");
+const cors =
+  require("cors");
+
 
 const express = require("express");
 
@@ -19,6 +22,9 @@ const paymentRoutes =
   require(
     "./routes/paymentRoutes"
   );
+
+  app.use(cors());
+  app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Ekadantha Backend Running");
 });

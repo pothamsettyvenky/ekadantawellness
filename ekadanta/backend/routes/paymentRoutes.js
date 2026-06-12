@@ -21,6 +21,20 @@ router.post(
   "/create-order",
   async (req, res) => {
 
+    console.log(
+      "Create Order Hit"
+    );
+
+    console.log(
+      "Body:",
+      req.body
+    );
+
+    console.log(
+      "Key ID:",
+      process.env.RAZORPAY_KEY_ID
+    );
+
     try {
 
       const {
@@ -31,6 +45,16 @@ router.post(
         packagePrices[
           packageType
         ];
+
+      if (!amount) {
+
+        return res.status(400).json({
+          success: false,
+          error:
+            "Invalid package type"
+        });
+
+      }
 
       const order =
         await razorpay.orders.create({
@@ -43,12 +67,22 @@ router.post(
 
         });
 
+      console.log(
+        "Order Created:",
+        order.id
+      );
+
       res.json({
         success: true,
         order
       });
 
     } catch (error) {
+
+      console.error(
+        "Create Order Error:",
+        error
+      );
 
       res.status(500).json({
         success: false,
