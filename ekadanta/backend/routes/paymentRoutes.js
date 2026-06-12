@@ -2,7 +2,8 @@ const express = require("express");
 const crypto = require("crypto");
 const {
   sendConfirmationEmail,
-  sendInvoiceEmail
+  sendInvoiceEmail,
+  sendDoctorNotification
 } = require("../services/emailServices");
 
 const razorpay =
@@ -191,6 +192,13 @@ router.post(
   admin.firestore.FieldValue.serverTimestamp()
 
         });
+        await sendConfirmationEmail(
+  appointmentData.email,
+  appointmentData.name,
+  "Free Follow-Up",
+  0,
+  "FREE-FOLLOWUP"
+);
       console.log(
   "Appointment Saved:",
   appointmentData.email
@@ -222,6 +230,25 @@ try {
   console.log("Invoice email sent");
 } catch (error) {
   console.error("Invoice email failed", error);
+}
+try {
+
+  await sendDoctorNotification(
+    appointmentData,
+    razorpay_payment_id
+  );
+
+  console.log(
+    "Doctor notification sent"
+  );
+
+} catch (error) {
+
+  console.error(
+    "Doctor notification failed",
+    error
+  );
+
 }
 
       res.json({

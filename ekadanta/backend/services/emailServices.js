@@ -40,6 +40,42 @@ const sendReminderEmail = async (
 
   return response;
 };
+const sendDoctorNotification = async (
+  appointmentData,
+  paymentId
+) => {
+
+  return resend.emails.send({
+
+    from:
+      "Ekadantha Wellness <onboarding@resend.dev>",
+
+    to:
+      "ekadantawellness@gmail.com",
+
+    subject:
+      "New Appointment Booked",
+
+    html: `
+      <h2>New Appointment</h2>
+
+      <p><b>Name:</b> ${appointmentData.name}</p>
+
+      <p><b>Phone:</b> ${appointmentData.phone}</p>
+
+      <p><b>Email:</b> ${appointmentData.email}</p>
+
+      <p><b>Date:</b> ${appointmentData.date}</p>
+
+      <p><b>Time:</b> ${appointmentData.slot}</p>
+
+      <p><b>Package:</b> ${appointmentData.packageType}</p>
+
+      <p><b>Payment ID:</b> ${paymentId}</p>
+    `
+  });
+
+};
 
 const sendConfirmationEmail = async (
   patientEmail,
@@ -169,5 +205,6 @@ const sendInvoiceEmail = async (
 module.exports = {
   sendReminderEmail,
   sendConfirmationEmail,
-  sendInvoiceEmail
+  sendInvoiceEmail,
+  sendDoctorNotification
 };
