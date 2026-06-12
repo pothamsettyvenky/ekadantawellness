@@ -30,14 +30,28 @@ router.post(
         !appointment.freeFollowUpUsed
       ) {
         return res.json({
-          status: "free_followup",
-          appointmentId: doc.id
-        });
+  status: "free_followup",
+  appointmentId: doc.id,
+
+  patientData: {
+    name: appointment.name || "",
+    phone: appointment.phone || "",
+    age: appointment.age || "",
+    gender: appointment.gender || ""
+  }
+});
       }
 
-      return res.json({
-        status: "paid_followup"
-      });
+     return res.json({
+  status: "paid_followup",
+
+  patientData: {
+    name: appointment.name || "",
+    phone: appointment.phone || "",
+    age: appointment.age || "",
+    gender: appointment.gender || ""
+  }
+});
 
     } catch (error) {
       console.error(error);

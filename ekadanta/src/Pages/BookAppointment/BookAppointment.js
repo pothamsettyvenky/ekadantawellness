@@ -1,414 +1,304 @@
-import React, { useState, useEffect } from "react";
-import "./BookAppointment.css";
+  import React, { useState, useEffect } from "react";
+  import "./BookAppointment.css";
 
-import {
-  collection,
-  onSnapshot
-} from "firebase/firestore";
+  import {
+    collection,
+    onSnapshot
+  } from "firebase/firestore";
 
-import { db } from "../../firebase/config";
+  import { db } from "../../firebase/config";
 
-function BookAppointment() {
-  const [followupStatus,
-  setFollowupStatus] =
-  useState(null);
-
-const [
-  originalAppointmentId,
-  setOriginalAppointmentId
-] = useState("");
-
-const [
-  checkingEligibility,
-  setCheckingEligibility
-] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [selectedServices, setSelectedServices] = useState([]);
-
-  const [customService, setCustomService] = useState("");
-
-  const [slots, setSlots] = useState([]);
-
-  const [formData, setFormData] = useState({
-  appointmentType: "initial",
-  packageType: "",
-  name: "",
-  email: "",
-  phone: "",
-  age: "",
-  gender: "",
-  service: "",
-  address: "",
-  date: "",
-  slot: "",
-  notes: "",
-});
-
-  const services = [
-    "Paediatric Care",
-    "Geriatric Care",
-    "ADHD",
-    "Autism",
-    "Respiratory Complaints",
-    "Gastric Complaints",
-    "Rectal Issues",
-    "Lifestyle Diseases",
-    "Bone & Joint Health",
-    "Skin Complaints",
-    "PCOD",
-    "Varicose Veins",
-    "Menopausal Syndrome",
-    "Hormonal Issues",
-    "Stress",
-    "Migraine",
-    "Autoimmune Disorders",
-    "Warts",
-    "General Consultation",
-  ];
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "slots"),
-      (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setSlots(data);
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
-
-    return () => unsubscribe();
-  }, []);
-const checkEligibility =
-  async () => {
-
-    try {
-
-      setCheckingEligibility(
-        true
-      );
-
-      const response =
-        await fetch(
-
-          "https://ekadantawellness-backend.onrender.com/api/followup/check-followup",
-
-          {
-
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify({
-
-                email:
-                  formData.email
-
-              })
-
-          }
-
-        );
-
-      const data =
-        await response.json();
-
-      setFollowupStatus(
-        data.status
-      );
-
-      if (
-        data.status ===
-        "free_followup"
-      ) {
-
-        setOriginalAppointmentId(
-          data.appointmentId
-        );
-
-        alert(
-          "Congratulations! You are eligible for a FREE follow-up consultation."
-        );
-
-      } else if (
-        data.status ===
-        "paid_followup"
-      ) {
-
-        alert(
-          "No free follow-up available. Please select a follow-up package."
-        );
-
-      } else {
-
-        alert(
-  "No previous consultation found. Please book a new consultation."
-);
-
-setFormData((prev) => ({
-  ...prev,
-  appointmentType: "initial"
-}));
-
-      }
-
-    } catch (error) {
-
-      console.error(error);
-
-    } finally {
-
-      setCheckingEligibility(
-        false
-      );
-
-    }
-
+  function BookAppointment() {
+    const openPopup = (
+    type,
+    title,
+    message
+  ) => {
+    setPopupType(type);
+    setPopupTitle(title);
+    setPopupMessage(message);
+    setShowPopup(true);
   };
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleServiceSelect = (e) => {
-    const service = e.target.value;
+    const [showPopup, setShowPopup] =
+    useState(false);
 
-    if (service && !selectedServices.includes(service)) {
-      setSelectedServices([...selectedServices, service]);
-    }
-  };
+  const [popupTitle, setPopupTitle] =
+    useState("");
 
-  const removeService = (service) => {
-    setSelectedServices(selectedServices.filter((item) => item !== service));
-  };
+  const [popupMessage, setPopupMessage] =
+    useState("");
 
- const handleSubmit = async (e) => {
+  const [popupType, setPopupType] =
+    useState("");
+    const [followupStatus,
+    setFollowupStatus] =
+    useState(null);
 
-  e.preventDefault();
-  if (
-  formData.appointmentType === "followup" &&
-  !followupStatus
-) {
-  alert(
-    "Please check eligibility first."
-  );
-  return;
-}
-  if (
-  formData.appointmentType === "followup" &&
-  followupStatus === "free_followup"
-) {
-  try {
+  const [
+    originalAppointmentId,
+    setOriginalAppointmentId
+  ] = useState("");
 
-    setLoading(true);
+  const [
+    checkingEligibility,
+    setCheckingEligibility
+  ] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [selectedServices, setSelectedServices] = useState([]);
 
-    const response = await fetch(
-      "https://ekadantawellness-backend.onrender.com/api/payment/book-free-followup",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
+    const [customService, setCustomService] = useState("");
+
+    const [slots, setSlots] = useState([]);
+
+    const [formData, setFormData] = useState({
+    appointmentType: "initial",
+    packageType: "",
+    name: "",
+    email: "",
+    phone: "",
+    age: "",
+    gender: "",
+    service: "",
+    address: "",
+    date: "",
+    slot: "",
+    notes: "",
+  });
+
+    const services = [
+      "Paediatric Care",
+      "Geriatric Care",
+      "ADHD",
+      "Autism",
+      "Respiratory Complaints",
+      "Gastric Complaints",
+      "Rectal Issues",
+      "Lifestyle Diseases",
+      "Bone & Joint Health",
+      "Skin Complaints",
+      "PCOD",
+      "Varicose Veins",
+      "Menopausal Syndrome",
+      "Hormonal Issues",
+      "Stress",
+      "Migraine",
+      "Autoimmune Disorders",
+      "Warts",
+      "General Consultation",
+    ];
+
+    useEffect(() => {
+      const unsubscribe = onSnapshot(
+        collection(db, "slots"),
+        (snapshot) => {
+          const data = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          setSlots(data);
         },
-        body: JSON.stringify({
-          originalAppointmentId,
-          appointmentData: {
-            ...formData,
-            services: selectedServices,
-            otherService: customService
-          }
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (data.success) {
-
-      alert(
-        "Free Follow-Up Booked Successfully"
+        (error) => {
+          console.error(error);
+        },
       );
 
-      return;
-    }
+      return () => unsubscribe();
+    }, []);
+  const checkEligibility =
+    async () => {
 
-  } catch (error) {
+      try {
 
-    console.error(error);
+        setCheckingEligibility(
+          true
+        );
 
-    alert("Booking Failed");
+        const response =
+          await fetch(
 
-    return;
+            "https://ekadantawellness-backend.onrender.com/api/followup/check-followup",
 
-  } finally {
+            {
 
-    setLoading(false);
+              method: "POST",
 
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  email:
+                    formData.email
+
+                })
+
+            }
+
+          );
+
+        const data = await response.json();
+
+console.log("FOLLOWUP RESPONSE:", data);
+
+setFollowupStatus(data.status);
+          
+  setFollowupStatus(data.status);
+        if (data.patientData) {
+    setFormData((prev) => ({
+      ...prev,
+
+      name:
+        data.patientData.name,
+
+      phone:
+        data.patientData.phone,
+
+      age:
+        data.patientData.age,
+
+      gender:
+        data.patientData.gender
+    }));
   }
-}
 
-  try {
+        if (
+          data.status ===
+          "free_followup"
+        ) {
 
-    setLoading(true);
+          setOriginalAppointmentId(
+            data.appointmentId
+          );
 
-    const packageAmounts = {
-  "Without Medication": 1499,
-  "With Medication": 2999,
-  "Follow-Up Without Medication": 1199,
-  "Follow-Up With Medication": 2499
-};
+      openPopup(
+    "free",
+    "🎉 Complimentary Follow-Up Available",
+    "We found an active consultation associated with this email address. You are eligible for 1 complimentary follow-up consultation."
+  );
 
-const appointmentData = {
-  ...formData,
-  services: selectedServices,
-  otherService: customService,
-  amount: packageAmounts[formData.packageType] || 0
-};
+        } else if (
+          data.status ===
+          "paid_followup"
+        ) {
 
-    const orderResponse =
-      await fetch(
+      openPopup(
+    "paid",
+    "Follow-Up Package Required",
+    "Your complimentary follow-up consultation has already been utilized. Please select a follow-up package below to continue."
+  );
 
-        "https://ekadantawellness-backend.onrender.com/api/payment/create-order",
+        } else {
 
-        {
+         openPopup(
+    "new",
+    "No Previous Consultation Found",
+    "We could not find any previous consultation associated with this email address. Please proceed with a new consultation booking."
+  );
 
-          method: "POST",
+  setFollowupStatus(null);
+  setOriginalAppointmentId("");
 
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-
-            packageType:
-              formData.packageType
-
-          })
+  setFormData((prev) => ({
+    ...prev,
+    appointmentType: "initial"
+  }));
 
         }
 
-      );
+      } catch (error) {
 
-    const orderData =
-      await orderResponse.json();
+        console.error(error);
 
+      } finally {
+
+        setCheckingEligibility(
+          false
+        );
+
+      }
+
+    };
+    const handleChange = (e) => {
+
+  const { name, value } = e.target;
+
+  if (name === "appointmentType") {
+
+    setFollowupStatus(null);
+    setOriginalAppointmentId("");
+
+  }
+
+  setFormData({
+    ...formData,
+    [name]: value
+  });
+
+};
+    const handleServiceSelect = (e) => {
+      const service = e.target.value;
+
+      if (service && !selectedServices.includes(service)) {
+        setSelectedServices([...selectedServices, service]);
+      }
+    };
+
+    const removeService = (service) => {
+      setSelectedServices(selectedServices.filter((item) => item !== service));
+    };
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
     if (
-      !orderData.success
-    ) {
+    formData.appointmentType === "followup" &&
+    !followupStatus
+  ) {
+    alert(
+      "Please check eligibility first."
+    );
+    return;
+  }
+    if (
+    formData.appointmentType === "followup" &&
+    followupStatus === "free_followup"
+  ) {
+    try {
 
-      throw new Error(
-        "Order Creation Failed"
+      setLoading(true);
+
+      const response = await fetch(
+        "https://ekadantawellness-backend.onrender.com/api/payment/book-free-followup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            originalAppointmentId,
+            appointmentData: {
+              ...formData,
+              services: selectedServices,
+              otherService: customService
+            }
+          })
+        }
       );
 
-    }
+      const data = await response.json();
+      
 
-    const options = {
+      if (data.success) {
 
-      key:
-        "rzp_test_T0oQrwW2TTRH5W",
+      alert(
+  "Free Follow-Up Booked Successfully"
+);
 
-      amount:
-        orderData.order.amount,
-
-      currency:
-        "INR",
-
-      name:
-        "Ekadantha Wellness",
-
-      description:
-        "Consultation Booking",
-
-      order_id:
-        orderData.order.id,
-
-      prefill: {
-
-        name:
-          formData.name,
-
-        email:
-          formData.email,
-
-        contact: String(formData.phone)
-
-      },
-      readonly: {
-  contact: false,
-  email: false
-},
-
-      theme: {
-
-        color:
-          "#2f6f5f"
-
-      },
-
-      handler:
-        async function (
-          response
-        ) {
-
-          try {
-
-            const verifyResponse =
-              await fetch(
-
-                "https://ekadantawellness-backend.onrender.com/api/payment/verify-payment",
-
-                {
-
-                  method:
-                    "POST",
-
-                  headers: {
-                    "Content-Type":
-                      "application/json"
-                  },
-
-                  body:
-                    JSON.stringify({
-
-                      razorpay_order_id:
-                        response.razorpay_order_id,
-
-                      razorpay_payment_id:
-                        response.razorpay_payment_id,
-
-                      razorpay_signature:
-                        response.razorpay_signature,
-
-                      appointmentData
-
-                    })
-
-                }
-
-              );
-
-            const verifyData =
-              await verifyResponse.json();
-
-            if (
-              verifyData.success
-            ) {
-
-              alert(
-                "Payment Successful. Appointment Confirmed."
-              );
-
-              setFormData({
+setFormData({
   appointmentType: "initial",
   packageType: "",
   name: "",
@@ -423,431 +313,719 @@ const appointmentData = {
   notes: ""
 });
 
-              setSelectedServices(
-                []
-              );
+setSelectedServices([]);
+setCustomService("");
+setFollowupStatus(null);
+setOriginalAppointmentId("");
+setShowPopup(false);
 
-              setCustomService(
-                ""
-              );
+        return;
+      }
 
-            } else {
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Booking Failed");
+
+      return;
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  }
+
+    try {
+
+      setLoading(true);
+
+      const packageAmounts = {
+    "Without Medication": 1499,
+    "With Medication": 2999,
+    "Follow-Up Without Medication": 1199,
+    "Follow-Up With Medication": 2499
+  };
+
+  const appointmentData = {
+    ...formData,
+    services: selectedServices,
+    otherService: customService,
+    amount: packageAmounts[formData.packageType] || 0
+  };
+
+      const orderResponse =
+        await fetch(
+
+          "https://ekadantawellness-backend.onrender.com/api/payment/create-order",
+
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              packageType:
+                formData.packageType
+
+            })
+
+          }
+
+        );
+
+      const orderData =
+        await orderResponse.json();
+
+      if (
+        !orderData.success
+      ) {
+
+        throw new Error(
+          "Order Creation Failed"
+        );
+
+      }
+
+      const options = {
+
+        key:
+          "rzp_test_T0oQrwW2TTRH5W",
+
+        amount:
+          orderData.order.amount,
+
+        currency:
+          "INR",
+
+        name:
+          "Ekadantha Wellness",
+
+        description:
+          "Consultation Booking",
+
+        order_id:
+          orderData.order.id,
+
+        prefill: {
+
+          name:
+            formData.name,
+
+          email:
+            formData.email,
+
+          contact: String(formData.phone)
+
+        },
+        readonly: {
+    contact: false,
+    email: false
+  },
+
+        theme: {
+
+          color:
+            "#2f6f5f"
+
+        },
+
+        handler:
+          async function (
+            response
+          ) {
+
+            try {
+
+              const verifyResponse =
+                await fetch(
+
+                  "https://ekadantawellness-backend.onrender.com/api/payment/verify-payment",
+
+                  {
+
+                    method:
+                      "POST",
+
+                    headers: {
+                      "Content-Type":
+                        "application/json"
+                    },
+
+                    body:
+                      JSON.stringify({
+
+                        razorpay_order_id:
+                          response.razorpay_order_id,
+
+                        razorpay_payment_id:
+                          response.razorpay_payment_id,
+
+                        razorpay_signature:
+                          response.razorpay_signature,
+
+                        appointmentData
+
+                      })
+
+                  }
+
+                );
+
+              const verifyData =
+                await verifyResponse.json();
+
+              if (
+                verifyData.success
+              ) {
+
+                alert(
+                  "Payment Successful. Appointment Confirmed."
+                );
+
+                setFormData({
+    appointmentType: "initial",
+    packageType: "",
+    name: "",
+    email: "",
+    phone: "",
+    age: "",
+    gender: "",
+    service: "",
+    address: "",
+    date: "",
+    slot: "",
+    notes: ""
+  });
+
+                setSelectedServices(
+                  []
+                );
+
+                setCustomService(
+                  ""
+                );
+                setFollowupStatus(null);
+setOriginalAppointmentId("");
+setShowPopup(false);
+
+              } else {
+
+                alert(
+                  "Payment Verification Failed"
+                );
+
+              }
+
+            } catch (
+              error
+            ) {
+
+              console.error(
+                error
+              );
 
               alert(
-                "Payment Verification Failed"
+                "Verification Failed"
               );
 
             }
 
-          } catch (
-            error
-          ) {
-
-            console.error(
-              error
-            );
-
-            alert(
-              "Verification Failed"
-            );
-
           }
 
-        }
+      };
+  console.log(
+    "Order Data:",
+    orderData
+  );
 
-    };
-console.log(
-  "Order Data:",
-  orderData
-);
+  console.log(
+    "Order:",
+    orderData.order
+  );
 
-console.log(
-  "Order:",
-  orderData.order
-);
+  console.log(
+    "Order ID:",
+    orderData.order?.id
+  );
 
-console.log(
-  "Order ID:",
-  orderData.order?.id
-);
+  console.log(
+    "Amount:",
+    orderData.order?.amount
+  );
+      const razorpay =
+        new window.Razorpay(
+          options
+        );
 
-console.log(
-  "Amount:",
-  orderData.order?.amount
-);
-    const razorpay =
-      new window.Razorpay(
-        options
+      razorpay.open();
+
+    } catch (error) {
+
+      console.error(
+        error
       );
 
-    razorpay.open();
+      alert(
+        error.message
+      );
 
-  } catch (error) {
+    } finally {
 
-    console.error(
-      error
-    );
+      setLoading(false);
 
-    alert(
-      error.message
-    );
+    }
 
-  } finally {
+  };
 
-    setLoading(false);
+    return (
+      <section className="book-appointment">
+        <div className="appointment-container">
+          <div className="appointment-header">
+            <p>ONLINE CONSULTATION</p>
 
-  }
+            <h1>Book Your Appointment</h1>
+          </div>
+          <div className="package-details-section">
+            <h2>Consultation Packages</h2>
 
-};
+            <div className="package-details-grid">
+              <div className="package-info-card">
+                <h3>Without Medication</h3>
 
-  return (
-    <section className="book-appointment">
-      <div className="appointment-container">
-        <div className="appointment-header">
-          <p>ONLINE CONSULTATION</p>
+                <div className="price">₹1499</div>
 
-          <h1>Book Your Appointment</h1>
-        </div>
-        <div className="package-details-section">
-          <h2>Consultation Packages</h2>
+                <ul>
+                  <li>✓ Initial Consultation (45–60 Minutes)</li>
 
-          <div className="package-details-grid">
-            <div className="package-info-card">
-              <h3>Without Medication</h3>
+                  <li>✓ Detailed Case Evaluation</li>
 
-              <div className="price">₹1499</div>
+                  <li>✓ Personalized Treatment Plan</li>
 
-              <ul>
-                <li>✓ Initial Consultation (45–60 Minutes)</li>
+                  <li>✓ 1 Complimentary Follow-Up Consultation</li>
+                  <li>✓ Reminder Email Sent After 15 Days</li>
+                </ul>
+              </div>
 
-                <li>✓ Detailed Case Evaluation</li>
+              <div className="package-info-card featured">
+                <h3>With Medication</h3>
 
-                <li>✓ Personalized Treatment Plan</li>
+                <div className="price">₹2999</div>
 
-                <li>✓ 1 Complimentary Follow-Up Consultation</li>
-                <li>✓ Reminder Email Sent After 15 Days</li>
-              </ul>
+                <ul>
+                  <li>✓ Initial Consultation (45–60 Minutes)</li>
+
+                  <li>✓ Detailed Case Evaluation</li>
+
+                  <li>✓ Personalized Treatment Plan</li>
+
+                  <li>✓ Homeopathic Medicines Included</li>
+
+                  <li>✓ 1 Follow-Up Consultation After 15 Days</li>
+
+                  <li>✓ Shipping Across India</li>
+                </ul>
+              </div>
             </div>
 
-            <div className="package-info-card featured">
-              <h3>With Medication</h3>
+            <div className="followup-note">
+              <h4>Follow-Up Packages</h4>
 
-              <div className="price">₹2999</div>
+              <p>Follow-up consultations are conducted every 15 days.</p>
 
-              <ul>
-                <li>✓ Initial Consultation (45–60 Minutes)</li>
+              <p>Follow-Up Package (Without Medication): ₹1199 per month</p>
 
-                <li>✓ Detailed Case Evaluation</li>
-
-                <li>✓ Personalized Treatment Plan</li>
-
-                <li>✓ Homeopathic Medicines Included</li>
-
-                <li>✓ 1 Follow-Up Consultation After 15 Days</li>
-
-                <li>✓ Shipping Across India</li>
-              </ul>
+              <p>Follow-Up Package (With Medication): ₹2499 per month</p>
             </div>
           </div>
 
-          <div className="followup-note">
-            <h4>Follow-Up Packages</h4>
+          <form onSubmit={handleSubmit}>
+          <div className="package-box">
 
-            <p>Follow-up consultations are conducted every 15 days.</p>
+    <h3>
+      Appointment Type
+    </h3>
 
-            <p>Follow-Up Package (Without Medication): ₹1199 per month</p>
+    <label>
+      <input
+        type="radio"
+        name="appointmentType"
+        value="initial"
+        checked={
+          formData.appointmentType ===
+          "initial"
+        }
+        onChange={handleChange}
+      />
+      New Consultation
+    </label>
 
-            <p>Follow-Up Package (With Medication): ₹2499 per month</p>
-          </div>
-        </div>
+    <label>
+      <input
+        type="radio"
+        name="appointmentType"
+        value="followup"
+        checked={
+          formData.appointmentType ===
+          "followup"
+        }
+        onChange={handleChange}
+      />
+      Follow-Up Consultation
+    </label>
 
-        <form onSubmit={handleSubmit}>
-         <div className="package-box">
+  </div>
+            {formData.appointmentType === "followup" && (
+    <div style={{ marginBottom: "20px" }}>
 
-  <h3>
-    Appointment Type
-  </h3>
+     <input
+  type="email"
+  name="email"
+  placeholder="Enter Email To Check Eligibility"
+  value={formData.email}
+  onChange={handleChange}
+  readOnly={!!followupStatus}
+  required
+/>
 
-  <label>
-    <input
-      type="radio"
-      name="appointmentType"
-      value="initial"
-      checked={
-        formData.appointmentType ===
-        "initial"
-      }
-      onChange={handleChange}
-    />
-    New Consultation
-  </label>
+      <button
+  type="button"
+  onClick={checkEligibility}
+  disabled={!!followupStatus}
+  style={{
+    marginLeft: "10px"
+  }}
+>
+  {checkingEligibility
+    ? "Verifying..."
+    : followupStatus
+    ? "✓ Eligibility Verified"
+    : "Verify Follow-Up Eligibility"}
+</button>
 
-  <label>
-    <input
-      type="radio"
-      name="appointmentType"
-      value="followup"
-      checked={
-        formData.appointmentType ===
-        "followup"
-      }
-      onChange={handleChange}
-    />
-    Follow-Up Consultation
-  </label>
+    </div>
+  )}
+  {formData.appointmentType === "initial" && (
+    <>
+      <h3>Select Package</h3>
 
-</div>
-           {formData.appointmentType === "followup" && (
-  <div style={{ marginBottom: "20px" }}>
+      <label>
+        <input
+          type="radio"
+          name="packageType"
+          value="Without Medication"
+          checked={
+            formData.packageType ===
+            "Without Medication"
+          }
+          onChange={handleChange}
+        />
+        Without Medication ₹1499
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          name="packageType"
+          value="With Medication"
+          checked={
+            formData.packageType ===
+            "With Medication"
+          }
+          onChange={handleChange}
+        />
+        With Medication ₹2999
+      </label>
+    </>
+  )}
+  {followupStatus === "paid_followup" && (
+    <>
+      <h3>Follow-Up Packages</h3>
+
+      <label>
+        <input
+          type="radio"
+          name="packageType"
+          value="Follow-Up Without Medication"
+          checked={
+            formData.packageType ===
+            "Follow-Up Without Medication"
+          }
+          onChange={handleChange}
+        />
+        Follow-Up Without Medication ₹1199
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          name="packageType"
+          value="Follow-Up With Medication"
+          checked={
+            formData.packageType ===
+            "Follow-Up With Medication"
+          }
+          onChange={handleChange}
+        />
+        Follow-Up With Medication ₹2499
+      </label>
+    </>
+  )}
+  {followupStatus === "free_followup" && (
+    <div
+      style={{
+        background: "#e8fff0",
+        padding: "15px",
+        marginBottom: "20px",
+        borderRadius: "8px"
+      }}
+    >
+      <div>
+    <h4>
+      ✅ Complimentary Follow-Up Confirmed
+    </h4>
+
+    <p>
+      Your patient details have been retrieved successfully.
+    </p>
+
+    <p>
+      Please select your preferred date and time to complete your booking.
+    </p>
+  </div>
+    </div>
+  )}
+            <div className="appointment-grid">
+              <div className="appointment-card">
+                <h3>Patient Details</h3>
+
+                <input
+    type="text"
+    name="name"
+    readOnly={
+      formData.appointmentType === "followup"
+    }
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+
+                {formData.appointmentType === "initial" && (
     <input
       type="email"
       name="email"
-      placeholder="Enter Email To Check Eligibility"
+      placeholder="Email"
       value={formData.email}
       onChange={handleChange}
+      required
     />
+  )}
 
-    <button
-      type="button"
-      onClick={checkEligibility}
-      style={{
-        marginLeft: "10px"
-      }}
-    >
-      {checkingEligibility
-        ? "Checking..."
-        : "Check Eligibility"}
-    </button>
-  </div>
-)}
-{formData.appointmentType === "initial" && (
-  <>
-    <h3>Select Package</h3>
-
-    <label>
-      <input
-        type="radio"
-        name="packageType"
-        value="Without Medication"
-        checked={
-          formData.packageType ===
-          "Without Medication"
-        }
-        onChange={handleChange}
-      />
-      Without Medication ₹1499
-    </label>
-
-    <label>
-      <input
-        type="radio"
-        name="packageType"
-        value="With Medication"
-        checked={
-          formData.packageType ===
-          "With Medication"
-        }
-        onChange={handleChange}
-      />
-      With Medication ₹2999
-    </label>
-  </>
-)}
-{followupStatus === "paid_followup" && (
-  <>
-    <h3>Follow-Up Packages</h3>
-
-    <label>
-      <input
-        type="radio"
-        name="packageType"
-        value="Follow-Up Without Medication"
-        checked={
-          formData.packageType ===
-          "Follow-Up Without Medication"
-        }
-        onChange={handleChange}
-      />
-      Follow-Up Without Medication ₹1199
-    </label>
-
-    <label>
-      <input
-        type="radio"
-        name="packageType"
-        value="Follow-Up With Medication"
-        checked={
-          formData.packageType ===
-          "Follow-Up With Medication"
-        }
-        onChange={handleChange}
-      />
-      Follow-Up With Medication ₹2499
-    </label>
-  </>
-)}
-{followupStatus === "free_followup" && (
-  <div
-    style={{
-      background: "#e8fff0",
-      padding: "15px",
-      marginBottom: "20px",
-      borderRadius: "8px"
-    }}
-  >
-    🎉 You are eligible for a FREE follow-up consultation.
-  </div>
-)}
-          <div className="appointment-grid">
-            <div className="appointment-card">
-              <h3>Patient Details</h3>
+                <input
+    type="tel"
+    name="phone"
+    readOnly={
+      formData.appointmentType === "followup"
+    }
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
 
               <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="number"
-                name="age"
-                placeholder="Age"
-                value={formData.age}
-                onChange={handleChange}
-                required
-              />
+    type="number"
+    name="age"
+    readOnly={
+      formData.appointmentType === "followup"
+    }
+                  placeholder="Age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  required
+                />
 
               <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Gender</option>
+    name="gender"
+    disabled={
+      formData.appointmentType === "followup"
+    }
+                  value={formData.gender}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Gender</option>
 
-                <option value="Male">Male</option>
+                  <option value="Male">Male</option>
 
-                <option value="Female">Female</option>
+                  <option value="Female">Female</option>
 
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div className="appointment-card">
-              <h3>Appointment Details</h3>
-
-              <label className="service-label">Select Services</label>
-
-              <select onChange={handleServiceSelect} defaultValue="">
-                <option value="">Select Service</option>
-
-                {services.map((item, index) => (
-                  <option key={index} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-
-              <div className="selected-services">
-                {selectedServices.map((service) => (
-                  <div key={service} className="service-tag">
-                    {service}
-
-                    <span onClick={() => removeService(service)}>✕</span>
-                  </div>
-                ))}
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
-              <input
-                type="text"
-                placeholder="Other Service (Optional)"
-                value={customService}
-                onChange={(e) => setCustomService(e.target.value)}
-              />
+              <div className="appointment-card">
+                <h3>Appointment Details</h3>
 
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                min={new Date().toISOString().split("T")[0]}
-                required
-              />
+                <label className="service-label">Select Services</label>
 
-              <select
-                name="slot"
-                value={formData.slot}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Slot</option>
+                <select onChange={handleServiceSelect} defaultValue="">
+                  <option value="">Select Service</option>
 
-                {slots
-                  .filter(
-                    (slot) =>
-                      slot.date === formData.date && slot.available === true,
-                  )
-                  .map((slot) => (
-                    <option key={slot.id} value={slot.time}>
-                      {slot.time}
+                  {services.map((item, index) => (
+                    <option key={index} value={item}>
+                      {item}
                     </option>
                   ))}
-              </select>
+                </select>
 
-              <textarea
-                rows="4"
-                name="address"
-                placeholder="Address"
-                value={formData.address}
-                onChange={handleChange}
-              />
+                <div className="selected-services">
+                  {selectedServices.map((service) => (
+                    <div key={service} className="service-tag">
+                      {service}
 
-              <textarea
-                rows="4"
-                name="notes"
-                placeholder="Additional Notes"
-                value={formData.notes}
-                onChange={handleChange}
-              />
+                      <span onClick={() => removeService(service)}>✕</span>
+                    </div>
+                  ))}
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Other Service (Optional)"
+                  value={customService}
+                  onChange={(e) => setCustomService(e.target.value)}
+                />
+
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  min={new Date().toISOString().split("T")[0]}
+                  required
+                />
+
+                <select
+                  name="slot"
+                  value={formData.slot}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Slot</option>
+
+                  {slots
+                    .filter(
+                      (slot) =>
+                        slot.date === formData.date && slot.available === true,
+                    )
+                    .map((slot) => (
+                      <option key={slot.id} value={slot.time}>
+                        {slot.time}
+                      </option>
+                    ))}
+                </select>
+
+                <textarea
+                  rows="4"
+                  name="address"
+                  placeholder="Address"
+                  value={formData.address}
+                  onChange={handleChange}
+                />
+
+                <textarea
+                  rows="4"
+                  name="notes"
+                  placeholder="Additional Notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-          </div>
 
-         <button
-  className="book-btn"
-  disabled={loading}
-  type="submit"
->
-  {loading
-    ? "Please Wait..."
-    : followupStatus === "free_followup"
-    ? "Book Free Follow-Up"
-    : "Proceed To Booking"}
-</button>
-        </form>
+          <button
+    className="book-btn"
+    disabled={loading}
+    type="submit"
+  >
+    {loading
+      ? "Please Wait..."
+      : followupStatus === "free_followup"
+      ? "Book Free Follow-Up"
+      : "Proceed To Booking"}
+  </button>
+          </form>
+        </div>
+        {showPopup && (
+    <div className="popup-overlay">
+      <div className="popup-modal">
+
+        <div className="popup-header">
+          <h2>{popupTitle}</h2>
+        </div>
+
+        <div className="popup-body">
+          <p>{popupMessage}</p>
+        </div>
+
+        <div className="popup-footer">
+
+          {popupType === "free" && (
+            <button
+              className="popup-btn primary"
+              onClick={() =>
+                setShowPopup(false)
+              }
+            >
+             Continue
+            </button>
+          )}
+
+          {popupType === "paid" && (
+            <button
+              className="popup-btn primary"
+              onClick={() =>
+                setShowPopup(false)
+              }
+            >
+              Select Package
+            </button>
+          )}
+
+          {popupType === "new" && (
+            <button
+              className="popup-btn primary"
+              onClick={() =>
+                setShowPopup(false)
+              }
+            >
+              Continue
+            </button>
+          )}
+
+          <button
+            className="popup-btn secondary"
+            onClick={() =>
+              setShowPopup(false)
+            }
+          >
+            Close
+          </button>
+
+        </div>
+
       </div>
-    </section>
-  );
-}
+    </div>
+  )}
+      </section>
+    );
+  }
 
-export default BookAppointment;
+  export default BookAppointment;
