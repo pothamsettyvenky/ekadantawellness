@@ -305,7 +305,25 @@ function BookAppointment() {
         }
 
     };
+console.log(
+  "Order Data:",
+  orderData
+);
 
+console.log(
+  "Order:",
+  orderData.order
+);
+
+console.log(
+  "Order ID:",
+  orderData.order?.id
+);
+
+console.log(
+  "Amount:",
+  orderData.order?.amount
+);
     const razorpay =
       new window.Razorpay(
         options

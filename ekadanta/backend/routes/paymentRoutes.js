@@ -71,7 +71,10 @@ router.post(
         "Order Created:",
         order.id
       );
-
+console.log(
+  "Order Created:",
+  order
+);
       res.json({
         success: true,
         order
