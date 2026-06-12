@@ -89,10 +89,7 @@ function BookAppointment() {
     setSelectedServices(selectedServices.filter((item) => item !== service));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
 
   e.preventDefault();
 
@@ -333,7 +330,6 @@ function BookAppointment() {
   }
 
 };
-  };
 
   return (
     <section className="book-appointment">
