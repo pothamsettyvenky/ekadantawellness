@@ -20,37 +20,53 @@ function Dashboard() {
 
   const loadDashboard = async () => {
 
-    try {
+  try {
 
-      const appointmentSnapshot =
-        await getDocs(collection(db, "appointments"));
+    const appointmentSnapshot =
+      await getDocs(
+        collection(db, "appointments")
+      );
 
-      const patientSnapshot =
-        await getDocs(collection(db, "patients"));
+    let totalRevenue = 0;
+    let totalPatients = 0;
 
-      let totalRevenue = 0;
+    appointmentSnapshot.docs.forEach(doc => {
 
-      appointmentSnapshot.docs.forEach(doc => {
+      const data = doc.data();
 
-        const data = doc.data();
+      if (
+        data.paymentStatus === "paid"
+      ) {
 
-        if (data.paymentStatus === "Paid") {
-          totalRevenue += Number(data.amount || 0);
-        }
+        totalRevenue += Number(
+          data.amount || 0
+        );
 
-      });
+        totalPatients++;
 
-      setAppointments(appointmentSnapshot.size);
-      setPatients(patientSnapshot.size);
-      setRevenue(totalRevenue);
+      }
 
-    } catch (error) {
+    });
 
-      console.error(error);
+    setAppointments(
+      appointmentSnapshot.size
+    );
 
-    }
+    setPatients(
+      totalPatients
+    );
 
-  };
+    setRevenue(
+      totalRevenue
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+};
 
   return (
 <AdminLayout>

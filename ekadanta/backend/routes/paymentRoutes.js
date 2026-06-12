@@ -4,8 +4,10 @@ const crypto = require("crypto");
 const razorpay =
   require("../config/razorpay");
 
-const { db } =
-  require("../firebaseAdmin");
+const {
+  admin,
+  db
+} = require("../firebaseAdmin");
 
 const router =
   express.Router();
@@ -139,7 +141,7 @@ router.post(
             razorpay_payment_id,
 
           createdAt:
-            new Date()
+  admin.firestore.FieldValue.serverTimestamp()
 
         });
 

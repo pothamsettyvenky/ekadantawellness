@@ -3,19 +3,16 @@ import "./BookAppointment.css";
 
 import {
   collection,
-  addDoc,
-  Timestamp,
   onSnapshot
 } from "firebase/firestore";
 
 import { db } from "../../firebase/config";
 
 function BookAppointment() {
-
   const [loading, setLoading] = useState(false);
   const [selectedServices, setSelectedServices] = useState([]);
 
-const [customService, setCustomService] = useState("");
+  const [customService, setCustomService] = useState("");
 
   const [slots, setSlots] = useState([]);
 
@@ -30,7 +27,7 @@ const [customService, setCustomService] = useState("");
     address: "",
     date: "",
     slot: "",
-    notes: ""
+    notes: "",
   });
 
   const services = [
@@ -52,295 +49,200 @@ const [customService, setCustomService] = useState("");
     "Migraine",
     "Autoimmune Disorders",
     "Warts",
-    "General Consultation"
+    "General Consultation",
   ];
 
- useEffect(() => {
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "slots"),
+      (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-  const unsubscribe = onSnapshot(
-    collection(db, "slots"),
-    (snapshot) => {
+        setSlots(data);
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
 
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-
-      setSlots(data);
-
-    },
-    (error) => {
-      console.error(error);
-    }
-  );
-
-  return () => unsubscribe();
-
-}, []);
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-
   };
   const handleServiceSelect = (e) => {
+    const service = e.target.value;
 
-  const service = e.target.value;
+    if (service && !selectedServices.includes(service)) {
+      setSelectedServices([...selectedServices, service]);
+    }
+  };
 
-  if (
-    service &&
-    !selectedServices.includes(service)
-  ) {
-
-    setSelectedServices([
-      ...selectedServices,
-      service
-    ]);
-
-  }
-
-};
-
-const removeService = (service) => {
-
-  setSelectedServices(
-    selectedServices.filter(
-      item => item !== service
-    )
-  );
-
-};
+  const removeService = (service) => {
+    setSelectedServices(selectedServices.filter((item) => item !== service));
+  };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
-
       setLoading(true);
 
-      const amount =
-        formData.packageType === "With Medication"
-          ? 2999
-          : 1499;
+      const amount = formData.packageType === "With Medication" ? 2999 : 1499;
 
-      const appointmentRef = await await addDoc(
-  collection(db, "appointments"),
-  {
-    ...formData,
+      // const appointmentRef = await addDoc(collection(db, "appointments"), {
+      //   ...formData,
 
-    services: selectedServices,
+      //   services: selectedServices,
 
-    otherService: customService,
+      //   otherService: customService,
 
-    amount,
+      //   amount,
 
-    paymentStatus: "Pending",
+      //   appointmentType: "initial",
+      //   consultationType: formData.packageType,
 
-    status: "Waiting For Payment",
+      //   paymentStatus: "pending",
 
-    createdAt: Timestamp.now()
-  }
-);
-    
+      //   status: "waiting_for_payment",
 
-      await addDoc(
-        collection(db, "patients"),
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          age: formData.age,
-          gender: formData.gender,
-          address: formData.address,
-          createdAt: Timestamp.now()
-        }
-      );
+      //   followUpEligible: false,
 
-      console.log(
-        "Appointment Created:",
-        appointmentRef.id
-      );
+      //   freeFollowUpUsed: false,
 
-      alert("Appointment Saved Successfully");
+      //   reminderSent: false,
+
+      //   createdAt: Timestamp.now(),
+      // });
+
+     
+
+      // alert("Appointment Saved Successfully");
 
       setFormData({
-  packageType: "",
-  name: "",
-  email: "",
-  phone: "",
-  age: "",
-  gender: "",
-  address: "",
-  date: "",
-  slot: "",
-  notes: ""
-});
+        packageType: "",
+        name: "",
+        email: "",
+        phone: "",
+        age: "",
+        gender: "",
+        address: "",
+        date: "",
+        slot: "",
+        notes: "",
+      });
 
-setSelectedServices([]);
+      setSelectedServices([]);
 
-setCustomService("");
-
+      setCustomService("");
     } catch (error) {
-
       console.error(error);
 
       alert("Something went wrong");
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   return (
-
     <section className="book-appointment">
-
       <div className="appointment-container">
-
         <div className="appointment-header">
-
           <p>ONLINE CONSULTATION</p>
 
           <h1>Book Your Appointment</h1>
-
         </div>
         <div className="package-details-section">
+          <h2>Consultation Packages</h2>
 
-  <h2>Consultation Packages</h2>
+          <div className="package-details-grid">
+            <div className="package-info-card">
+              <h3>Without Medication</h3>
 
-  <div className="package-details-grid">
+              <div className="price">₹1499</div>
 
-    <div className="package-info-card">
+              <ul>
+                <li>✓ Initial Consultation (45–60 Minutes)</li>
 
-      <h3>Without Medication</h3>
+                <li>✓ Detailed Case Evaluation</li>
 
-      <div className="price">
-        ₹1499
-      </div>
+                <li>✓ Personalized Treatment Plan</li>
 
-      <ul>
+                <li>✓ 1 Complimentary Follow-Up Consultation</li>
+                <li>✓ Reminder Email Sent After 15 Days</li>
+              </ul>
+            </div>
 
-        <li>✓ Initial Consultation (45–60 Minutes)</li>
+            <div className="package-info-card featured">
+              <h3>With Medication</h3>
 
-        <li>✓ Detailed Case Evaluation</li>
+              <div className="price">₹2999</div>
 
-        <li>✓ Personalized Treatment Plan</li>
+              <ul>
+                <li>✓ Initial Consultation (45–60 Minutes)</li>
 
-        <li>✓ 1 Follow-Up Consultation After 15 Days</li>
+                <li>✓ Detailed Case Evaluation</li>
 
-      </ul>
+                <li>✓ Personalized Treatment Plan</li>
 
-    </div>
+                <li>✓ Homeopathic Medicines Included</li>
 
-    <div className="package-info-card featured">
+                <li>✓ 1 Follow-Up Consultation After 15 Days</li>
 
-      <h3>With Medication</h3>
+                <li>✓ Shipping Across India</li>
+              </ul>
+            </div>
+          </div>
 
-      <div className="price">
-        ₹2999
-      </div>
+          <div className="followup-note">
+            <h4>Follow-Up Packages</h4>
 
-      <ul>
+            <p>Follow-up consultations are conducted every 15 days.</p>
 
-        <li>✓ Initial Consultation (45–60 Minutes)</li>
+            <p>Follow-Up Package (Without Medication): ₹1199 per month</p>
 
-        <li>✓ Detailed Case Evaluation</li>
-
-        <li>✓ Personalized Treatment Plan</li>
-
-        <li>✓ Homeopathic Medicines Included</li>
-
-        <li>✓ 1 Follow-Up Consultation After 15 Days</li>
-
-        <li>✓ Shipping Across India</li>
-
-      </ul>
-
-    </div>
-
-  </div>
-
-  <div className="followup-note">
-
-    <h4>
-      Follow-Up Packages
-    </h4>
-
-    <p>
-      Follow-up consultations are conducted every 15 days.
-    </p>
-
-    <p>
-      Follow-Up Package (Without Medication):
-      ₹1199 per month
-    </p>
-
-    <p>
-      Follow-Up Package (With Medication):
-      ₹2499 per month
-    </p>
-
-  </div>
-
-</div>
+            <p>Follow-Up Package (With Medication): ₹2499 per month</p>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit}>
-
           <div className="package-box">
-
             <h3>Select Package</h3>
 
             <label>
-
               <input
                 type="radio"
                 name="packageType"
                 value="Without Medication"
-                checked={
-                  formData.packageType ===
-                  "Without Medication"
-                }
+                checked={formData.packageType === "Without Medication"}
                 onChange={handleChange}
                 required
               />
-
-               Without Medication ₹1499
-(1 Consultation + 1 Follow-Up)
-
+              Without Medication ₹1499 (1 Consultation + 1 Follow-Up)
             </label>
 
             <label>
-
               <input
                 type="radio"
                 name="packageType"
                 value="With Medication"
-                checked={
-                  formData.packageType ===
-                  "With Medication"
-                }
+                checked={formData.packageType === "With Medication"}
                 onChange={handleChange}
                 required
               />
-With Medication ₹2999
-(1 Consultation + 1 Follow-Up + Medicines)
-            
-
+              With Medication ₹2999 (1 Consultation + 1 Follow-Up + Medicines)
             </label>
-
           </div>
 
           <div className="appointment-grid">
-
             <div className="appointment-card">
-
               <h3>Patient Details</h3>
 
               <input
@@ -385,130 +287,76 @@ With Medication ₹2999
                 onChange={handleChange}
                 required
               >
-                <option value="">
-                  Select Gender
-                </option>
+                <option value="">Select Gender</option>
 
-                <option value="Male">
-                  Male
-                </option>
+                <option value="Male">Male</option>
 
-                <option value="Female">
-                  Female
-                </option>
+                <option value="Female">Female</option>
 
-                <option value="Other">
-                  Other
-                </option>
-
+                <option value="Other">Other</option>
               </select>
-
             </div>
 
             <div className="appointment-card">
-
               <h3>Appointment Details</h3>
 
-             <label className="service-label">
-  Select Services
-</label>
+              <label className="service-label">Select Services</label>
 
-<select
-  onChange={handleServiceSelect}
-  defaultValue=""
->
+              <select onChange={handleServiceSelect} defaultValue="">
+                <option value="">Select Service</option>
 
-  <option value="">
-    Select Service
-  </option>
+                {services.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
 
-  {services.map((item, index) => (
+              <div className="selected-services">
+                {selectedServices.map((service) => (
+                  <div key={service} className="service-tag">
+                    {service}
 
-    <option
-      key={index}
-      value={item}
-    >
-      {item}
-    </option>
+                    <span onClick={() => removeService(service)}>✕</span>
+                  </div>
+                ))}
+              </div>
 
-  ))}
+              <input
+                type="text"
+                placeholder="Other Service (Optional)"
+                value={customService}
+                onChange={(e) => setCustomService(e.target.value)}
+              />
 
-</select>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                min={new Date().toISOString().split("T")[0]}
+                required
+              />
 
-<div className="selected-services">
+              <select
+                name="slot"
+                value={formData.slot}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Slot</option>
 
-  {selectedServices.map((service) => (
-
-    <div
-      key={service}
-      className="service-tag"
-    >
-
-      {service}
-
-      <span
-        onClick={() =>
-          removeService(service)
-        }
-      >
-        ✕
-      </span>
-
-    </div>
-
-  ))}
-
-</div>
-
-<input
-  type="text"
-  placeholder="Other Service (Optional)"
-  value={customService}
-  onChange={(e) =>
-    setCustomService(
-      e.target.value
-    )
-  }
-/>
-
-             <input
-  type="date"
-  name="date"
-  value={formData.date}
-  onChange={handleChange}
-  min={new Date().toISOString().split("T")[0]}
-  required
-/>
-
-             <select
-  name="slot"
-  value={formData.slot}
-  onChange={handleChange}
-  required
->
-
-  <option value="">
-    Select Slot
-  </option>
-
-  {slots
-    .filter(
-      slot =>
-        slot.date === formData.date &&
-        slot.available === true
-    )
-    .map(slot => (
-
-      <option
-        key={slot.id}
-        value={slot.time}
-      >
-        {slot.time}
-      </option>
-
-    ))}
-
-</select>
+                {slots
+                  .filter(
+                    (slot) =>
+                      slot.date === formData.date && slot.available === true,
+                  )
+                  .map((slot) => (
+                    <option key={slot.id} value={slot.time}>
+                      {slot.time}
+                    </option>
+                  ))}
+              </select>
 
               <textarea
                 rows="4"
@@ -525,31 +373,16 @@ With Medication ₹2999
                 value={formData.notes}
                 onChange={handleChange}
               />
-
             </div>
-
           </div>
 
-          <button
-            className="book-btn"
-            disabled={loading}
-            type="submit"
-          >
-            {
-              loading
-                ? "Please Wait..."
-                : "Proceed To Booking"
-            }
+          <button className="book-btn" disabled={loading} type="submit">
+            {loading ? "Please Wait..." : "Proceed To Booking"}
           </button>
-
         </form>
-
       </div>
-
     </section>
-
   );
-
 }
 
 export default BookAppointment;
