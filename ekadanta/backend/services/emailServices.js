@@ -1,76 +1,173 @@
-const { Resend } =
-  require("resend");
+const { Resend } = require("resend");
 
-const resend =
-  new Resend(
-    process.env.RESEND_API_KEY
-  );
+const resend = new Resend(
+  process.env.RESEND_API_KEY
+);
 
-const sendReminderEmail =
-  async (
-    patientEmail,
-    patientName
-  ) => {
+const sendReminderEmail = async (
+  patientEmail,
+  patientName
+) => {
 
-    const response =
-      await resend.emails.send({
+  const response =
+    await resend.emails.send({
 
-        from:
-          "Ekadantha Wellness <onboarding@resend.dev>",
+      from:
+        "Ekadantha Wellness <onboarding@resend.dev>",
 
-        to:
-          "ekadanthawellness@gmail.com",
+      to:
+        patientEmail,
 
-        subject:
-          `15 Day Follow Up Reminder - ${patientName}`,
+      subject:
+        "15 Day Follow Up Reminder",
 
-        html: `
+      html: `
+        <h2>Hello ${patientName}</h2>
 
-          <h2>
-            Hello ${patientName}
-          </h2>
+        <p>
+          It has been 15 days since your consultation.
+        </p>
 
-          <p>
-            It has been 15 days since your consultation.
-          </p>
+        <p>
+          Please schedule your follow-up appointment.
+        </p>
 
-          <p>
-            We would love to support your wellness journey.
-          </p>
+        <p>
+          Ekadantha Wellness
+        </p>
+      `
+    });
 
-          <p>
-            Please book your follow up appointment.
-          </p>
+  return response;
+};
 
-          <br/>
+const sendConfirmationEmail = async (
+  patientEmail,
+  patientName,
+  packageType,
+  amount,
+  paymentId
+) => {
 
-          <p>
-            Patient Email:
-            ${patientEmail}
-          </p>
+  const response =
+    await resend.emails.send({
 
-          <p>
-            Ekadantha Homoeopathy Clinic
-          </p>
+      from:
+        "Ekadantha Wellness <onboarding@resend.dev>",
 
-        `
+      to:
+        patientEmail,
 
-      });
+      subject:
+        "Appointment Booking Confirmation",
 
-    if (
-      response.error
-    ) {
+      html: `
+        <h2>Hello ${patientName}</h2>
 
-      throw new Error(
-        response.error.message
-      );
+        <p>
+          Your appointment has been booked successfully.
+        </p>
 
-    }
+        <p>
+          <b>Package:</b>
+          ${packageType}
+        </p>
 
-    return response;
+        <p>
+          <b>Amount Paid:</b>
+          ₹${amount}
+        </p>
 
-  };
+        <p>
+          <b>Payment ID:</b>
+          ${paymentId}
+        </p>
+
+        <p>
+          You are eligible for one complimentary follow-up consultation within 15 days.
+        </p>
+
+        <br/>
+
+        <p>
+          Thank you for choosing Ekadantha Wellness.
+        </p>
+      `
+    });
+
+  return response;
+};
+
+const sendInvoiceEmail = async (
+  patientEmail,
+  patientName,
+  packageType,
+  amount,
+  paymentId
+) => {
+
+  const invoiceNumber =
+    "EKW-" +
+    Date.now();
+
+  const response =
+    await resend.emails.send({
+
+      from:
+        "Ekadantha Wellness <onboarding@resend.dev>",
+
+      to:
+        patientEmail,
+
+      subject:
+        `Invoice ${invoiceNumber}`,
+
+      html: `
+        <h2>Payment Invoice</h2>
+
+        <p>
+          <b>Invoice Number:</b>
+          ${invoiceNumber}
+        </p>
+
+        <p>
+          <b>Patient:</b>
+          ${patientName}
+        </p>
+
+        <p>
+          <b>Package:</b>
+          ${packageType}
+        </p>
+
+        <p>
+          <b>Amount:</b>
+          ₹${amount}
+        </p>
+
+        <p>
+          <b>Payment ID:</b>
+          ${paymentId}
+        </p>
+
+        <p>
+          <b>Status:</b>
+          Paid
+        </p>
+
+        <br/>
+
+        <p>
+          Ekadantha Wellness
+        </p>
+      `
+    });
+
+  return response;
+};
 
 module.exports = {
-  sendReminderEmail
+  sendReminderEmail,
+  sendConfirmationEmail,
+  sendInvoiceEmail
 };

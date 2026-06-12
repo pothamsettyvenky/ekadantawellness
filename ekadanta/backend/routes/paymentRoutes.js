@@ -1,5 +1,9 @@
 const express = require("express");
 const crypto = require("crypto");
+const {
+  sendConfirmationEmail,
+  sendInvoiceEmail
+} = require("../services/emailServices");
 
 const razorpay =
   require("../config/razorpay");
@@ -184,6 +188,36 @@ router.post(
   admin.firestore.FieldValue.serverTimestamp()
 
         });
+      console.log(
+  "Appointment Saved:",
+  appointmentData.email
+);
+
+await sendConfirmationEmail(
+  appointmentData.email,
+  appointmentData.name,
+  appointmentData.packageType,
+  appointmentData.amount,
+  razorpay_payment_id
+);
+
+console.log(
+  "Confirmation Email Sent:",
+  appointmentData.email
+);
+
+await sendInvoiceEmail(
+  appointmentData.email,
+  appointmentData.name,
+  appointmentData.packageType,
+  appointmentData.amount,
+  razorpay_payment_id
+);
+
+console.log(
+  "Invoice Email Sent:",
+  appointmentData.email
+);
 
       res.json({
         success: true,

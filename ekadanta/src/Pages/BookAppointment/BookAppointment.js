@@ -173,10 +173,13 @@ function BookAppointment() {
         email:
           formData.email,
 
-        contact:
-          formData.phone
+        contact: String(formData.phone)
 
       },
+      readonly: {
+  contact: false,
+  email: false
+},
 
       theme: {
 
