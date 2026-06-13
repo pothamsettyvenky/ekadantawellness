@@ -13,7 +13,7 @@ const sendReminderEmail = async (
     await resend.emails.send({
 
       from:
-        "Ekadantha Wellness <onboarding@resend.dev>",
+        "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
       to:
         patientEmail,
@@ -48,7 +48,7 @@ const sendDoctorNotification = async (
   return resend.emails.send({
 
     from:
-      "Ekadantha Wellness <onboarding@resend.dev>",
+      "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
     to:
       "ekadantawellness@gmail.com",
@@ -89,7 +89,7 @@ const sendConfirmationEmail = async (
     await resend.emails.send({
 
       from:
-        "Ekadantha Wellness <onboarding@resend.dev>",
+        "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
       to:
         patientEmail,
@@ -150,7 +150,7 @@ const sendInvoiceEmail = async (
     await resend.emails.send({
 
       from:
-        "Ekadantha Wellness <onboarding@resend.dev>",
+        "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
       to:
         patientEmail,
