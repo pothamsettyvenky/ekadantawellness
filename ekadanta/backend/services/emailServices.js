@@ -51,7 +51,7 @@ const sendDoctorNotification = async (
       "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
     to:
-      "ekadantawellness@gmail.com",
+      "ekadanthaawellness@gmail.com",
 
     subject:
       "New Appointment Booked",
