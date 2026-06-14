@@ -156,53 +156,43 @@ router.post(
 
       }
 
-      await db
-        .collection(
-          "appointments"
-        )
-        .add({
+     const docRef = await db
+  .collection("appointments")
+  .add({
 
-          ...appointmentData,
+    ...appointmentData,
 
-         appointmentType:
-  appointmentData.appointmentType,
+    appointmentType:
+      appointmentData.appointmentType,
 
-          paymentStatus:
-            "paid",
+    paymentStatus:
+      "paid",
 
-          status:
-            "confirmed",
+    status:
+      "confirmed",
 
-          followUpEligible:
-            true,
+    followUpEligible:
+      true,
 
-          freeFollowUpUsed:
-            false,
+    freeFollowUpUsed:
+      false,
 
-          reminderSent:
-            false,
+    reminderSent:
+      false,
 
-          razorpayOrderId:
-            razorpay_order_id,
+    razorpayOrderId:
+      razorpay_order_id,
 
-          razorpayPaymentId:
-            razorpay_payment_id,
+    razorpayPaymentId:
+      razorpay_payment_id,
 
-          createdAt:
-  admin.firestore.FieldValue.serverTimestamp()
+    createdAt:
+      admin.firestore.FieldValue.serverTimestamp()
 
-        });
-        await sendConfirmationEmail(
-  appointmentData.email,
-  appointmentData.name,
-  "Free Follow-Up",
-  0,
-  "FREE-FOLLOWUP"
-);
-      console.log(
-  "Appointment Saved:",
-  appointmentData.email
-);
+  });
+
+const bookingId = docRef.id;
+      
 
 try {
   await sendConfirmationEmail(
@@ -210,7 +200,8 @@ try {
     appointmentData.name,
     appointmentData.packageType,
     appointmentData.amount,
-    razorpay_payment_id
+    razorpay_payment_id,
+    bookingId
   );
 
   console.log("Confirmation email sent");
@@ -224,7 +215,8 @@ try {
     appointmentData.name,
     appointmentData.packageType,
     appointmentData.amount,
-    razorpay_payment_id
+    razorpay_payment_id,
+    bookingId
   );
 
   console.log("Invoice email sent");
@@ -235,7 +227,7 @@ try {
 
   await sendDoctorNotification(
     appointmentData,
-    razorpay_payment_id
+    bookingId
   );
 
   console.log(
@@ -279,30 +271,47 @@ router.post(
         appointmentData
       } = req.body;
 
-      await db
-        .collection("appointments")
-        .add({
+     const docRef = await db
+  .collection("appointments")
+  .add({
 
-          ...appointmentData,
+    ...appointmentData,
 
-          parentAppointmentId:
-            originalAppointmentId,
+    parentAppointmentId:
+      originalAppointmentId,
 
-          appointmentType:
-            "followup",
+    appointmentType:
+      "followup",
 
-          paymentStatus:
-            "free",
+    paymentStatus:
+      "free",
 
-          amount: 0,
+    amount: 0,
 
-          status:
-            "confirmed",
+    status:
+      "confirmed",
 
-          createdAt:
-            admin.firestore.FieldValue.serverTimestamp()
+    createdAt:
+      admin.firestore.FieldValue.serverTimestamp()
 
-        });
+  });
+
+const bookingId = docRef.id;
+await sendConfirmationEmail(
+  appointmentData.email,
+  appointmentData.name,
+  "Free Follow-Up",
+  0,
+  bookingId
+);
+
+await sendDoctorNotification(
+  {
+    ...appointmentData,
+    packageType: "Free Follow-Up"
+  },
+  bookingId
+);
 
       await db
         .collection("appointments")

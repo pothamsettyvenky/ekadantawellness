@@ -42,7 +42,7 @@ const sendReminderEmail = async (
 };
 const sendDoctorNotification = async (
   appointmentData,
-  paymentId
+  bookingId
 ) => {
 
   return resend.emails.send({
@@ -51,7 +51,7 @@ const sendDoctorNotification = async (
       "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
     to:
-      "ekadanthaawellness@gmail.com",
+      "ekadanthawellness@gmail.com",
 
     subject:
       "New Appointment Booked",
@@ -71,7 +71,7 @@ const sendDoctorNotification = async (
 
       <p><b>Package:</b> ${appointmentData.packageType}</p>
 
-      <p><b>Payment ID:</b> ${paymentId}</p>
+      <p><b>Booking ID:</b> ${bookingId}</p>
     `
   });
 
@@ -82,7 +82,8 @@ const sendConfirmationEmail = async (
   patientName,
   packageType,
   amount,
-  paymentId
+  paymentId,
+  bookingId
 ) => {
 
   const response =
@@ -118,6 +119,10 @@ const sendConfirmationEmail = async (
           <b>Payment ID:</b>
           ${paymentId}
         </p>
+         <p>
+          <b>Payment ID:</b>
+          ${bookingId}
+        </p>
 
         <p>
           You are eligible for one complimentary follow-up consultation within 15 days.
@@ -139,7 +144,8 @@ const sendInvoiceEmail = async (
   patientName,
   packageType,
   amount,
-  paymentId
+  paymentId,
+  bookingId
 ) => {
 
   const invoiceNumber =
@@ -184,6 +190,10 @@ const sendInvoiceEmail = async (
         <p>
           <b>Payment ID:</b>
           ${paymentId}
+        </p>
+        <p>
+          <b>Payment ID:</b>
+          ${bookingId}
         </p>
 
         <p>
