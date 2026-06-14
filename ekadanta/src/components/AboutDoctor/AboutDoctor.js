@@ -49,7 +49,7 @@ function AboutDoctor() {
 
           {/* Button */}
 
-          <Link to="/about/dr-priya">
+          <Link to="/about/doctor">
             <button className="doctor-btn">More Info</button>
           </Link>
         </div>

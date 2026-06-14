@@ -1,29 +1,16 @@
 const { Resend } = require("resend");
-const {
-  generateInvoicePDF
-} = require("./pdfService");
-const resend = new Resend(
-  process.env.RESEND_API_KEY
-);
+const { generateInvoicePDF } = require("./pdfService");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const sendReminderEmail = async (
-  patientEmail,
-  patientName
-) => {
+const sendReminderEmail = async (patientEmail, patientName) => {
+  const response = await resend.emails.send({
+    from: "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
-  const response =
-    await resend.emails.send({
+    to: patientEmail,
 
-      from:
-        "Ekadantha Wellness <appointments@ekadanthawellness.com>",
+    subject: "15 Day Follow Up Reminder",
 
-      to:
-        patientEmail,
-
-      subject:
-        "15 Day Follow Up Reminder",
-
-      html: `
+    html: `
         <h2>Hello ${patientName}</h2>
 
         <p>
@@ -37,26 +24,18 @@ const sendReminderEmail = async (
         <p>
           Ekadantha Wellness
         </p>
-      `
-    });
+      `,
+  });
 
   return response;
 };
-const sendDoctorNotification = async (
-  appointmentData,
-  bookingId
-) => {
-
+const sendDoctorNotification = async (appointmentData, bookingId) => {
   return resend.emails.send({
+    from: "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
-    from:
-      "Ekadantha Wellness <appointments@ekadanthawellness.com>",
+    to: "ekadanthawellness@gmail.com",
 
-    to:
-      "ekadanthawellness@gmail.com",
-
-    subject:
-      "New Appointment Booked",
+    subject: "New Appointment Booked",
 
     html: `
       <h2>New Appointment</h2>
@@ -69,14 +48,13 @@ const sendDoctorNotification = async (
 
       <p><b>Date:</b> ${appointmentData.date}</p>
 
-      <p><b>Time:</b> ${appointmentData.slot}</p>
+      <p><b>Time:</b> ${appointmentData.slotTime}</p>
 
       <p><b>Package:</b> ${appointmentData.packageType}</p>
 
       <p><b>Booking ID:</b> ${bookingId}</p>
-    `
+    `,
   });
-
 };
 
 const sendConfirmationEmail = async (
@@ -85,22 +63,16 @@ const sendConfirmationEmail = async (
   packageType,
   amount,
   paymentId,
-  bookingId
+  bookingId,
 ) => {
+  const response = await resend.emails.send({
+    from: "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
-  const response =
-    await resend.emails.send({
+    to: patientEmail,
 
-      from:
-        "Ekadantha Wellness <appointments@ekadanthawellness.com>",
+    subject: "Appointment Booking Confirmation",
 
-      to:
-        patientEmail,
-
-      subject:
-        "Appointment Booking Confirmation",
-
-      html: `
+    html: `
         <h2>Hello ${patientName}</h2>
 
         <p>
@@ -135,38 +107,25 @@ const sendConfirmationEmail = async (
         <p>
           Thank you for choosing Ekadantha Wellness.
         </p>
-      `
-    });
-console.log("Confirmation Email Response:", response);
+      `,
+  });
+  console.log("Confirmation Email Response:", response);
   return response;
 };
 
-const sendInvoiceEmail = async (
-  appointmentData,
-  paymentId,
-  bookingId
-) => {
-
-  const invoiceNumber =
-    "EKW-" +
-    Date.now();
-const pdfBuffer =
-  await generateInvoicePDF(
+const sendInvoiceEmail = async (appointmentData, paymentId, bookingId) => {
+  const invoiceNumber = "EKW-" + Date.now();
+  const pdfBuffer = await generateInvoicePDF(
     appointmentData,
     paymentId,
-    bookingId
+    bookingId,
   );
-  const response =
-  await resend.emails.send({
+  const response = await resend.emails.send({
+    from: "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
-    from:
-      "Ekadantha Wellness <appointments@ekadanthawellness.com>",
+    to: appointmentData.email,
 
-    to:
-      appointmentData.email,
-
-    subject:
-      `Invoice ${invoiceNumber}`,
+    subject: `Invoice ${invoiceNumber}`,
 
     html: `
       <h2>Appointment Confirmed</h2>
@@ -178,15 +137,11 @@ const pdfBuffer =
 
     attachments: [
       {
-        filename:
-          `${invoiceNumber}.pdf`,
+        filename: `${invoiceNumber}.pdf`,
 
-        content:
-          pdfBuffer.toString(
-            "base64"
-          )
-      }
-    ]
+        content: pdfBuffer.toString("base64"),
+      },
+    ],
   });
 
   return response;
@@ -196,5 +151,5 @@ module.exports = {
   sendReminderEmail,
   sendConfirmationEmail,
   sendInvoiceEmail,
-  sendDoctorNotification
+  sendDoctorNotification,
 };

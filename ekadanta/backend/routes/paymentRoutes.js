@@ -155,6 +155,27 @@ router.post(
           });
 
       }
+      const slotDoc = await db
+  .collection("slots")
+  .doc(appointmentData.slot)
+  .get();
+
+if (!slotDoc.exists) {
+  return res.status(400).json({
+    success: false,
+    message: "Slot not found"
+  });
+}
+
+if (
+  slotDoc.data().available === false
+) {
+  return res.status(400).json({
+    success: false,
+    message:
+      "This slot has already been booked."
+  });
+}
 
      const docRef = await db
   .collection("appointments")
@@ -192,7 +213,27 @@ router.post(
   });
 
 const bookingId = docRef.id;
-      
+console.log("Appointment Data:", appointmentData);
+
+console.log(
+  "Slot ID received:",
+  appointmentData.slot
+);
+
+console.log(
+  "Slot Time received:",
+  appointmentData.slotTime
+);
+  await db
+  .collection("slots")
+  .doc(appointmentData.slot)
+  .update({
+    available: false
+  });
+  console.log(
+  "Selected Slot:",
+  appointmentData.slot
+);    
 
 try {
   await sendConfirmationEmail(
@@ -269,6 +310,7 @@ router.post(
       } = req.body;
 
      const docRef = await db
+     
   .collection("appointments")
   .add({
 
@@ -292,8 +334,31 @@ router.post(
       admin.firestore.FieldValue.serverTimestamp()
 
   });
+const slotDoc = await db
+  .collection("slots")
+  .doc(appointmentData.slot)
+  .get();
 
+if (!slotDoc.exists) {
+  return res.status(400).json({
+    success: false,
+    message: "Slot not found"
+  });
+}
+
+if (slotDoc.data().available === false) {
+  return res.status(400).json({
+    success: false,
+    message: "This slot has already been booked."
+  });
+}
 const bookingId = docRef.id;
+await db
+  .collection("slots")
+  .doc(appointmentData.slot)
+  .update({
+    available: false
+  });
 await sendConfirmationEmail(
   appointmentData.email,
   appointmentData.name,

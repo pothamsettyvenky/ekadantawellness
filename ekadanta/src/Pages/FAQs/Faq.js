@@ -29,7 +29,7 @@ const faqData = [
       "In many cases, yes. However, it is important to inform your doctor about all ongoing medications, supplements, or treatments.",
   },
   {
-    question: "Does Homoeopathy only work slowly?",
+    question: "Does Homoeopathy work slowly?",
     answer:
       "Not always. Homoeopathy can act very quickly in acute conditions such as fever, food poisoning, cough, injuries, acidity, or allergies.",
   },

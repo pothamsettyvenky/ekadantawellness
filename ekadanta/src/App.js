@@ -25,6 +25,7 @@ import Appointments from "./Admin/Appointments/Appointments";
 import Slots from "./Admin/Slots/Slots";
 import Patients from "./Admin/Patients/Patients";
 import PatientDetails from "./Admin/PatientDetails/PatientDetails"
+import Awards from "./Pages/Awards/Awards";
 function App() {
 
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,7 @@ function App() {
             <Route path = "/treatments" element = {<Treatments/>}/>
             <Route path = "/patientscorner/testimonials" element = {<TestimonialsPage/>}/>
             <Route path = "/book_appointment" element = {<BookAppointment/>}/>
+            <Route path = "/media" element ={<Awards/>}/>
 
 
             {/* admin page */}

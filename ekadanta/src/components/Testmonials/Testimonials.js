@@ -100,7 +100,7 @@ function Testimonials() {
                 </p>
 
                 <Link
-                  to="/feedback"
+                  to="/patientscorner/testimonials"
                   className="view-more-btn"
                 >
                   View More

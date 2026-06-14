@@ -85,7 +85,7 @@ function AboutClinic() {
 
           </p>
 
-          <Link to="/book-appointment">
+          <Link to="/book_appointment">
 
             <button className="clinic-btn">
               Book Consultation

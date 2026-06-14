@@ -63,6 +63,7 @@
     date: "",
     slot: "",
     notes: "",
+    slotTime: "",
   });
 
     const services = [
@@ -283,7 +284,8 @@ setFollowupStatus(data.status);
             appointmentData: {
               ...formData,
               services: selectedServices,
-              otherService: customService
+              otherService: customService,
+              
             }
           })
         }
@@ -352,7 +354,9 @@ setShowPopup(false);
     ...formData,
     services: selectedServices,
     otherService: customService,
-    amount: packageAmounts[formData.packageType] || 0
+    amount: packageAmounts[formData.packageType] || 0,
+  
+    
   };
 
       const orderResponse =
@@ -646,69 +650,90 @@ setShowPopup(false);
           </div>
 
           <form onSubmit={handleSubmit}>
-          <div className="package-box">
+          <div className="selection-section">
 
-    <h3>
-      Appointment Type
-    </h3>
+  <h3>Appointment Type</h3>
 
-    <label>
+  <div className="selection-cards">
+
+    <label
+      className={`selection-card ${
+        formData.appointmentType === "initial"
+          ? "active"
+          : ""
+      }`}
+    >
       <input
         type="radio"
         name="appointmentType"
         value="initial"
         checked={
-          formData.appointmentType ===
-          "initial"
+          formData.appointmentType === "initial"
         }
         onChange={handleChange}
       />
-      New Consultation
+
+      <div>
+        <h4>New Consultation</h4>
+        <p>First consultation with doctor</p>
+      </div>
+
     </label>
 
-    <label>
+    <label
+      className={`selection-card ${
+        formData.appointmentType === "followup"
+          ? "active"
+          : ""
+      }`}
+    >
       <input
         type="radio"
         name="appointmentType"
         value="followup"
         checked={
-          formData.appointmentType ===
-          "followup"
+          formData.appointmentType === "followup"
         }
         onChange={handleChange}
       />
-      Follow-Up Consultation
+
+      <div>
+        <h4>Follow-Up Consultation</h4>
+        <p>Existing patient review</p>
+      </div>
+
     </label>
 
   </div>
+
+</div>
             {formData.appointmentType === "followup" && (
     <div style={{ marginBottom: "20px" }}>
+<div className="followup-check">
 
-     <input
-  type="email"
-  name="email"
-  placeholder="Enter Email To Check Eligibility"
-  value={formData.email}
-  onChange={handleChange}
-  readOnly={!!followupStatus}
-  required
-/>
+  <input
+    type="email"
+    name="email"
+    placeholder="Enter your email address"
+    value={formData.email}
+    onChange={handleChange}
+    readOnly={!!followupStatus}
+    required
+  />
 
-      <button
-  type="button"
-  onClick={checkEligibility}
-  disabled={!!followupStatus}
-  style={{
-    marginLeft: "10px"
-  }}
->
-  {checkingEligibility
-    ? "Verifying..."
-    : followupStatus
-    ? "✓ Eligibility Verified"
-    : "Verify Follow-Up Eligibility"}
-</button>
+  <button
+    type="button"
+    onClick={checkEligibility}
+    disabled={!!followupStatus}
+  >
+    {checkingEligibility
+      ? "Verifying..."
+      : followupStatus
+      ? "✓ Verified"
+      : "Verify Eligibility"}
+  </button>
 
+</div>
     </div>
   )}
   {formData.appointmentType === "initial" && (
@@ -912,25 +937,41 @@ setShowPopup(false);
                   required
                 />
 
-                <select
-                  name="slot"
-                  value={formData.slot}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Slot</option>
+               <select
+  value={formData.slot}
+  onChange={(e) => {
+    const selectedSlot =
+      slots.find(
+        (slot) =>
+          slot.id === e.target.value
+      );
 
-                  {slots
-                    .filter(
-                      (slot) =>
-                        slot.date === formData.date && slot.available === true,
-                    )
-                    .map((slot) => (
-                      <option key={slot.id} value={slot.time}>
-                        {slot.time}
-                      </option>
-                    ))}
-                </select>
+    setFormData({
+      ...formData,
+      slot: selectedSlot.id,
+      slotTime: selectedSlot.time
+    });
+  }}
+>
+  <option value="">
+    Select Slot
+  </option>
+
+  {slots
+    .filter(
+      (slot) =>
+        slot.date === formData.date &&
+        slot.available === true
+    )
+    .map((slot) => (
+      <option
+        key={slot.id}
+        value={slot.id}
+      >
+        {slot.time}
+      </option>
+    ))}
+</select>
 
                 <textarea
                   rows="4"

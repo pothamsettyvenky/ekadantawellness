@@ -21,7 +21,7 @@ function Banner() {
             and bring harmony to your life.
           </p>
 
-          <Link to="/book-appointment">
+          <Link to="/book_appointment">
             <button className="hero-btn">Book Appointment</button>
           </Link>
         </div>
