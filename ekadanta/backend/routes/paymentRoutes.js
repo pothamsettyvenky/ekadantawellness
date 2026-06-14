@@ -211,10 +211,7 @@ try {
 
 try {
   await sendInvoiceEmail(
-    appointmentData.email,
-    appointmentData.name,
-    appointmentData.packageType,
-    appointmentData.amount,
+     appointmentData,
     razorpay_payment_id,
     bookingId
   );
@@ -302,9 +299,19 @@ await sendConfirmationEmail(
   appointmentData.name,
   "Free Follow-Up",
   0,
+  "FREE-FOLLOWUP",
+  bookingId
+
+);
+await sendInvoiceEmail(
+  {
+    ...appointmentData,
+    amount: 0,
+    packageType: "Free Follow-Up"
+  },
+  "FREE-FOLLOWUP",
   bookingId
 );
-
 await sendDoctorNotification(
   {
     ...appointmentData,

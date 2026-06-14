@@ -1,5 +1,7 @@
 const { Resend } = require("resend");
-
+const {
+  generateInvoicePDF
+} = require("./pdfService");
 const resend = new Resend(
   process.env.RESEND_API_KEY
 );
@@ -120,7 +122,7 @@ const sendConfirmationEmail = async (
           ${paymentId}
         </p>
          <p>
-          <b>Payment ID:</b>
+          <b>Booking ID:</b>
           ${bookingId}
         </p>
 
@@ -135,15 +137,12 @@ const sendConfirmationEmail = async (
         </p>
       `
     });
-console.log("REMINDER EMAIL RESPONSE:", response);
+console.log("Confirmation Email Response:", response);
   return response;
 };
 
 const sendInvoiceEmail = async (
-  patientEmail,
-  patientName,
-  packageType,
-  amount,
+  appointmentData,
   paymentId,
   bookingId
 ) => {
@@ -151,63 +150,44 @@ const sendInvoiceEmail = async (
   const invoiceNumber =
     "EKW-" +
     Date.now();
-
+const pdfBuffer =
+  await generateInvoicePDF(
+    appointmentData,
+    paymentId,
+    bookingId
+  );
   const response =
-    await resend.emails.send({
+  await resend.emails.send({
 
-      from:
-        "Ekadantha Wellness <appointments@ekadanthawellness.com>",
+    from:
+      "Ekadantha Wellness <appointments@ekadanthawellness.com>",
 
-      to:
-        patientEmail,
+    to:
+      appointmentData.email,
 
-      subject:
-        `Invoice ${invoiceNumber}`,
+    subject:
+      `Invoice ${invoiceNumber}`,
 
-      html: `
-        <h2>Payment Invoice</h2>
+    html: `
+      <h2>Appointment Confirmed</h2>
 
-        <p>
-          <b>Invoice Number:</b>
-          ${invoiceNumber}
-        </p>
+      <p>
+        Please find your invoice attached.
+      </p>
+    `,
 
-        <p>
-          <b>Patient:</b>
-          ${patientName}
-        </p>
+    attachments: [
+      {
+        filename:
+          `${invoiceNumber}.pdf`,
 
-        <p>
-          <b>Package:</b>
-          ${packageType}
-        </p>
-
-        <p>
-          <b>Amount:</b>
-          ₹${amount}
-        </p>
-
-        <p>
-          <b>Payment ID:</b>
-          ${paymentId}
-        </p>
-        <p>
-          <b>Payment ID:</b>
-          ${bookingId}
-        </p>
-
-        <p>
-          <b>Status:</b>
-          Paid
-        </p>
-
-        <br/>
-
-        <p>
-          Ekadantha Wellness
-        </p>
-      `
-    });
+        content:
+          pdfBuffer.toString(
+            "base64"
+          )
+      }
+    ]
+  });
 
   return response;
 };
