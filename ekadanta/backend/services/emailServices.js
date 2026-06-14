@@ -130,7 +130,7 @@ const sendConfirmationEmail = async (
         </p>
       `
     });
-
+console.log("REMINDER EMAIL RESPONSE:", response);
   return response;
 };
 
