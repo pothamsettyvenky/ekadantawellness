@@ -3,7 +3,6 @@ import "./footer.css";
 
 import {
   FaInstagram,
-  FaWhatsapp,
   FaPhoneAlt,
   FaEnvelope,
   FaMapMarkerAlt,
