@@ -65,7 +65,7 @@ const generateInvoicePDF = (appointmentData, paymentId, bookingId) => {
 
     doc.moveDown(0.5);
 
-    doc.text(`Doctor: Dr. Ekadantha`);
+    doc.text(`Doctor: Dr. Shripriya`);
 
     doc.text(`Package: ${appointmentData.packageType}`);
 

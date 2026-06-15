@@ -21,9 +21,7 @@ const sendReminderEmail = async (patientEmail, patientName) => {
           Please schedule your follow-up appointment.
         </p>
 
-        <p>
-          Ekadantha Wellness
-        </p>
+      <a href="ekadanthawellness.com"> Ekadantha wellness </p>
       `,
   });
 
@@ -133,6 +131,8 @@ const sendInvoiceEmail = async (appointmentData, paymentId, bookingId) => {
       <p>
         Please find your invoice attached.
       </p>
+      <p> Thank you </p>
+  <a href="ekadanthawellness.com"> Ekadantha wellness </p>
     `,
 
     attachments: [
@@ -142,7 +142,10 @@ const sendInvoiceEmail = async (appointmentData, paymentId, bookingId) => {
         content: pdfBuffer.toString("base64"),
       },
     ],
+    
   });
+  
+      
 
   return response;
 };

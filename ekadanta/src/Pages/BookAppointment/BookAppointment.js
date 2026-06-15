@@ -1,6 +1,7 @@
   import React, { useState, useEffect } from "react";
   import "./BookAppointment.css";
-
+import { useNavigate }
+from "react-router-dom";
   import {
     collection,
     onSnapshot
@@ -19,9 +20,13 @@
     setPopupMessage(message);
     setShowPopup(true);
   };
+  const navigate = useNavigate();
+  const [serviceDropdown, setServiceDropdown] =
+  useState("");
     const [showPopup, setShowPopup] =
     useState(false);
-
+const [showSuccessPopup, setShowSuccessPopup] =
+  useState(false);
   const [popupTitle, setPopupTitle] =
     useState("");
 
@@ -64,6 +69,7 @@
     slot: "",
     notes: "",
     slotTime: "",
+    
   });
 
     const services = [
@@ -264,6 +270,16 @@ setFollowupStatus(data.status);
     );
     return;
   }
+  if (
+  formData.appointmentType === "followup" &&
+  followupStatus === "paid_followup" &&
+  !formData.packageType
+) {
+  alert(
+    "Please select a follow-up package."
+  );
+  return;
+}
     if (
     formData.appointmentType === "followup" &&
     followupStatus === "free_followup"
@@ -296,9 +312,7 @@ setFollowupStatus(data.status);
 
       if (data.success) {
 
-      alert(
-  "Free Follow-Up Booked Successfully"
-);
+    setShowSuccessPopup(true);
 
 setFormData({
   appointmentType: "initial",
@@ -312,6 +326,7 @@ setFormData({
   address: "",
   date: "",
   slot: "",
+  slotTime: "",
   notes: ""
 });
 
@@ -489,9 +504,7 @@ setShowPopup(false);
                 verifyData.success
               ) {
 
-                alert(
-                  "Payment Successful. Appointment Confirmed."
-                );
+              setShowSuccessPopup(true);
 
                 setFormData({
     appointmentType: "initial",
@@ -737,70 +750,116 @@ setShowPopup(false);
     </div>
   )}
   {formData.appointmentType === "initial" && (
-    <>
-      <h3>Select Package</h3>
+   <div className="consultation-packages">
 
-      <label>
-        <input
-          type="radio"
-          name="packageType"
-          value="Without Medication"
-          checked={
-            formData.packageType ===
-            "Without Medication"
-          }
-          onChange={handleChange}
-        />
-        Without Medication ₹1499
-      </label>
+  <label
+    className={`consultation-option ${
+      formData.packageType ===
+      "Without Medication"
+        ? "selected"
+        : ""
+    }`}
+  >
+    <input
+      type="radio"
+      name="packageType"
+      value="Without Medication"
+      checked={
+        formData.packageType ===
+        "Without Medication"
+      }
+      onChange={handleChange}
+    />
 
-      <label>
-        <input
-          type="radio"
-          name="packageType"
-          value="With Medication"
-          checked={
-            formData.packageType ===
-            "With Medication"
-          }
-          onChange={handleChange}
-        />
-        With Medication ₹2999
-      </label>
-    </>
+    <div>
+      <h4>Without Medication</h4>
+      <p>₹1499</p>
+    </div>
+  </label>
+
+  <label
+    className={`consultation-option ${
+      formData.packageType ===
+      "With Medication"
+        ? "selected"
+        : ""
+    }`}
+  >
+    <input
+      type="radio"
+      name="packageType"
+      value="With Medication"
+      checked={
+        formData.packageType ===
+        "With Medication"
+      }
+      onChange={handleChange}
+    />
+
+    <div>
+      <h4>With Medication</h4>
+      <p>₹2999</p>
+    </div>
+  </label>
+
+</div>
   )}
   {followupStatus === "paid_followup" && (
-    <>
-      <h3>Follow-Up Packages</h3>
+   <div className="followup-packages">
 
-      <label>
-        <input
-          type="radio"
-          name="packageType"
-          value="Follow-Up Without Medication"
-          checked={
-            formData.packageType ===
-            "Follow-Up Without Medication"
-          }
-          onChange={handleChange}
-        />
-        Follow-Up Without Medication ₹1199
-      </label>
+  <h3>Select Follow-Up Package</h3>
 
-      <label>
-        <input
-          type="radio"
-          name="packageType"
-          value="Follow-Up With Medication"
-          checked={
-            formData.packageType ===
-            "Follow-Up With Medication"
-          }
-          onChange={handleChange}
-        />
-        Follow-Up With Medication ₹2499
-      </label>
-    </>
+  <label
+    className={`package-option ${
+      formData.packageType ===
+      "Follow-Up Without Medication"
+        ? "selected"
+        : ""
+    }`}
+  >
+    <input
+      type="radio"
+      name="packageType"
+      value="Follow-Up Without Medication"
+      checked={
+        formData.packageType ===
+        "Follow-Up Without Medication"
+      }
+      onChange={handleChange}
+    />
+
+    <div>
+      <h4>Follow-Up Without Medication</h4>
+      <p>₹1199 per month</p>
+    </div>
+  </label>
+
+  <label
+    className={`package-option ${
+      formData.packageType ===
+      "Follow-Up With Medication"
+        ? "selected"
+        : ""
+    }`}
+  >
+    <input
+      type="radio"
+      name="packageType"
+      value="Follow-Up With Medication"
+      checked={
+        formData.packageType ===
+        "Follow-Up With Medication"
+      }
+      onChange={handleChange}
+    />
+
+    <div>
+      <h4>Follow-Up With Medication</h4>
+      <p>₹2499 per month</p>
+    </div>
+  </label>
+
+</div>
   )}
   {followupStatus === "free_followup" && (
     <div
@@ -901,7 +960,13 @@ setShowPopup(false);
 
                 <label className="service-label">Select Services</label>
 
-                <select onChange={handleServiceSelect} defaultValue="">
+                <select
+  value={serviceDropdown}
+  onChange={(e) => {
+    setServiceDropdown(e.target.value);
+    handleServiceSelect(e);
+  }}
+>
                   <option value="">Select Service</option>
 
                   {services.map((item, index) => (
@@ -1065,6 +1130,38 @@ setShowPopup(false);
       </div>
     </div>
   )}
+  {showSuccessPopup && (
+  <div className="success-popup-overlay">
+
+    <div className="success-popup">
+
+      <div className="success-check">
+        ✓
+      </div>
+
+      <h2>
+        Appointment Booked Successfully
+      </h2>
+
+      <p>
+        Your booking has been confirmed.
+        Confirmation email and invoice
+        have been sent to your email.
+      </p>
+
+      <button
+        onClick={() =>{
+          setShowSuccessPopup(false);
+            navigate("/");
+        } }
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+)}
       </section>
     );
   }
