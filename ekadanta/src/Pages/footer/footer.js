@@ -94,9 +94,29 @@ function Footer() {
 
       {/* Bottom */}
 
-      <div className="footer-bottom">
-        <p>© 2026 Ekadantha Wellness. All Rights Reserved.</p>
-      </div>
+     <div className="footer-bottom">
+
+  <a
+    href="/privacy-policy"
+    className="footer-bottom-link"
+  >
+    Privacy Policy
+  </a>
+
+  <p>
+    © 2026 Ekadantha Wellness. All Rights Reserved.
+  </p>
+
+  <a
+    href="https://venkatesh-pothamsetty.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="footer-bottom-link"
+  >
+    Meet The Developer → VENKATESH POTHAMSETTY
+  </a>
+
+</div>
     </footer>
   );
 }

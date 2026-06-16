@@ -26,6 +26,7 @@ import Slots from "./Admin/Slots/Slots";
 import Patients from "./Admin/Patients/Patients";
 import PatientDetails from "./Admin/PatientDetails/PatientDetails"
 import Awards from "./Pages/Awards/Awards";
+import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 function App() {
 
   const [loading, setLoading] = useState(true);
@@ -64,7 +65,7 @@ function App() {
             <Route path = "/patientscorner/testimonials" element = {<TestimonialsPage/>}/>
             <Route path = "/book_appointment" element = {<BookAppointment/>}/>
             <Route path = "/media" element ={<Awards/>}/>
-
+            <Route path = "/privacy-policy" element = {<PrivacyPolicy/>}/>
 
             {/* admin page */}
             <Route path = "/admin/appointment" element = {<Appointments/>}/>
