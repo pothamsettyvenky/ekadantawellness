@@ -18,6 +18,7 @@ import Treatments from "./Pages/Treatments/Treatments";
 import ScrollToTop from "./ScrollToTop";
 import TestimonialsPage from "./Pages/TestimonialsPage/TestimonialsPage";
 import BookAppointment from "./Pages/BookAppointment/BookAppointment";
+import PaymentStatus from "./Pages/PaymentStatus/PaymentStatus";
 
 // admin page
 import Dashboard from "./Admin/Dashboard/Dashboard";
@@ -66,6 +67,7 @@ function App() {
             <Route path = "/book_appointment" element = {<BookAppointment/>}/>
             <Route path = "/media" element ={<Awards/>}/>
             <Route path = "/privacy-policy" element = {<PrivacyPolicy/>}/>
+             <Route path="/payment-status" element={<PaymentStatus />} />
 
             {/* admin page */}
             <Route path = "/admin/appointment" element = {<Appointments/>}/>

@@ -1,418 +1,259 @@
 const express = require("express");
-const crypto = require("crypto");
 const {
   sendConfirmationEmail,
   sendInvoiceEmail,
-  sendDoctorNotification
+  sendDoctorNotification,
 } = require("../services/emailServices");
 
-const razorpay =
-  require("../config/razorpay");
+const cashfree = require("../config/cashfree");
+const { admin, db } = require("../firebaseAdmin");
 
-const {
-  admin,
-  db
-} = require("../firebaseAdmin");
-
-const router =
-  express.Router();
+const router = express.Router();
 
 const packagePrices = {
   "Without Medication": 1499,
   "With Medication": 2999,
-
   "Follow-Up Without Medication": 1199,
-  "Follow-Up With Medication": 2499
+  "Follow-Up With Medication": 2499,
 };
 
-router.post(
-  "/create-order",
-  async (req, res) => {
+// ─── CREATE ORDER ─────────────────────────────────────────────────────────────
+router.post("/create-order", async (req, res) => {
+  console.log("Create Order Hit");
+  console.log("Body:", req.body);
 
-    console.log(
-      "Create Order Hit"
-    );
+  try {
+    const { packageType, customerDetails } = req.body;
+    const amount = packagePrices[packageType];
 
-    console.log(
-      "Body:",
-      req.body
-    );
+    if (!amount) {
+      return res.status(400).json({ success: false, error: "Invalid package type" });
+    }
 
-    console.log(
-      "Key ID:",
-      process.env.RAZORPAY_KEY_ID
-    );
+    const orderId = `order_${Date.now()}`;
 
+    const orderRequest = {
+      order_id: orderId,
+      order_amount: amount,
+      order_currency: "INR",
+      customer_details: {
+        customer_id: customerDetails?.phone
+          ? `cust_${customerDetails.phone}`
+          : `cust_${Date.now()}`,
+        customer_phone: customerDetails?.phone || "9999999999",
+        customer_email: customerDetails?.email || "",
+        customer_name: customerDetails?.name || "",
+      },
+      order_meta: {
+        return_url: `${process.env.FRONTEND_URL}/payment-status?order_id={order_id}`,
+      },
+    };
+
+    const response = await cashfree.PGCreateOrder(orderRequest);
+    console.log("Order Created:", response.data.order_id);
+
+    res.json({
+      success: true,
+      order: {
+        id: response.data.order_id,
+        payment_session_id: response.data.payment_session_id,
+        amount: amount,
+      },
+    });
+  } catch (error) {
+    console.error("Create Order Error:", error?.response?.data || error.message);
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data?.message || error.message,
+    });
+  }
+});
+
+// ─── VERIFY PAYMENT ───────────────────────────────────────────────────────────
+router.post("/verify-payment", async (req, res) => {
+  try {
+    const { cashfree_order_id, appointmentData } = req.body;
+
+    // Fetch order status from Cashfree
+    const orderResponse = await cashfree.PGFetchOrder(cashfree_order_id);
+    const orderStatus = orderResponse.data.order_status;
+
+    if (orderStatus !== "PAID") {
+      return res.status(400).json({
+        success: false,
+        message: `Payment not completed. Status: ${orderStatus}`,
+      });
+    }
+
+    // ── DUPLICATE PREVENTION ─────────────────────────────────────────────────
+    const existingAppointment = await db
+      .collection("appointments")
+      .where("cashfreeOrderId", "==", cashfree_order_id)
+      .get();
+
+    if (!existingAppointment.empty) {
+      console.log("Duplicate blocked:", cashfree_order_id);
+      return res.json({ success: true, message: "Already processed" });
+    }
+    // ────────────────────────────────────────────────────────────────────────
+
+    // Get payment ID
+    const paymentsResponse = await cashfree.PGOrderFetchPayments(cashfree_order_id);
+    const payment = paymentsResponse.data?.[0];
+    const cashfreePaymentId = payment?.cf_payment_id || cashfree_order_id;
+
+    // Check slot availability
+    const slotDoc = await db
+      .collection("slots")
+      .doc(appointmentData.slot)
+      .get();
+
+    if (!slotDoc.exists) {
+      return res.status(400).json({ success: false, message: "Slot not found" });
+    }
+
+    if (slotDoc.data().available === false) {
+      return res.status(400).json({
+        success: false,
+        message: "This slot has already been booked.",
+      });
+    }
+
+    // Save appointment to Firestore
+    const docRef = await db.collection("appointments").add({
+      ...appointmentData,
+      appointmentType: appointmentData.appointmentType,
+      paymentStatus: "paid",
+      status: "confirmed",
+      followUpEligible: true,
+      freeFollowUpUsed: false,
+      reminderSent: false,
+      cashfreeOrderId: cashfree_order_id,
+      cashfreePaymentId: cashfreePaymentId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    const bookingId = docRef.id;
+
+    console.log("Appointment saved:", bookingId);
+    console.log("Slot ID:", appointmentData.slot);
+    console.log("Slot Time:", appointmentData.slotTime);
+
+    // Mark slot as booked
+    await db
+      .collection("slots")
+      .doc(appointmentData.slot)
+      .update({ available: false });
+
+    // Send emails
     try {
-
-      const {
-        packageType
-      } = req.body;
-
-      const amount =
-        packagePrices[
-          packageType
-        ];
-
-      if (!amount) {
-
-        return res.status(400).json({
-          success: false,
-          error:
-            "Invalid package type"
-        });
-
-      }
-console.log(
-  "Backend Key:",
-  process.env.RAZORPAY_KEY_ID
-);
-      const order =
-        await razorpay.orders.create({
-
-          amount:
-            amount * 100,
-
-          currency:
-            "INR"
-
-        });
-
-      console.log(
-        "Order Created:",
-        order.id
+      await sendConfirmationEmail(
+        appointmentData.email,
+        appointmentData.name,
+        appointmentData.packageType,
+        appointmentData.amount,
+        cashfreePaymentId,
+        bookingId
       );
-console.log(
-  "Order Created:",
-  order
-);
-      res.json({
-        success: true,
-        order
-      });
-
-    } catch (error) {
-
-      console.error(
-        "Create Order Error:",
-        error
-      );
-
-      res.status(500).json({
-        success: false,
-        error: error.message
-      });
-
+      console.log("Confirmation email sent");
+    } catch (err) {
+      console.error("Confirmation email failed", err);
     }
-
-  }
-);
-
-router.post(
-  "/verify-payment",
-  async (req, res) => {
 
     try {
-
-      const {
-
-        razorpay_order_id,
-
-        razorpay_payment_id,
-
-        razorpay_signature,
-
-        appointmentData
-
-      } = req.body;
-
-      const body =
-        razorpay_order_id +
-        "|" +
-        razorpay_payment_id;
-
-      const expectedSignature =
-        crypto
-          .createHmac(
-            "sha256",
-            process.env
-              .RAZORPAY_KEY_SECRET
-          )
-          .update(body)
-          .digest("hex");
-
-      if (
-        expectedSignature !==
-        razorpay_signature
-      ) {
-
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message:
-              "Invalid Signature"
-          });
-
-      }
-      const slotDoc = await db
-  .collection("slots")
-  .doc(appointmentData.slot)
-  .get();
-
-if (!slotDoc.exists) {
-  return res.status(400).json({
-    success: false,
-    message: "Slot not found"
-  });
-}
-
-if (
-  slotDoc.data().available === false
-) {
-  return res.status(400).json({
-    success: false,
-    message:
-      "This slot has already been booked."
-  });
-}
-
-     const docRef = await db
-  .collection("appointments")
-  .add({
-
-    ...appointmentData,
-
-    appointmentType:
-      appointmentData.appointmentType,
-
-    paymentStatus:
-      "paid",
-
-    status:
-      "confirmed",
-
-    followUpEligible:
-      true,
-
-    freeFollowUpUsed:
-      false,
-
-    reminderSent:
-      false,
-
-    razorpayOrderId:
-      razorpay_order_id,
-
-    razorpayPaymentId:
-      razorpay_payment_id,
-
-    createdAt:
-      admin.firestore.FieldValue.serverTimestamp()
-
-  });
-
-const bookingId = docRef.id;
-console.log("Appointment Data:", appointmentData);
-
-console.log(
-  "Slot ID received:",
-  appointmentData.slot
-);
-
-console.log(
-  "Slot Time received:",
-  appointmentData.slotTime
-);
-  await db
-  .collection("slots")
-  .doc(appointmentData.slot)
-  .update({
-    available: false
-  });
-  console.log(
-  "Selected Slot:",
-  appointmentData.slot
-);    
-
-try {
-  await sendConfirmationEmail(
-    appointmentData.email,
-    appointmentData.name,
-    appointmentData.packageType,
-    appointmentData.amount,
-    razorpay_payment_id,
-    bookingId
-  );
-
-  console.log("Confirmation email sent");
-} catch (error) {
-  console.error("Confirmation email failed", error);
-}
-
-try {
-  await sendInvoiceEmail(
-     appointmentData,
-    razorpay_payment_id,
-    bookingId
-  );
-
-  console.log("Invoice email sent");
-} catch (error) {
-  console.error("Invoice email failed", error);
-}
-try {
-
-  await sendDoctorNotification(
-    appointmentData,
-    bookingId
-  );
-
-  console.log(
-    "Doctor notification sent"
-  );
-
-} catch (error) {
-
-  console.error(
-    "Doctor notification failed",
-    error
-  );
-
-}
-
-      res.json({
-        success: true,
-        message:
-          "Payment Verified"
-      });
-
-    } catch (error) {
-
-      res.status(500).json({
-        success: false,
-        error: error.message
-      });
-
+      await sendInvoiceEmail(appointmentData, cashfreePaymentId, bookingId);
+      console.log("Invoice email sent");
+    } catch (err) {
+      console.error("Invoice email failed", err);
     }
-
-  }
-);
-router.post(
-  "/book-free-followup",
-  async (req, res) => {
 
     try {
-
-      const {
-        originalAppointmentId,
-        appointmentData
-      } = req.body;
-
-     const docRef = await db
-     
-  .collection("appointments")
-  .add({
-
-    ...appointmentData,
-
-    parentAppointmentId:
-      originalAppointmentId,
-
-    appointmentType:
-      "followup",
-
-    paymentStatus:
-      "free",
-
-    amount: 0,
-
-    status:
-      "confirmed",
-
-    createdAt:
-      admin.firestore.FieldValue.serverTimestamp()
-
-  });
-const slotDoc = await db
-  .collection("slots")
-  .doc(appointmentData.slot)
-  .get();
-
-if (!slotDoc.exists) {
-  return res.status(400).json({
-    success: false,
-    message: "Slot not found"
-  });
-}
-
-if (slotDoc.data().available === false) {
-  return res.status(400).json({
-    success: false,
-    message: "This slot has already been booked."
-  });
-}
-const bookingId = docRef.id;
-await db
-  .collection("slots")
-  .doc(appointmentData.slot)
-  .update({
-    available: false
-  });
-await sendConfirmationEmail(
-  appointmentData.email,
-  appointmentData.name,
-  "Free Follow-Up",
-  0,
-  "FREE-FOLLOWUP",
-  bookingId
-
-);
-await sendInvoiceEmail(
-  {
-    ...appointmentData,
-    amount: 0,
-    packageType: "Free Follow-Up"
-  },
-  "FREE-FOLLOWUP",
-  bookingId
-);
-await sendDoctorNotification(
-  {
-    ...appointmentData,
-    packageType: "Free Follow-Up"
-  },
-  bookingId
-);
-
-      await db
-        .collection("appointments")
-        .doc(
-          originalAppointmentId
-        )
-        .update({
-
-          freeFollowUpUsed: true
-
-        });
-
-      res.json({
-        success: true
-      });
-
-    } catch (error) {
-
-      console.error(error);
-
-      res.status(500).json({
-        success: false,
-        error: error.message
-      });
-
+      await sendDoctorNotification(appointmentData, bookingId);
+      console.log("Doctor notification sent");
+    } catch (err) {
+      console.error("Doctor notification failed", err);
     }
 
-  }
-);
+    res.json({ success: true, message: "Payment Verified" });
 
-module.exports =
-  router;
+  } catch (error) {
+    console.error("Verify Payment Error:", error?.response?.data || error.message);
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data?.message || error.message,
+    });
+  }
+});
+
+// ─── BOOK FREE FOLLOW-UP ──────────────────────────────────────────────────────
+router.post("/book-free-followup", async (req, res) => {
+  try {
+    const { originalAppointmentId, appointmentData } = req.body;
+
+    const slotDoc = await db
+      .collection("slots")
+      .doc(appointmentData.slot)
+      .get();
+
+    if (!slotDoc.exists) {
+      return res.status(400).json({ success: false, message: "Slot not found" });
+    }
+
+    if (slotDoc.data().available === false) {
+      return res.status(400).json({
+        success: false,
+        message: "This slot has already been booked.",
+      });
+    }
+
+    const docRef = await db.collection("appointments").add({
+      ...appointmentData,
+      parentAppointmentId: originalAppointmentId,
+      appointmentType: "followup",
+      paymentStatus: "free",
+      amount: 0,
+      status: "confirmed",
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    const bookingId = docRef.id;
+
+    await db
+      .collection("slots")
+      .doc(appointmentData.slot)
+      .update({ available: false });
+
+    await sendConfirmationEmail(
+      appointmentData.email,
+      appointmentData.name,
+      "Free Follow-Up",
+      0,
+      "FREE-FOLLOWUP",
+      bookingId
+    );
+
+    await sendInvoiceEmail(
+      { ...appointmentData, amount: 0, packageType: "Free Follow-Up" },
+      "FREE-FOLLOWUP",
+      bookingId
+    );
+
+    await sendDoctorNotification(
+      { ...appointmentData, packageType: "Free Follow-Up" },
+      bookingId
+    );
+
+    await db
+      .collection("appointments")
+      .doc(originalAppointmentId)
+      .update({ freeFollowUpUsed: true });
+
+    res.json({ success: true });
+
+  } catch (error) {
+    console.error("Free Followup Error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+module.exports = router;
