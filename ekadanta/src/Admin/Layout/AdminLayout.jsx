@@ -30,19 +30,6 @@ function AdminLayout({ children }) {
           <Link to="/admin/slots">
             Slots
           </Link>
-
-          <Link to="/admin/notes">
-            Doctor Notes
-          </Link>
-
-          <Link to="/admin/payments">
-            Payments
-          </Link>
-
-          <Link to="/admin/settings">
-            Settings
-          </Link>
-
         </nav>
 
       </aside>
