@@ -305,7 +305,7 @@ function BookAppointment() {
 
       // Step 3 — Open Cashfree checkout
       // User pays → Cashfree redirects to /payment-status?order_id=xxx
-      const cashfree = window.Cashfree({ mode: "sandbox" }); // ← change to "production" when going live
+      const cashfree = window.Cashfree({ mode: "production" }); // ← change to "production" when going live
 
       cashfree.checkout({
         paymentSessionId: orderData.order.payment_session_id,
