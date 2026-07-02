@@ -170,7 +170,9 @@ align-items: center;
 
   font-size:16px;
 }
-
+.footer-contact-item a{
+  color: #D8CFB7;
+}
 /* ========================= */
 /* Bottom */
 /* ========================= */

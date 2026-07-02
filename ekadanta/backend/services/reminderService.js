@@ -38,7 +38,7 @@ const processReminders = async () => {
       );
 
       // TESTING MODE
-      if (diffDays >= 1) {
+      if (diffDays >= 15) {
 
         try {
 

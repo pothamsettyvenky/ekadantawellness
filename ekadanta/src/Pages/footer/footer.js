@@ -73,16 +73,14 @@ function Footer() {
           <h3>Contact</h3>
 
           <div className="footer-contact-item">
-            <FaPhoneAlt />
+  <FaPhoneAlt />
+  <a href="tel:+918251809191">+91825 18091</a>
+</div>
 
-            <span>+91 91825 29087</span>
-          </div>
-
-          <div className="footer-contact-item">
-            <FaEnvelope />
-
-            <span>ekadanthawellness@gmail.com</span>
-          </div>
+         <div className="footer-contact-item">
+  <FaEnvelope />
+  <a href="mailto:ekadanthawellness@gmail.com">ekadanthawellness@gmail.com</a>
+</div>
 
           <div className="footer-contact-item">
             <FaMapMarkerAlt />

@@ -480,6 +480,7 @@ function BookAppointment() {
                 ))}
               </div>
               <input type="text" placeholder="Other Service (Optional)" value={customService} onChange={(e) => setCustomService(e.target.value)} />
+              <label className="service-label">Select Date</label>
               <input type="date" name="date" value={formData.date} onChange={handleChange} min={new Date().toISOString().split("T")[0]} required />
               <select
                 value={formData.slot}
