@@ -7,98 +7,58 @@ const processReminders = async () => {
   try {
     const snapshot = await db
       .collection("appointments")
+      .where("paymentStatus", "==", "paid")
+      .where("followUpEligible", "==", true)
       .get();
 
     const today = new Date();
 
     for (const doc of snapshot.docs) {
-
       const patient = doc.data();
 
-      if (!patient.email) {
-        continue;
-      }
+      if (!patient.email) continue;
+      if (!patient.createdAt) continue;
 
-      if (!patient.createdAt) {
-        continue;
-      }
+      // Use last reminder date if exists, otherwise use appointment creation date
+      const lastReminderDate = patient.reminderSentAt
+        ? patient.reminderSentAt.toDate()
+        : patient.createdAt.toDate();
 
-      const appointmentDate =
-        patient.createdAt.toDate();
-
-      const diffDays = Math.floor(
-        (today - appointmentDate) /
-        (1000 * 60 * 60 * 24)
+      const daysSinceLastReminder = Math.floor(
+        (today - lastReminderDate) / (1000 * 60 * 60 * 24)
       );
 
       console.log(
-        patient.email,
-        "Days:",
-        diffDays
+        `${patient.email} — Days since last reminder: ${daysSinceLastReminder}`
       );
 
-      // TESTING MODE
-      if (diffDays >= 15) {
-
+      if (daysSinceLastReminder >= 15) {
         try {
-
           await sendReminderEmail(
             patient.email,
             patient.name || "Patient"
           );
 
+          // Reset the 15-day clock
+          await doc.ref.update({
+            reminderSent: true,
+            reminderSentAt: new Date(),
+            reminderCount: (patient.reminderCount || 0) + 1,
+          });
+
           console.log(
-            "Reminder Sent:",
-            patient.email
+            `Reminder #${(patient.reminderCount || 0) + 1} sent to: ${patient.email}`
           );
 
         } catch (error) {
-
-          console.error(
-            "Email Failed:",
-            patient.email,
-            error.message
-          );
-
+          console.error("Email failed:", patient.email, error.message);
         }
-
       }
-
     }
 
   } catch (error) {
-
-    console.error(
-      "Reminder Error:",
-      error
-    );
-
+    console.error("Reminder Error:", error);
   }
-
 };
 
-module.exports = {
-  processReminders,
-};
-
-
-
-// prodution 
-
-// if (patient.reminderSent) {
-//   continue;
-// }
-
-// if (diffDays >= 15) {
-
-//   await sendReminderEmail(
-//     patient.email,
-//     patient.name || "Patient"
-//   );
-
-//   await doc.ref.update({
-//     reminderSent: true,
-//     reminderSentAt: new Date(),
-//   });
-
-// }
+module.exports = { processReminders };
