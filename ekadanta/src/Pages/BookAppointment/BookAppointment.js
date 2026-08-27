@@ -333,7 +333,7 @@ function BookAppointment() {
           <div className="package-details-grid">
             <div className="package-info-card">
               <h3>Without Medication</h3>
-              <div className="price">999</div>
+              <div className="price">₹999</div>
               <ul>
                 <li>✓ Initial Consultation (45–60 Minutes)</li>
                 <li>✓ Detailed Case Evaluation</li>
@@ -410,7 +410,7 @@ function BookAppointment() {
             <div className="consultation-packages">
               <label className={`consultation-option ${formData.packageType === "Without Medication" ? "selected" : ""}`}>
                 <input type="radio" name="packageType" value="Without Medication" checked={formData.packageType === "Without Medication"} onChange={handleChange} />
-                <div><h4>Without Medication</h4><p>999</p></div>
+                <div><h4>Without Medication</h4><p>₹999</p></div>
               </label>
               <label className={`consultation-option ${formData.packageType === "With Medication" ? "selected" : ""}`}>
                 <input type="radio" name="packageType" value="With Medication" checked={formData.packageType === "With Medication"} onChange={handleChange} />
