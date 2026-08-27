@@ -11,8 +11,8 @@ const { admin, db } = require("../firebaseAdmin");
 const router = express.Router();
 
 const packagePrices = {
-  "Without Medication": 1499,
-  "With Medication": 2999,
+  "Without Medication": 999,
+  "With Medication": 1999,
   "Follow-Up Without Medication": 1199,
   "Follow-Up With Medication": 2499,
 };
