@@ -355,12 +355,12 @@ function BookAppointment() {
               </ul>
             </div>
           </div>
-          <div className="followup-note">
+          {/* <div className="followup-note">
             <h4>Follow-Up Packages</h4>
             <p>Follow-up consultations are conducted every 15 days.</p>
             <p>Follow-Up Package (Without Medication): ₹1199 per month</p>
             <p>Follow-Up Package (With Medication): ₹2499 per month</p>
-          </div>
+          </div> */}
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -375,13 +375,13 @@ function BookAppointment() {
                   <p>First consultation with doctor</p>
                 </div>
               </label>
-              <label className={`selection-card ${formData.appointmentType === "followup" ? "active" : ""}`}>
+              {/* <label className={`selection-card ${formData.appointmentType === "followup" ? "active" : ""}`}>
                 <input type="radio" name="appointmentType" value="followup" checked={formData.appointmentType === "followup"} onChange={handleChange} />
                 <div>
                   <h4>Follow-Up Consultation</h4>
                   <p>Existing patient review</p>
                 </div>
-              </label>
+              </label> */}
             </div>
           </div>
 
@@ -420,7 +420,7 @@ function BookAppointment() {
           )}
 
           {/* ── Paid Follow-Up Package Selection ── */}
-          {followupStatus === "paid_followup" && (
+          {/* {followupStatus === "paid_followup" && (
             <div className="followup-packages">
               <h3>Select Follow-Up Package</h3>
               <label className={`package-option ${formData.packageType === "Follow-Up Without Medication" ? "selected" : ""}`}>
@@ -432,16 +432,16 @@ function BookAppointment() {
                 <div><h4>Follow-Up With Medication</h4><p>₹2499 per month</p></div>
               </label>
             </div>
-          )}
+          )} */}
 
           {/* ── Free Follow-Up Banner ── */}
-          {followupStatus === "free_followup" && (
+          {/* {followupStatus === "free_followup" && (
             <div style={{ background: "#e8fff0", padding: "15px", marginBottom: "20px", borderRadius: "8px" }}>
               <h4>✅ Complimentary Follow-Up Confirmed</h4>
               <p>Your patient details have been retrieved successfully.</p>
               <p>Please select your preferred date and time to complete your booking.</p>
             </div>
-          )}
+          )} */}
 
           <div className="appointment-grid">
             {/* ── Patient Details ── */}
@@ -502,7 +502,7 @@ function BookAppointment() {
           </div>
 
           <button className="book-btn" disabled={loading} type="submit">
-            {loading ? "Please Wait..." : followupStatus === "free_followup" ? "Book Free Follow-Up" : "Proceed To Booking"}
+           {loading ? "Please Wait..." : "Proceed To Booking"}
           </button>
         </form>
       </div>
